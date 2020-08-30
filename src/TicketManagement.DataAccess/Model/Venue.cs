@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TicketManagement.DataAccess.Model
+﻿namespace TicketManagement.DataAccess.Model
 {
     public class Venue
     {
+        // in meters
+        public int Wight { get; set; }
 
+        public int Lenght { get; set; }
 
-
-
-        int Wight { get; set; } // in meters
-        int Lenght { get; set; }
-
-        int SizeBySeats { get { return Wight * Lenght; } } // one seat by meter^2
- 
+        public int SizeBySeats
+        {
+            get { return Wight * Lenght; }
+        } // one seat by meter^2
     }
 }

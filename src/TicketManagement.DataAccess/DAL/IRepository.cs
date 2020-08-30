@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.DataAccess.DAL
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> //: IDisposable
+        where T : class, new()
     {
-        void Add(T obj);
+        void Create(T obj);
+
         void Remove(T obj);
-        T Get(int id);
+
+        T GetById(int id);
+
         IEnumerable<T> GetAll();
 
-        //for future- Find()
+        void Update(T obj);
 
+        // for future- Find()
     }
 }

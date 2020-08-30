@@ -33,9 +33,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
@@ -44,7 +44,9 @@
     <Compile Include="DAL\EventRepository.cs" />
     <Compile Include="DAL\IEventRepository.cs" />
     <Compile Include="DAL\IRepository.cs" />
-    <Compile Include="Model\Event.cs" />
+    <Compile Include="DAL\IUnitOfWork.cs" />
+    <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="Model\PublicEvent.cs" />
     <Compile Include="Model\Area.cs" />
     <Compile Include="Model\Venue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

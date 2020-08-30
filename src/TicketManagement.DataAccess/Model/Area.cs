@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TicketManagement.DataAccess.Model
+﻿namespace TicketManagement.DataAccess.Model
 {
     public class Area
     {
+        public int LayoutId { get; set; }
 
-        int LayoutId;
-        int CountSeats;
+        public int CountSeats { get; set; }
 
-        int CoordX;
-        int CoordY;
+        public int CoordX { get; set; }
 
-
-
+        public int CoordY { get; set; }
     }
 }
