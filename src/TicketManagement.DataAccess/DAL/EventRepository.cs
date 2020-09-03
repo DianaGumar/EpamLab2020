@@ -6,7 +6,7 @@ namespace TicketManagement.DataAccess.DAL
 {
     public class EventRepository : Repository<PublicEvent>, IEventRepository
     {
-        public EventRepository(SqlConnection conn)
+        public EventRepository(string conn)
             : base(conn)
         {
         }

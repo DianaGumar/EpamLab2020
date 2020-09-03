@@ -1,16 +1,17 @@
 ﻿using System.Data.Linq;
+using System.Data.SqlClient;
 
 namespace TicketManagement.DataAccess.DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DataContext _context;
+        private readonly string _conn;
 
-        public UnitOfWork(DataContext context)
+        public UnitOfWork(string conn)
         {
-            _context = context;
+            _conn = conn;
 
-            Events = new EventRepository(context);
+            Events = new EventRepository(conn);
         }
 
         public IEventRepository Events { get; private set; }

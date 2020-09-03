@@ -5,7 +5,7 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <CodeAnalysisRuleSet>EPAM.Trainings.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)EPAM.Trainings.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>

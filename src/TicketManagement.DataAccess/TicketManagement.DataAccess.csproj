@@ -44,8 +44,9 @@
     <Compile Include="DAL\EventRepository.cs" />
     <Compile Include="DAL\IEventRepository.cs" />
     <Compile Include="DAL\IRepository.cs" />
-    <Compile Include="DAL\IUnitOfWork.cs" />
-    <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="DAL\foFuture\IUnitOfWork.cs" />
+    <Compile Include="DAL\foFuture\UnitOfWork.cs" />
+    <Compile Include="Model\Etable.cs" />
     <Compile Include="Model\PublicEvent.cs" />
     <Compile Include="Model\Area.cs" />
     <Compile Include="Model\Venue.cs" />
