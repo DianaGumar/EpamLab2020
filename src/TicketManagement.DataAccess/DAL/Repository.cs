@@ -10,13 +10,6 @@ namespace TicketManagement.DataAccess.DAL
     public class Repository<T> : IRepository<T>
         where T : class, new()
     {
-        //private readonly SqlConnection _conn;
-
-        //// inflexible with db changing
-        //public Repository(SqlConnection conn)
-        //{
-        //    _conn = conn;
-        //}
 
         private readonly string _strConn;
 
@@ -33,66 +26,72 @@ namespace TicketManagement.DataAccess.DAL
 
         public int Create(T obj)
         {
+ 
+            // will be care about null checking
 
-            ////create sql query
-            //List<object> values = GetEntrailsValues(obj);
-
-            //StringBuilder sb = new StringBuilder();
-            //sb.Append("insert into " + Name + "s (");
-            //int count = Entrails[0].Count;
-            //for (int i = 1; i < count - 1; i++)
+            //if (objPropertiesInfo.ElementAt(i).Key.Equals("DateTime")
+            //       && values[i].ToString().Equals(DateTime.MinValue.ToString()))
             //{
-            //    sb.Append(Entrails[1][i] + ",");
+            //    values[i] = null;
             //}
-            //sb.Append(Entrails[1][count - 1]);
-            //sb.Append(") values( ");
-            //for (int i = 1; i < count - 1; i++)
+
+            //if (values[i] != null)
             //{
-            //    if (Entrails[0][i].Equals("DateTime"))
+            //    if (values[i].ToString() != "")
             //    {
-            //        values[i] = ((DateTime)values[i]).ToString("yyyy-MM-dd");
+            //        sb.Append(prefix);
+            //        prefix = ",";
+            //        sb.Append(objPropertiesInfo.ElementAt(i).Key);
             //    }
-            //    sb.Append("'" + values[i] + "', ");
-            //}
-            //if (Entrails[0][count - 1].Equals("DateTime"))
-            //{
-            //    values[count - 1] = ((DateTime)values[count - 1]).ToString("yyyy-MM-dd");
-            //}
-            //sb.Append(values[count - 1] + " )");
-
-            //string sql = sb.ToString();
-            ////            insert into comission.entrants(EntrantName, ScoreDiploma, Student)
-            ////            values('Mik', '5', 0);
-            //int countRowsUffected = 0;
-
-            ////----------------------------------
-
-            //using(SqlConnection conn = new SqlConnection(_strConn))
-            //{
-            //    conn.Open(); //?
-
-            //    SqlCommand command = new SqlCommand(sql, conn);
-            //    countRowsUffected = command.ExecuteNonQuery();
             //}
 
-            //return countRowsUffected;
 
-            throw new NotImplementedException();
+            IEnumerable<object> values = GetPropertiesValues(obj);
+
+            StringBuilder sb = new StringBuilder();
+
+            string split = "";
+            foreach (var item in objPropertiesInfo)
+            {
+                sb.Append(split);
+                split = ",";
+                sb.Append("@");
+                sb.Append(item.Key);
+            }
+
+            string sql = String.Format("insert into {0}({1}) values({2});",
+               objName, objPropertiesNames, sb.ToString());
+
+            int countRowsUffected = 0;
+            using(SqlConnection conn = new SqlConnection(_strConn))
+            {
+                conn.Open();
+                SqlCommand command = new SqlCommand(sql, conn);
+
+                for (int i = 0; i < values.Count(); i++)
+                {
+                    command.Parameters.AddWithValue("@" + objPropertiesInfo.ElementAt(i).Key, values.ElementAt(i));
+                }
+
+                countRowsUffected = command.ExecuteNonQuery();
+            }
+
+            return countRowsUffected;
         }
 
         public T GetById(int id)
         {
             T entity = new T();
 
-            string sql = "select " + objPropertiesNames
-                + " from " + objName
-                + " where " + objPropertiesInfo.ElementAt(0).Key + "=" + id;
-
+            string sql = String.Format("select {0} from {1} where {2} = @value;",
+               objPropertiesNames, objName, objPropertiesInfo.ElementAt(0).Key);
 
             // from pull conections in future
             using (SqlConnection conn = new SqlConnection(_strConn))
             {
                 SqlCommand command = new SqlCommand(sql, conn);
+                SqlParameter param = new SqlParameter("@value", id);
+                command.Parameters.Add(param);
 
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
@@ -114,9 +113,8 @@ namespace TicketManagement.DataAccess.DAL
         {
             ICollection<T> entitys = new List<T>();
 
-            string sql = "select " + objPropertiesNames 
-                + " from " + objName;
-
+            string sql = String.Format("select {0} from {1}",
+               objPropertiesNames, objName);
 
             using (SqlConnection conn = new SqlConnection(_strConn))
             {
@@ -142,19 +140,18 @@ namespace TicketManagement.DataAccess.DAL
             IEnumerable<object> values = GetPropertiesValues(obj);
 
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < values.Count() - 1; i++)
+            string split = "";
+
+            foreach (var item in objPropertiesInfo)
             {
-                sb.Append(objPropertiesInfo.ElementAt(i).Key);
-                sb.Append("=");
-                sb.Append(values.ElementAt(i));
-                sb.Append(",");
+                sb.Append(split);
+                split = ",";
+                sb.Append(item.Key);
+                sb.Append("=@");
+                sb.Append(item.Key);
             }
-            sb.Append(objPropertiesInfo.ElementAt(values.Count() - 1).Key);
-            sb.Append("=");
-            sb.Append(values.ElementAt(values.Count() - 1));
 
-
-            string sql = "delete * from " + objName + " where " + sb.ToString();
+            string sql = String.Format("delete * from {0} where {1};", objName, sb.ToString());
 
             int countRowsUffected = 0;
 
@@ -162,6 +159,12 @@ namespace TicketManagement.DataAccess.DAL
             {
                 conn.Open();
                 SqlCommand command = new SqlCommand(sql, conn);
+
+                for (int i = 0; i < values.Count(); i++)
+                {
+                    command.Parameters.AddWithValue("@" + objPropertiesInfo.ElementAt(i).Key, values.ElementAt(i));
+                }
+
                 countRowsUffected = command.ExecuteNonQuery();
             }
                
@@ -170,8 +173,8 @@ namespace TicketManagement.DataAccess.DAL
 
         public int Remove(int id)
         {
-            string sql = "delete * from " + objName 
-                + " where " + objPropertiesInfo.ElementAt(0).Key + "=" + id;
+            string sql = String.Format("delete * from {0} where {1} = @value;", 
+                objName, objPropertiesInfo.ElementAt(0).Key);
 
             int countRowsUffected = 0;
 
@@ -179,6 +182,9 @@ namespace TicketManagement.DataAccess.DAL
             {
                 conn.Open();
                 SqlCommand command = new SqlCommand(sql, conn);
+                SqlParameter param = new SqlParameter("@value", id);
+                command.Parameters.Add(param);
+
                 countRowsUffected = command.ExecuteNonQuery();
             }
 
@@ -188,64 +194,53 @@ namespace TicketManagement.DataAccess.DAL
         public int Update(T obj)
         {
 
-            ////create sql query
-            //List<object> values = GetEntrailsValues(obj);
+            //UPDATE table_name
+            //SET column1 = value1, column2 = value2, ...
+            //WHERE condition;
 
-            //StringBuilder sb = new StringBuilder();
-            //sb.Append("update " + Name + "s set ");
-            //int count = Entrails[0].Count;
-            //for (int i = 1; i < count - 1; i++)
-            //{
-            //    //проверка на злощастный тип даты- из за несовпдения форматов
-            //    if (Entrails[0][i].Equals("DateTime"))
-            //    {
-            //        values[i] = ((DateTime)values[i]).ToString("yyyy-MM-dd");
-            //    }
-            //    sb.Append(Entrails[1][i] + "= '" + values[i] + "', ");
-            //}
-            //if (Entrails[0][count - 1].Equals("DateTime"))
-            //{
-            //    values[count - 1] = ((DateTime)values[count - 1]).ToString("yyyy-MM-dd");
-            //}
-            //sb.Append(Entrails[1][count - 1] + "= '" + values[count - 1] + "'");
-            //sb.Append(" where " + Entrails[1][0] + "= " + values[0]);
+            IEnumerable<object> values = GetPropertiesValues(obj);
 
-            //string sql = sb.ToString();
-            //// update comission.entrants set EntrantName = 'Igor', ScoreDiploma = 8, Student = 0 
-            ////where EntrantID = 6;
-            //int countRowsUffected = 0;
+            StringBuilder sb = new StringBuilder();
+            string split = "";
 
-            ////----------------------------------
+            for (int i = 1; i < values.Count(); i++)
+            {
+                sb.Append(split);
+                split = ",";
+                sb.Append(objPropertiesInfo.ElementAt(i).Key);
+                sb.Append("=@");
+                sb.Append(objPropertiesInfo.ElementAt(i).Key);
+            }
 
-            //try
-            //{
-            //    connection.Open();
-            //    MySqlCommand command = new MySqlCommand(sql, connection);
-            //    countRowsUffected = command.ExecuteNonQuery();
+            string sql = String.Format("update {0} set {1} where {2} = @{2};", 
+                objName, sb.ToString(), objPropertiesInfo.ElementAt(0).Key);
 
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine("Connect to bd exeption: ", e.Message);
-            //}
-            //finally { connection.Close(); }
+            int countRowsUffected = 0;
 
-            //return countRowsUffected;
+            using (SqlConnection conn = new SqlConnection(_strConn))
+            {
+                conn.Open();
+                SqlCommand command = new SqlCommand(sql, conn);
 
-            throw new NotImplementedException();
+                for (int i = 0; i < values.Count(); i++)
+                {
+                    command.Parameters.AddWithValue("@" + objPropertiesInfo.ElementAt(i).Key, values.ElementAt(i));
+                }
+
+                countRowsUffected = command.ExecuteNonQuery();
+            }
+
+            return countRowsUffected;
         }
 
 
-        // todo ? get out into new class - only reflection methods
 
         // for reflectoin work
         private string objName = typeof(T).Name;
         private IDictionary<string, string> objPropertiesInfo;
-        string objPropertiesNames;
+        private string objPropertiesNames;
 
-        // some methods for beter work with reflection
-
-        // from list values create full objet
+        // from list values create instanse T
         protected static T SetValuesByReflection(object[] obj)
         {
             T t = new T();
@@ -279,6 +274,7 @@ namespace TicketManagement.DataAccess.DAL
             return typesAndNames;
         }
 
+        // by instance
         protected IEnumerable<object> GetPropertiesValues(T obj)
         {
             ICollection<object> values = new List<object>();
