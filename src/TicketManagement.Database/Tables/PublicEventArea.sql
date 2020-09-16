@@ -1,7 +1,7 @@
-﻿CREATE TABLE [dbo].[EventArea]
+﻿CREATE TABLE [dbo].[PublicEventArea]
 (
 	[Id] int identity primary key,
-	[EventId] int NOT NULL,
+	[PublicEventId] int NOT NULL,
 	[Description] nvarchar(200) NOT NULL,
 	[CoordX] int NOT NULL,
 	[CoordY] int NOT NULL,

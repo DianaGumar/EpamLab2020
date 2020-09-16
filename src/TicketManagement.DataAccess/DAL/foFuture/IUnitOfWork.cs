@@ -3,7 +3,7 @@
     // ensure all repositories will use same context
     public interface IUnitOfWork
     {
-        IEventRepository Events { get; }
+        IPublicEventRepository Events { get; }
 
         // IVenueRepository Venues { get; } ?
         // save mehod nonexist, becase only for orm

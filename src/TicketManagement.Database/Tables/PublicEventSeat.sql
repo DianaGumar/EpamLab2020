@@ -1,7 +1,7 @@
-﻿CREATE TABLE [dbo].[EventSeat]
+﻿CREATE TABLE [dbo].[PublicEventSeat]
 (
 	[Id] int identity primary key,
-	[EventAreaId] int NOT NULL,
+	[PublicEventAreaId] int NOT NULL,
 	[Row] int NOT NULL,
 	[Number] int NOT NULL,
 	[State] int NOT NULL

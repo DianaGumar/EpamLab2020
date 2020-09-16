@@ -11,9 +11,9 @@ namespace TicketManagement.DataAccess.DAL
         {
             _conn = conn;
 
-            Events = new EventRepository(conn);
+            Events = new PublicEventRepository(conn);
         }
 
-        public IEventRepository Events { get; private set; }
+        public IPublicEventRepository Events { get; private set; }
     }
 }
