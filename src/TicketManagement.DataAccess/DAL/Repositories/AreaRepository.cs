@@ -15,11 +15,11 @@ namespace TicketManagement.DataAccess.DAL
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
-            command.CommandText = "insert into Area (Description, TMLayout, CoordX, CoordY) " +
-                "values(@Description, @TMLayout, @CoordX, @CoordY);";
+            command.CommandText = "insert into Area (Description, TMLayoutId, CoordX, CoordY) OUTPUT INSERTED.ID " +
+                "values(@Description, @TMLayoutId, @CoordX, @CoordY);";
 
             command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 200).Value = obj?.Description;
-            command.Parameters.Add("@TMLayout", System.Data.SqlDbType.Int).Value = obj?.TMLayoutId;
+            command.Parameters.Add("@TMLayoutId", System.Data.SqlDbType.Int).Value = obj?.TMLayoutId;
             command.Parameters.Add("@CoordX", System.Data.SqlDbType.Int).Value = obj?.CoordX;
             command.Parameters.Add("@CoordY", System.Data.SqlDbType.Int).Value = obj?.CoordY;
 

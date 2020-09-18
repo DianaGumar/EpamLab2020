@@ -15,7 +15,7 @@ namespace TicketManagement.DataAccess.DAL
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
-            command.CommandText = "insert into TMEventSeat (TMEventAreaId, Number, Row, State) " +
+            command.CommandText = "insert into TMEventSeat (TMEventAreaId, Number, Row, State) OUTPUT INSERTED.ID " +
                 "values(@TMEventAreaId, @Number, @Row, @State);";
 
             command.Parameters.Add("@TMEventAreaId", System.Data.SqlDbType.Int).Value = obj?.TMEventAreaId;

@@ -23,7 +23,7 @@
     <Rule Id="CA1901" Action="Warning" />
     <Rule Id="CA2002" Action="Warning" />
     <Rule Id="CA2007" Action="None" />
-    <Rule Id="CA2100" Action="Warning" />
+    <Rule Id="CA2100" Action="Info" />
     <Rule Id="CA2101" Action="Warning" />
     <Rule Id="CA2108" Action="Warning" />
     <Rule Id="CA2111" Action="Warning" />
@@ -65,6 +65,9 @@
     <Rule Id="CA2241" Action="Warning" />
     <Rule Id="CA2242" Action="Warning" />
     <Rule Id="CS1591" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.NetCore.Analyzers" RuleNamespace="Microsoft.NetCore.Analyzers">
+    <Rule Id="CA2100" Action="Info" />
   </Rules>
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
     <Rule Id="S1006" Action="None" />

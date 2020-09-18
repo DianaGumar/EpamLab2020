@@ -15,7 +15,7 @@ namespace TicketManagement.DataAccess.DAL
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
-            command.CommandText = "insert into TMLayout (Description, VenueId) " +
+            command.CommandText = "insert into TMLayout (Description, VenueId) OUTPUT INSERTED.ID " +
                 "values(@Description, @VenueId);";
 
             command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 120).Value = obj?.Description;

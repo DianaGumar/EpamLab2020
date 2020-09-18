@@ -15,7 +15,7 @@ namespace TicketManagement.DataAccess.DAL
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
-            command.CommandText = "insert into Seat (AreaId, Number, Row) " +
+            command.CommandText = "insert into Seat (AreaId, Number, Row) OUTPUT INSERTED.ID " +
                 "values(@AreaId, @Number, @Row);";
 
             command.Parameters.Add("@AreaId", System.Data.SqlDbType.Int).Value = obj?.AreaId;

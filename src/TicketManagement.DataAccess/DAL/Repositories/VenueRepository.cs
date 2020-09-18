@@ -20,9 +20,17 @@ namespace TicketManagement.DataAccess.DAL
 
             command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 120).Value = obj?.Description;
             command.Parameters.Add("@Address", System.Data.SqlDbType.NVarChar, 200).Value = obj?.Address;
-            command.Parameters.Add("@Phone", System.Data.SqlDbType.NVarChar, 30).Value = obj?.Phone;
             command.Parameters.Add("@Weidth", System.Data.SqlDbType.Int).Value = obj?.Weidth;
             command.Parameters.Add("@Lenght", System.Data.SqlDbType.Int).Value = obj?.Lenght;
+            command.Parameters.Add(
+                new SqlParameter
+                {
+                    ParameterName = "@Phone",
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                    Size = 30,
+                    IsNullable = true,
+                    Value = obj?.Phone,
+                });
 
             conn.Open();
             var idNewObj = command.ExecuteScalar();

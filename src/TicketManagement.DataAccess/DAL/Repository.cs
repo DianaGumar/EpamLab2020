@@ -59,19 +59,14 @@ namespace TicketManagement.DataAccess.DAL
                 command.Parameters.AddWithValue('@' + _objPropertiesInfo.ElementAt(i).Key, values.ElementAt(i));
             }
 
-            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
-
-            command.Parameters.AddWithValue("@objPropertiesNamesWithoutId", objPropertiesNamesWithoutId);
-            command.Parameters.AddWithValue("@objPropertiesInfo", sb.ToString());
-
-            command.CommandText = "insert into @objName(@objPropertiesNamesWithoutId) values(@objPropertiesInfo);";
+            command.CommandText = $"insert into {_objName} ({objPropertiesNamesWithoutId}) OUTPUT INSERTED.ID values({sb});";
 
             conn.Open();
-            var idNewObj = command.ExecuteScalar();
+            var idNewObj = (int)command.ExecuteScalar();
             command.Dispose();
             conn.Close();
 
-            SetValuesByReflection(obj, idNewObj != null ? (int)idNewObj : 0);
+            SetValuesByReflection(obj, idNewObj);
             return obj;
         }
 
@@ -89,11 +84,9 @@ namespace TicketManagement.DataAccess.DAL
             command.Connection = conn;
 
             command.Parameters.Add("@objPKValue", SqlDbType.Int).Value = id;
-            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
-            command.Parameters.Add("@objPKName", SqlDbType.NVarChar).Value = _objPropertiesInfo.ElementAt(0).Key;
-            command.Parameters.AddWithValue("@objPropertiesNames", _objPropertiesNames);
 
-            command.CommandText = "select @objPropertiesNames from @objName where @objPKName = @objPKValue;";
+            command.CommandText =
+                $"select {_objPropertiesNames} from {_objName} where {_objPropertiesInfo.ElementAt(0).Key} = @objPKValue;";
 
             conn.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -121,10 +114,7 @@ namespace TicketManagement.DataAccess.DAL
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
-            command.Parameters.AddWithValue("@objPropertiesNames", _objPropertiesNames);
-            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
-
-            command.CommandText = "select @objPropertiesNames from @objName";
+            command.CommandText = $"select {_objPropertiesNames} from {_objName}";
 
             conn.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -143,6 +133,7 @@ namespace TicketManagement.DataAccess.DAL
             return entitys;
         }
 
+        // without id
         public int Remove(T obj)
         {
             IEnumerable<object> values = GetPropertiesValues(obj);
@@ -150,7 +141,7 @@ namespace TicketManagement.DataAccess.DAL
             StringBuilder sb = new StringBuilder();
             string split = "";
 
-            foreach (var item in _objPropertiesInfo)
+            foreach (var item in _objPropertiesInfo.Skip(1))
             {
                 sb.Append(split);
                 split = " and ";
@@ -163,12 +154,9 @@ namespace TicketManagement.DataAccess.DAL
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
-            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
-            command.Parameters.AddWithValue("@objPropertiesInfo", sb.ToString());
+            command.CommandText = $"delete from {_objName} where {sb};";
 
-            command.CommandText = "delete from @objName where @objPropertiesInfo;";
-
-            for (int i = 0; i < values.Count(); i++)
+            for (int i = 1; i < values.Count(); i++)
             {
                 command.Parameters.AddWithValue('@' + _objPropertiesInfo.ElementAt(i).Key, values.ElementAt(i));
             }
@@ -188,10 +176,8 @@ namespace TicketManagement.DataAccess.DAL
             command.Connection = conn;
 
             command.Parameters.Add("@objPKValue", SqlDbType.Int).Value = id;
-            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
-            command.Parameters.Add("@objPKName", SqlDbType.NVarChar).Value = _objPropertiesInfo.ElementAt(0).Key;
 
-            command.CommandText = "delete from @objName where @objPKName = @objPKValue;";
+            command.CommandText = $"delete from {_objName} where {_objPropertiesInfo.ElementAt(0).Key} = @objPKValue;";
 
             conn.Open();
             int countRowsUffected = command.ExecuteNonQuery();
@@ -206,22 +192,21 @@ namespace TicketManagement.DataAccess.DAL
             throw new NotImplementedException();
         }
 
+        // with id
         public int Update(T obj)
         {
-            // not by id
-            // but by all fields
             IEnumerable<object> values = GetPropertiesValues(obj);
 
             StringBuilder sb = new StringBuilder();
             string split = "";
 
-            for (int i = 1; i < values.Count(); i++)
+            foreach (var item in _objPropertiesInfo.Skip(1))
             {
                 sb.Append(split);
                 split = ",";
-                sb.Append(_objPropertiesInfo.ElementAt(i).Key);
+                sb.Append(item.Key);
                 sb.Append("=@");
-                sb.Append(_objPropertiesInfo.ElementAt(i).Key);
+                sb.Append(item.Key);
             }
 
             SqlConnection conn = new SqlConnection(StrConn);
@@ -233,12 +218,9 @@ namespace TicketManagement.DataAccess.DAL
                 command.Parameters.AddWithValue("@" + _objPropertiesInfo.ElementAt(i).Key, values.ElementAt(i));
             }
 
-            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
-            command.Parameters.AddWithValue("@objPropertiesInfo", sb.ToString());
-            command.Parameters.Add("@objPKName", SqlDbType.NVarChar).Value = _objPropertiesInfo.ElementAt(0).Key;
-            command.Parameters.AddWithValue("@objPKValue", _objPropertiesInfo.ElementAt(0).Value);
+            command.Parameters.AddWithValue("@objPKValue", values.ElementAt(0));
 
-            command.CommandText = "update @objName set @objPropertiesInfo where @objPKName = @objPKValue;";
+            command.CommandText = $"update {_objName} set {sb} where {_objPropertiesInfo.ElementAt(0).Key} = @objPKValue;";
 
             conn.Open();
             int countRowsUffected = command.ExecuteNonQuery();
