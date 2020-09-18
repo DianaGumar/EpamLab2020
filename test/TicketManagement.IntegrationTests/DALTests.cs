@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.DataAccess.Model;
 
@@ -8,76 +9,29 @@ namespace TicketManagement.IntegrationTests
     [TestFixture]
     public class DALTests
     {
-        [Test]
-        public void ReedTest()
-        {
-
-            string str = @"Data Source=.\SQLEXPRESS;Initial Catalog=Example;Integrated Security=True";
-
-            var repository = new Repository<Etable>(str);
-
-            Etable et = repository.GetById(1);
-            Etable e = new Etable() { id = 1, name = "alise", age = 15 };
-
-            Assert.AreEqual(et, e);
-
-        }
+        private readonly string _str =
+            @"Data Source=.\SQLEXPRESS;Initial Catalog=TicketManagement.Database;Integrated Security=True";
 
         [Test]
-        public void ReedAllTest()
+        public void RepositoryCreateMethodTest()
         {
+            // arange
+            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
+            IAreaRepository areaRepository = new AreaRepository(_str);
+            ISeatRepository seatRepository = new SeatRepository(_str);
 
-            string str = @"Data Source=.\SQLEXPRESS;Initial Catalog=Example;Integrated Security=True";
+            // act
+            TMLayout layout = layoutRepository.Create(
+                new TMLayout { Description = "some desc", VenueId = 2 });
+            Area area = areaRepository.Create(
+                new Area { Description = "area1", CoordX = 0, CoordY = 0, TMLayoutId = layout.Id });
+            Seat seat = seatRepository.Create(
+                new Seat { Number = 1, Row = 1, AreaId = area.Id });
 
-            var repository = new Repository<Etable>(str);
-
-            ICollection<Etable> et = (ICollection<Etable>)repository.GetAll();
-
-            Assert.AreEqual(et.Count, 2);
-
-        }
-
-        [Test]
-        public void CreateTest()
-        {
-
-            string str = @"Data Source=.\SQLEXPRESS;Initial Catalog=Example;Integrated Security=True";
-
-            var repository = new Repository<Etable>(str);
-
-            Etable e = new Etable() { name = "man", age = 22 };
-            int i = repository.Create(e);
-
-            Assert.AreEqual(i, 1);
-
-        }
-
-        [Test]
-        public void UpdateTest()
-        {
-
-            string str = @"Data Source=.\SQLEXPRESS;Initial Catalog=Example;Integrated Security=True";
-
-            var repository = new Repository<Etable>(str);
-
-            Etable e = new Etable() { id = 3, name = "maaaan", age = 22 };
-            int i = repository.Update(e);
-
-            Assert.AreEqual(i, 1);
-
-        }
-
-        [Test]
-        public void DeleteTest()
-        {
-            string str = @"Data Source=.\SQLEXPRESS;Initial Catalog=Example;Integrated Security=True";
-
-            var repository = new Repository<Etable>(str);
-
-            Etable e = new Etable { id = 1, name = "alise", age = 15 };
-            int i = repository.Remove(e);
-
-            Assert.AreEqual(i, 1);
+            // assert
+            layout.Should().BeEquivalentTo(layoutRepository.GetById(layout.Id));
+            area.Should().BeEquivalentTo(areaRepository.GetById(area.Id));
+            seat.Should().BeEquivalentTo(seatRepository.GetById(seat.Id));
         }
     }
 }

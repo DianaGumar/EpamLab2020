@@ -11,8 +11,6 @@ namespace TicketManagement.DataAccess.DAL
     public class Repository<T> : IRepository<T>
         where T : class, new()
     {
-        private readonly string _strConn;
-
         // for reflectoin work
         private readonly string _objPropertiesNames;
 
@@ -22,23 +20,21 @@ namespace TicketManagement.DataAccess.DAL
 
         public Repository(string conn)
         {
-            _strConn = conn;
+            StrConn = conn;
 
             _objPropertiesInfo = GetPropertiesNamesAndTypes();
             _objPropertiesNames = string.Join(",", _objPropertiesInfo.Keys.ToArray());
         }
 
+        protected string StrConn { get; }
+
         // some ADO code methods (with reflection)
-        public int Create(T obj)
+        public T Create(T obj)
         {
             // will be care about null checking
             IEnumerable<object> values = GetPropertiesValues(obj);
 
-            ICollection<string> list = new List<string>();
-            for (int i = 1; i < _objPropertiesInfo.Count; i++)
-            {
-                list.Add(_objPropertiesInfo.Keys.ElementAt(i));
-            }
+            ICollection<string> list = _objPropertiesInfo.Keys.Skip(1).ToList();
 
             string objPropertiesNamesWithoutId = string.Join(",", list.ToArray());
 
@@ -54,7 +50,7 @@ namespace TicketManagement.DataAccess.DAL
                 sb.Append(_objPropertiesInfo.ElementAt(i).Key);
             }
 
-            SqlConnection conn = new SqlConnection(_strConn);
+            SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
@@ -63,7 +59,7 @@ namespace TicketManagement.DataAccess.DAL
                 command.Parameters.AddWithValue('@' + _objPropertiesInfo.ElementAt(i).Key, values.ElementAt(i));
             }
 
-            command.Parameters.Add("@objName", SqlDbType.NChar).Value = _objName;
+            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
 
             command.Parameters.AddWithValue("@objPropertiesNamesWithoutId", objPropertiesNamesWithoutId);
             command.Parameters.AddWithValue("@objPropertiesInfo", sb.ToString());
@@ -71,24 +67,30 @@ namespace TicketManagement.DataAccess.DAL
             command.CommandText = "insert into @objName(@objPropertiesNamesWithoutId) values(@objPropertiesInfo);";
 
             conn.Open();
-            int countRowsUffected = command.ExecuteNonQuery();
+            var idNewObj = command.ExecuteScalar();
             command.Dispose();
             conn.Close();
 
-            return countRowsUffected;
+            SetValuesByReflection(obj, idNewObj != null ? (int)idNewObj : 0);
+            return obj;
+        }
+
+        public IEnumerable<T> Create(IEnumerable<T> objs)
+        {
+            throw new NotImplementedException();
         }
 
         public T GetById(int id)
         {
             T entity = new T();
 
-            SqlConnection conn = new SqlConnection(_strConn);
+            SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
             command.Parameters.Add("@objPKValue", SqlDbType.Int).Value = id;
-            command.Parameters.Add("@objName", SqlDbType.NChar).Value = _objName;
-            command.Parameters.Add("@objPKName", SqlDbType.NChar).Value = _objPropertiesInfo.ElementAt(0).Key;
+            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
+            command.Parameters.Add("@objPKName", SqlDbType.NVarChar).Value = _objPropertiesInfo.ElementAt(0).Key;
             command.Parameters.AddWithValue("@objPropertiesNames", _objPropertiesNames);
 
             command.CommandText = "select @objPropertiesNames from @objName where @objPKName = @objPKValue;";
@@ -115,12 +117,12 @@ namespace TicketManagement.DataAccess.DAL
         {
             ICollection<T> entitys = new List<T>();
 
-            SqlConnection conn = new SqlConnection(_strConn);
+            SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
             command.Parameters.AddWithValue("@objPropertiesNames", _objPropertiesNames);
-            command.Parameters.Add("@objName", SqlDbType.NChar).Value = _objName;
+            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
 
             command.CommandText = "select @objPropertiesNames from @objName";
 
@@ -157,11 +159,11 @@ namespace TicketManagement.DataAccess.DAL
                 sb.Append(item.Key);
             }
 
-            SqlConnection conn = new SqlConnection(_strConn);
+            SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
-            command.Parameters.Add("@objName", SqlDbType.NChar).Value = _objName;
+            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
             command.Parameters.AddWithValue("@objPropertiesInfo", sb.ToString());
 
             command.CommandText = "delete from @objName where @objPropertiesInfo;";
@@ -181,13 +183,13 @@ namespace TicketManagement.DataAccess.DAL
 
         public int Remove(int id)
         {
-            SqlConnection conn = new SqlConnection(_strConn);
+            SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
             command.Parameters.Add("@objPKValue", SqlDbType.Int).Value = id;
-            command.Parameters.Add("@objName", SqlDbType.NChar).Value = _objName;
-            command.Parameters.Add("@objPKName", SqlDbType.NChar).Value = _objPropertiesInfo.ElementAt(0).Key;
+            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
+            command.Parameters.Add("@objPKName", SqlDbType.NVarChar).Value = _objPropertiesInfo.ElementAt(0).Key;
 
             command.CommandText = "delete from @objName where @objPKName = @objPKValue;";
 
@@ -197,6 +199,11 @@ namespace TicketManagement.DataAccess.DAL
             conn.Close();
 
             return countRowsUffected;
+        }
+
+        public IEnumerable<T> Remove(IEnumerable<T> objs)
+        {
+            throw new NotImplementedException();
         }
 
         public int Update(T obj)
@@ -217,7 +224,7 @@ namespace TicketManagement.DataAccess.DAL
                 sb.Append(_objPropertiesInfo.ElementAt(i).Key);
             }
 
-            SqlConnection conn = new SqlConnection(_strConn);
+            SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
 
@@ -226,9 +233,9 @@ namespace TicketManagement.DataAccess.DAL
                 command.Parameters.AddWithValue("@" + _objPropertiesInfo.ElementAt(i).Key, values.ElementAt(i));
             }
 
-            command.Parameters.Add("@objName", SqlDbType.NChar).Value = _objName;
+            command.Parameters.Add("@objName", SqlDbType.NVarChar).Value = _objName;
             command.Parameters.AddWithValue("@objPropertiesInfo", sb.ToString());
-            command.Parameters.Add("@objPKName", SqlDbType.NChar).Value = _objPropertiesInfo.ElementAt(0).Key;
+            command.Parameters.Add("@objPKName", SqlDbType.NVarChar).Value = _objPropertiesInfo.ElementAt(0).Key;
             command.Parameters.AddWithValue("@objPKValue", _objPropertiesInfo.ElementAt(0).Value);
 
             command.CommandText = "update @objName set @objPropertiesInfo where @objPKName = @objPKValue;";
@@ -239,6 +246,11 @@ namespace TicketManagement.DataAccess.DAL
             conn.Close();
 
             return countRowsUffected;
+        }
+
+        public IEnumerable<T> Update(IEnumerable<T> objs)
+        {
+            throw new NotImplementedException();
         }
 
         // from list values create instanse T
@@ -261,6 +273,16 @@ namespace TicketManagement.DataAccess.DAL
             }
 
             return t;
+        }
+
+        protected static T SetValuesByReflection(T obj, int id)
+        {
+            Type type = typeof(T);
+            var properties = type.GetProperties();
+
+            properties[0].SetValue(obj, id);
+
+            return obj;
         }
 
         // get info about properties types and names from main type

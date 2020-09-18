@@ -3,7 +3,7 @@
 namespace TicketManagement.DataAccess.Model
 {
     // renamed by code controle
-    public class PublicEvent
+    public class TMEvent
     {
         public int Id { get; set; }
 
@@ -11,11 +11,10 @@ namespace TicketManagement.DataAccess.Model
 
         public string Description { get; set; }
 
-        public int LayoutId { get; set; }
+        public int TMLayoutId { get; set; }
 
         public DateTime StartEvent { get; set; }
 
         public DateTime EndEvent { get; set; }
-
     }
 }

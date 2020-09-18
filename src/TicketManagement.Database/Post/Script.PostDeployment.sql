@@ -1,9 +1,9 @@
 ﻿--- Venue
 insert into dbo.Venue
-values ('First venue', 'First venue address', '123 45 678 90 12')
+values ('First venue', 'First venue address', '123 45 678 90 12', 20, 20)
 
 --- Layout
-insert into dbo.Layout
+insert into dbo.TMLayout
 values (1, 'First layout'),
 (1, 'Second layout')
 

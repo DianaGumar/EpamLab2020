@@ -2,13 +2,8 @@
 
 namespace TicketManagement.DataAccess.DAL
 {
-    public interface IPublicEventRepository : IRepository<PublicEvent>
+    public interface ITMEventRepository : IRepository<TMEvent>
     {
-        // start store prosedure
-        void CreateEvent(PublicEvent obj, double priseBySeat);
-
-        void DeleteEvent(PublicEvent obj);
-
         // should be in logic part
         // thats need to know to create event
 

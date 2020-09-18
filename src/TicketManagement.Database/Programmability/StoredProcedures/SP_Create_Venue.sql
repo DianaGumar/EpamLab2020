@@ -15,14 +15,14 @@ AS
 		from Venue 
 		where Venue.Description = @Description and Venue.Address = @Address and Venue.Phone = @Phone
 
-	insert into dbo.Layout
+	insert into dbo.TMLayout
 	values (@current_Venue_id, 'Default layout')
 
 	--- Area
 	declare @current_Layout_id int
-	select @current_Layout_id = dbo.Layout.Id 
-		from Layout 
-		where Layout.VenueId = @current_Venue_id
+	select @current_Layout_id = dbo.TMLayout.Id 
+		from TMLayout 
+		where TMLayout.VenueId = @current_Venue_id
 
 
 	insert into dbo.Area
@@ -33,7 +33,7 @@ AS
 	declare @current_Area_id int
 	select @current_Area_id = dbo.Area.Id 
 		from Area 
-		where Area.LayoutId = @current_Layout_id
+		where Area.TMLayoutId = @current_Layout_id
 
 	declare @i int = 0
 	declare @j int = 0

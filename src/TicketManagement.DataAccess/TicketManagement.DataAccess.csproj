@@ -41,14 +41,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\PublicEventRepository.cs" />
-    <Compile Include="DAL\IPublicEventRepository.cs" />
+    <Compile Include="DAL\AreaRepository.cs" />
+    <Compile Include="DAL\ITMLayoutRepository.cs" />
+    <Compile Include="DAL\IAreaRepository.cs" />
+    <Compile Include="DAL\ISeatRepository.cs" />
+    <Compile Include="DAL\ITMEventSeatRepository.cs" />
+    <Compile Include="DAL\ITMEventAreaRepository.cs" />
+    <Compile Include="DAL\IVenueRepository.cs" />
+    <Compile Include="DAL\TMLayoutRepository.cs" />
+    <Compile Include="DAL\TMEventRepository.cs" />
+    <Compile Include="DAL\ITMEventRepository.cs" />
     <Compile Include="DAL\IRepository.cs" />
-    <Compile Include="DAL\foFuture\IUnitOfWork.cs" />
-    <Compile Include="DAL\foFuture\UnitOfWork.cs" />
-    <Compile Include="Model\Etable.cs" />
-    <Compile Include="Model\PublicEvent.cs" />
+    <Compile Include="DAL\TMEventAreaRepository.cs" />
+    <Compile Include="DAL\TMEventSeatRepository.cs" />
+    <Compile Include="DAL\SeatRepository.cs" />
+    <Compile Include="DAL\VenueRepository.cs" />
+    <Compile Include="Model\TMLayout.cs" />
+    <Compile Include="Model\TMEvent.cs" />
     <Compile Include="Model\Area.cs" />
+    <Compile Include="Model\TMEventArea.cs" />
+    <Compile Include="Model\TMEventSeat.cs" />
+    <Compile Include="Model\Seat.cs" />
     <Compile Include="Model\Venue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAL\Repository.cs" />
