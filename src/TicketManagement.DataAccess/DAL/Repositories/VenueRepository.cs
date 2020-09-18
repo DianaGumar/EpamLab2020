@@ -3,14 +3,14 @@ using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.DataAccess.DAL
 {
-    internal class VenueRepository : Repository<Venue>, IVenueRepository
+    public class VenueRepository : Repository<Venue>, IVenueRepository
     {
-        internal VenueRepository(string conn)
+        public VenueRepository(string conn)
             : base(conn)
         {
         }
 
-        internal new int Create(Venue obj)
+        public new Venue Create(Venue obj)
         {
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
@@ -29,7 +29,8 @@ namespace TicketManagement.DataAccess.DAL
             command.Dispose();
             conn.Close();
 
-            return idNewObj != null ? (int)idNewObj : 0;
+            SetValuesByReflection(obj, idNewObj != null ? (int)idNewObj : 0);
+            return obj;
         }
     }
 }

@@ -4,24 +4,24 @@ using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.DataAccess.DAL
 {
-    internal class TMEventRepository : Repository<TMEvent>, ITMEventRepository
+    public class TMEventRepository : Repository<TMEvent>, ITMEventRepository
     {
-        internal TMEventRepository(string conn)
+        public TMEventRepository(string conn)
             : base(conn)
         {
         }
 
-        internal new int Create(TMEvent obj)
+        public new TMEvent Create(TMEvent obj)
         {
             return Create(obj, 0);
         }
 
-        internal int Create(TMEvent obj, decimal arwaPrice)
+        public TMEvent Create(TMEvent obj, decimal arwaPrice)
         {
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
-            command.CommandText = "SP_Create_PublicEvent";
+            command.CommandText = "SP_Create_TMEvent";
             command.CommandType = System.Data.CommandType.StoredProcedure;
 
             command.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 120).Value = obj?.Name;
@@ -36,7 +36,8 @@ namespace TicketManagement.DataAccess.DAL
             command.Dispose();
             conn.Close();
 
-            return idNewObj != null ? (int)idNewObj : 0;
+            SetValuesByReflection(obj, idNewObj != null ? (int)idNewObj : 0);
+            return obj;
         }
 
         internal new int Remove(TMEvent obj)
