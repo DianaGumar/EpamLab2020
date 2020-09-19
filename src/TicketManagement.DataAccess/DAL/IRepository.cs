@@ -14,6 +14,8 @@ namespace TicketManagement.DataAccess.DAL
 
         int Remove(T obj);
 
+        int Remove(int id);
+
         IEnumerable<T> Remove(IEnumerable<T> objs);
 
         T GetById(int id);

@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.DataAccess.DAL
@@ -15,8 +16,8 @@ namespace TicketManagement.DataAccess.DAL
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
             command.Connection = conn;
-            command.CommandText = "SP_Create_Venue";
-            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandText = "insert into Venue (Description, Address, Weidth, Lenght, Phone) OUTPUT INSERTED.ID " +
+                "values(@Description, @Address, @Weidth, @Lenght, @Phone);";
 
             command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 120).Value = obj?.Description;
             command.Parameters.Add("@Address", System.Data.SqlDbType.NVarChar, 200).Value = obj?.Address;
@@ -29,7 +30,7 @@ namespace TicketManagement.DataAccess.DAL
                     SqlDbType = System.Data.SqlDbType.NVarChar,
                     Size = 30,
                     IsNullable = true,
-                    Value = obj?.Phone,
+                    Value = (object)obj?.Phone ?? DBNull.Value,
                 });
 
             conn.Open();

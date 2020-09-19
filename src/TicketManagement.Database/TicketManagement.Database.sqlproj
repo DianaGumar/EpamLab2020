@@ -73,7 +73,8 @@
     <Build Include="ForeignKeys\FK_TMEvent_TMEventArea.sql" />
     <Build Include="ForeignKeys\FK_Area_TMEventSeat.sql" />
     <Build Include="Programmability\StoredProcedures\SP_Create_TMEvent.sql" />
-    <Build Include="Programmability\StoredProcedures\SP_Create_Venue.sql" />
+    <Build Include="Programmability\StoredProcedures\SP_Delete_TMEvent.sql" />
+    <Build Include="Programmability\StoredProcedures\SP_Update_TMEvent.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\TMEvent.sql" />

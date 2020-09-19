@@ -249,6 +249,11 @@ namespace TicketManagement.DataAccess.DAL
             {
                 foreach (PropertyInfo info in properties)
                 {
+                    if (obj[i] == DBNull.Value)
+                    {
+                        obj[i] = null;
+                    }
+
                     info.SetValue(t, obj[i]);
                     i++;
                 }

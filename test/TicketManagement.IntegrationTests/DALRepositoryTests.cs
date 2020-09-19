@@ -13,7 +13,7 @@ namespace TicketManagement.IntegrationTests
         private readonly string _str = ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
 
         [Test]
-        public void RepositoryCreateReadMethodByLayoutTest()
+        public void RepositoryCreateReadMethodByVenueTest()
         {
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -21,32 +21,30 @@ namespace TicketManagement.IntegrationTests
             IAreaRepository areaRepository = new AreaRepository(_str);
             ISeatRepository seatRepository = new SeatRepository(_str);
 
-            int venueId = 1;
-
             // act
-            Venue venue = venueRepository.GetById(venueId);
-            if (venue.Id != 0)
-            {
-                TMLayout layout = layoutRepository.Create(
-                new TMLayout { Description = "some desc", VenueId = venueId });
-                Area area = areaRepository.Create(
-                    new Area { Description = "area1", CoordX = 0, CoordY = 0, TMLayoutId = layout.Id });
-                Seat seat = seatRepository.Create(
-                    new Seat { Number = 1, Row = 1, AreaId = area.Id });
+            Venue venue = venueRepository.Create(
+                new Venue { Description = "some v desc", Address = "some address", Lenght = 2, Weidth = 2 });
+            TMLayout layout = layoutRepository.Create(
+            new TMLayout { Description = "some desc", VenueId = venue.Id });
+            Area area = areaRepository.Create(
+                new Area { Description = "area1", CoordX = 0, CoordY = 0, TMLayoutId = layout.Id });
+            Seat seat = seatRepository.Create(
+                new Seat { Number = 1, Row = 1, AreaId = area.Id });
 
-                // assert
-                layout.Should().BeEquivalentTo(layoutRepository.GetById(layout.Id));
-                area.Should().BeEquivalentTo(areaRepository.GetById(area.Id));
-                seat.Should().BeEquivalentTo(seatRepository.GetById(seat.Id));
+            // assert
+            venue.Should().BeEquivalentTo(venueRepository.GetById(venue.Id));
+            layout.Should().BeEquivalentTo(layoutRepository.GetById(layout.Id));
+            area.Should().BeEquivalentTo(areaRepository.GetById(area.Id));
+            seat.Should().BeEquivalentTo(seatRepository.GetById(seat.Id));
 
-                seatRepository.Remove(seat);
-                areaRepository.Remove(area);
-                layoutRepository.Remove(layout);
-            }
+            seatRepository.Remove(seat.Id);
+            areaRepository.Remove(area);
+            layoutRepository.Remove(layout);
+            venueRepository.Remove(venue.Id);
         }
 
         [Test]
-        public void RepositoryDeleteMethodByLayoutTest()
+        public void RepositoryDeleteMethodByVenueTest()
         {
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -54,32 +52,30 @@ namespace TicketManagement.IntegrationTests
             IAreaRepository areaRepository = new AreaRepository(_str);
             ISeatRepository seatRepository = new SeatRepository(_str);
 
-            int venueId = 1;
-
             // act
-            Venue venue = venueRepository.GetById(venueId);
-            if (venue.Id != 0)
-            {
-                TMLayout layout = layoutRepository.Create(
-                new TMLayout { Description = "some desc", VenueId = venueId });
-                Area area = areaRepository.Create(
-                    new Area { Description = "area1", CoordX = 0, CoordY = 0, TMLayoutId = layout.Id });
-                Seat seat = seatRepository.Create(
-                    new Seat { Number = 1, Row = 1, AreaId = area.Id });
+            Venue venue = venueRepository.Create(
+            new Venue { Description = "some v desc", Address = "some address", Lenght = 2, Weidth = 2, Phone = "some phone" });
+            TMLayout layout = layoutRepository.Create(
+            new TMLayout { Description = "some desc", VenueId = venue.Id });
+            Area area = areaRepository.Create(
+                new Area { Description = "area1", CoordX = 0, CoordY = 0, TMLayoutId = layout.Id });
+            Seat seat = seatRepository.Create(
+                new Seat { Number = 1, Row = 1, AreaId = area.Id });
 
-                seatRepository.Remove(seat);
-                areaRepository.Remove(area);
-                layoutRepository.Remove(layout);
+            seatRepository.Remove(seat);
+            areaRepository.Remove(area);
+            layoutRepository.Remove(layout);
+            venueRepository.Remove(venue.Id);
 
-                // assert
-                new TMLayout().Should().BeEquivalentTo(layoutRepository.GetById(layout.Id));
-                new Area().Should().BeEquivalentTo(areaRepository.GetById(area.Id));
-                new Seat().Should().BeEquivalentTo(seatRepository.GetById(seat.Id));
-            }
+            // assert
+            new Venue().Should().BeEquivalentTo(venueRepository.GetById(venue.Id));
+            new TMLayout().Should().BeEquivalentTo(layoutRepository.GetById(layout.Id));
+            new Area().Should().BeEquivalentTo(areaRepository.GetById(area.Id));
+            new Seat().Should().BeEquivalentTo(seatRepository.GetById(seat.Id));
         }
 
         [Test]
-        public void RepositoryUpdateMethodByLayoutTest()
+        public void RepositoryUpdateMethodByVenueTest()
         {
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -87,36 +83,36 @@ namespace TicketManagement.IntegrationTests
             IAreaRepository areaRepository = new AreaRepository(_str);
             ISeatRepository seatRepository = new SeatRepository(_str);
 
-            int venueId = 1;
-
             // act
-            Venue venue = venueRepository.GetById(venueId);
-            if (venue.Id != 0)
-            {
-                TMLayout layout = layoutRepository.Create(
-                new TMLayout { Description = "some desc", VenueId = venueId });
-                Area area = areaRepository.Create(
-                    new Area { Description = "area1", CoordX = 0, CoordY = 0, TMLayoutId = layout.Id });
-                Seat seat = seatRepository.Create(
-                    new Seat { Number = 1, Row = 1, AreaId = area.Id });
+            Venue venue = venueRepository.Create(
+            new Venue { Description = "some v desc", Address = "some address", Lenght = 2, Weidth = 2, Phone = "some phone" });
+            TMLayout layout = layoutRepository.Create(
+            new TMLayout { Description = "some desc", VenueId = venue.Id });
+            Area area = areaRepository.Create(
+                new Area { Description = "area1", CoordX = 0, CoordY = 0, TMLayoutId = layout.Id });
+            Seat seat = seatRepository.Create(
+                new Seat { Number = 1, Row = 1, AreaId = area.Id });
 
-                layout.Description = "new desc";
-                area.Description = "new desc";
-                seat.Number += 1;
+            venue.Description = "new v desc";
+            layout.Description = "new desc";
+            area.Description = "new desc";
+            seat.Number += 1;
 
-                layoutRepository.Update(layout);
-                areaRepository.Update(area);
-                seatRepository.Update(seat);
+            venueRepository.Update(venue);
+            layoutRepository.Update(layout);
+            areaRepository.Update(area);
+            seatRepository.Update(seat);
 
-                // assert
-                layout.Should().BeEquivalentTo(layoutRepository.GetById(layout.Id));
-                area.Should().BeEquivalentTo(areaRepository.GetById(area.Id));
-                seat.Should().BeEquivalentTo(seatRepository.GetById(seat.Id));
+            // assert
+            venue.Should().BeEquivalentTo(venueRepository.GetById(venue.Id));
+            layout.Should().BeEquivalentTo(layoutRepository.GetById(layout.Id));
+            area.Should().BeEquivalentTo(areaRepository.GetById(area.Id));
+            seat.Should().BeEquivalentTo(seatRepository.GetById(seat.Id));
 
-                seatRepository.Remove(seat);
-                areaRepository.Remove(area);
-                layoutRepository.Remove(layout);
-            }
+            seatRepository.Remove(seat);
+            areaRepository.Remove(area);
+            layoutRepository.Remove(layout);
+            venueRepository.Remove(venue.Id);
         }
     }
 }

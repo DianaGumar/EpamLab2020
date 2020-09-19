@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DALConcreteRepositoryTests.cs" />
+    <Compile Include="DALEventSPTests.cs" />
     <Compile Include="DALRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
