@@ -21,7 +21,7 @@ namespace TicketManagement.DataAccess.DAL
 
             command.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 120).Value = obj?.Name;
             command.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, -1).Value = obj?.Description;
-            command.Parameters.Add("@LayoutId", System.Data.SqlDbType.Int).Value = obj?.TMLayoutId;
+            command.Parameters.Add("@TMLayoutId", System.Data.SqlDbType.Int).Value = obj?.TMLayoutId;
             command.Parameters.Add("@StartEvent", System.Data.SqlDbType.DateTime).Value = obj?.StartEvent;
             command.Parameters.Add("@EndEvent", System.Data.SqlDbType.DateTime).Value = obj?.EndEvent;
 
@@ -29,18 +29,19 @@ namespace TicketManagement.DataAccess.DAL
             var idNewObj = command.ExecuteScalar();
             command.Dispose();
             conn.Close();
-
-            SetValuesByReflection(obj, idNewObj != null ? (int)idNewObj : 0);
+            var t = idNewObj.GetType();
+            t.ToString();
+            SetValuesByReflection(obj, (int)idNewObj);
             return obj;
         }
 
         // without id
-        internal new int Remove(TMEvent obj)
+        public new int Remove(TMEvent obj)
         {
             throw new NotImplementedException();
         }
 
-        internal new int Remove(int id)
+        public new int Remove(int id)
         {
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
@@ -58,7 +59,7 @@ namespace TicketManagement.DataAccess.DAL
             return countRowAffected;
         }
 
-        internal new int Update(TMEvent obj)
+        public new int Update(TMEvent obj)
         {
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();

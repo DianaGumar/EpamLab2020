@@ -28,16 +28,12 @@ AS
 			(select Id from TMEventArea where TMEventArea.TMEventId = @TMEventId)
 		delete from TMEventArea where TMEventArea.TMEventId = @TMEventId
 
-
-
 		declare @TMEventArea table (Id int)
 
 		INSERT INTO TMEventArea (TMEventId, Description, CoordX, CoordY, Price) 
 		OUTPUT INSERTED.ID into @TMEventArea
 		SELECT @TMEventId, Area.Description, Area.CoordX, Area.CoordY, 0
 		FROM Area WHERE Area.TMLayoutId = @LayoutId;
-
-		select * from @TMEventArea;
 
 		WITH tmeventArea_id_area_id AS
 		(
