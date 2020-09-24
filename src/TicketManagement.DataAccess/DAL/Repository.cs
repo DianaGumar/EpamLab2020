@@ -303,5 +303,10 @@ namespace TicketManagement.DataAccess.DAL
 
             return values;
         }
+
+        public IEnumerable<T> Find(Func<T, bool> p)
+        {
+            return GetAll().Where(p);
+        }
     }
 }

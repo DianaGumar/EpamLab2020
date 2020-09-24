@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("TicketManagement.IntegrationTests")]
@@ -25,6 +26,8 @@ namespace TicketManagement.DataAccess.DAL
         int Update(T obj);
 
         IEnumerable<T> Update(IEnumerable<T> objs);
+
+        IEnumerable<T> Find(Func<T, bool> p);
 
         // for future- Find()
     }

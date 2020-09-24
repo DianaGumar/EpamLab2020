@@ -3,9 +3,9 @@ using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.DataAccess.DAL
 {
-    internal class TMEventAreaRepository : Repository<TMEventArea>, ITMEventAreaRepository
+    public class TMEventAreaRepository : Repository<TMEventArea>, ITMEventAreaRepository
     {
-        internal TMEventAreaRepository(string conn)
+        public TMEventAreaRepository(string conn)
             : base(conn)
         {
         }

@@ -41,8 +41,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogicLayer\ITMEventBL.cs" />
+    <Compile Include="BusinessLogicLayer\IVenueBL.cs" />
+    <Compile Include="BusinessLogicLayer\TMEventBL.cs" />
+    <Compile Include="BusinessLogicLayer\VenueBL.cs" />
+    <Compile Include="IServices\IAreaService.cs" />
+    <Compile Include="IServices\ITMEventSeatService.cs" />
+    <Compile Include="IServices\ITMEventAreaService.cs" />
+    <Compile Include="IServices\ITMLayoutService.cs" />
+    <Compile Include="IServices\ISeatService.cs" />
+    <Compile Include="IServices\IVenueService.cs" />
+    <Compile Include="IServices\ITMEventService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TMEventSeatService.cs" />
+    <Compile Include="Services\TMEventAreaService.cs" />
+    <Compile Include="Services\AreaService.cs" />
+    <Compile Include="Services\TMLayoutService.cs" />
+    <Compile Include="Services\SeatService.cs" />
+    <Compile Include="Services\VenueService.cs" />
+    <Compile Include="Services\TMEventService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TicketManagement.DataAccess\TicketManagement.DataAccess.csproj">
+      <Project>{f3fb2891-8d14-47eb-a4a6-5acce066408c}</Project>
+      <Name>TicketManagement.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
