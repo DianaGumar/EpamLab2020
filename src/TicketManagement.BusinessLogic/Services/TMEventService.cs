@@ -25,7 +25,7 @@ namespace TicketManagement.BusinessLogic
             return _tmeventRepository.GetAll().ToList();
         }
 
-        TMEvent ITMEventService.CreateTMEvent(TMEvent obj)
+        public TMEvent CreateTMEvent(TMEvent obj)
         {
             if (obj.StartEvent > DateTime.Now.Date && obj.EndEvent > obj.StartEvent)
             {
