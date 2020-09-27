@@ -1,8 +1,6 @@
-﻿using TicketManagement.DataAccess.DAL;
-
-namespace TicketManagement.BusinessLogic
+﻿namespace TicketManagement.BusinessLogic
 {
-    internal interface ITMEventAreaService : ITMEventAreaRepository
+    internal interface ITMEventAreaService
     {
         void SetPrice(int tmeventAreaId, decimal price);
     }

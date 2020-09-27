@@ -1,19 +1,17 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ticketmanagement.BusinessLogic")]
+[assembly: AssemblyTitle("TicketManagement.DomainModel")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("EPAM Systems")]
-[assembly: AssemblyProduct("Ticketmanagement.BusinessLogic")]
-[assembly: AssemblyCopyright("Copyright © EPAM Systems 2020")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("TicketManagement.DomainModel")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("TicketManagement.UnitTests")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -21,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("196fd5b1-50f2-4958-939b-4e762a689a25")]
+[assembly: Guid("06862518-364c-4f34-aa26-5cdfbfd0dde8")]
 
 // Version information for an assembly consists of the following four values:
 //

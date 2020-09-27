@@ -3,18 +3,20 @@ using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.BusinessLogic
 {
-    internal class TMEventAreaService : TMEventAreaRepository, ITMEventAreaService
+    internal class TMEventAreaService : ITMEventAreaService
     {
-        internal TMEventAreaService(string connectString)
-            : base(connectString)
+        private readonly ITMEventAreaRepository _tmeventAreaRepository;
+
+        internal TMEventAreaService(ITMEventAreaRepository tmeventAreaRepository)
         {
+            _tmeventAreaRepository = tmeventAreaRepository;
         }
 
         public void SetPrice(int tmeventAreaId, decimal price)
         {
-            TMEventArea tmeventArea = GetById(tmeventAreaId);
+            TMEventArea tmeventArea = _tmeventAreaRepository.GetById(tmeventAreaId);
             tmeventArea.Price = price;
-            Update(tmeventArea);
+            _tmeventAreaRepository.Update(tmeventArea);
         }
     }
 }

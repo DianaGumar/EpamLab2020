@@ -62,6 +62,10 @@
     <Compile Include="Services\TMEventService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TicketManagement.DomainModel\TicketManagement.DomainModel.csproj">
+      <Project>{06862518-364c-4f34-aa26-5cdfbfd0dde8}</Project>
+      <Name>TicketManagement.DomainModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TicketManagement.DataAccess\TicketManagement.DataAccess.csproj">
       <Project>{f3fb2891-8d14-47eb-a4a6-5acce066408c}</Project>
       <Name>TicketManagement.DataAccess</Name>

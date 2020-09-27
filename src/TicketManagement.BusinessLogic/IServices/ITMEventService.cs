@@ -1,10 +1,14 @@
-﻿using TicketManagement.DataAccess.DAL;
+﻿using System.Collections.Generic;
 using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.BusinessLogic
 {
-    internal interface ITMEventService : ITMEventRepository
+    internal interface ITMEventService
     {
-        TMEvent CreateEvent(TMEvent obj);
+        int RemoveTMEvent(int id);
+
+        List<TMEvent> GetAllTMEvent();
+
+        TMEvent CreateTMEvent(TMEvent obj);
     }
 }

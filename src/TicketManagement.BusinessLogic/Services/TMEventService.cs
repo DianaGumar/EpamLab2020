@@ -6,30 +6,33 @@ using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.BusinessLogic
 {
-    internal class TMEventService : TMEventRepository, ITMEventService
+    internal class TMEventService : ITMEventService
     {
-        internal TMEventService(string connectString)
-            : base(connectString)
+        private readonly ITMEventRepository _tmeventRepository;
+
+        internal TMEventService(ITMEventRepository tmeventRepository)
         {
+            _tmeventRepository = tmeventRepository;
         }
 
-        // null validation property will be in layer upper
-        private static bool IsValid(TMEvent obj)
+        public int RemoveTMEvent(int id)
         {
-            return obj != null && obj.StartEvent > DateTime.Now.Date && obj.EndEvent > obj.StartEvent;
+            return _tmeventRepository.Remove(id);
         }
 
-        TMEvent ITMEventService.CreateEvent(TMEvent obj)
+        public List<TMEvent> GetAllTMEvent()
         {
-            if (IsValid(obj))
+            return _tmeventRepository.GetAll().ToList();
+        }
+
+        TMEvent ITMEventService.CreateTMEvent(TMEvent obj)
+        {
+            if (obj.StartEvent > DateTime.Now.Date && obj.EndEvent > obj.StartEvent)
             {
-                List<TMEvent> events = GetAll()
+                List<TMEvent> objs = _tmeventRepository.GetAll()
                     .Where(item => item.TMLayoutId == obj.TMLayoutId && item.StartEvent == obj.StartEvent).ToList();
 
-                if (events.Count == 0)
-                {
-                    obj = Create(obj);
-                }
+                return objs.Count == 0 ? _tmeventRepository.Create(obj) : objs.ElementAt(0);
             }
 
             return obj;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.BusinessLogic;
 using TicketManagement.DataAccess.Model;
@@ -19,9 +18,9 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 
         public TMEvent CreateEvent(TMEvent tmevent)
         {
-            List<Area> areas = _areaService.GetAll().Where(a => a.TMLayoutId == tmevent.TMLayoutId).ToList();
+            List<Area> areas = _areaService.GetAllArea().Where(a => a.TMLayoutId == tmevent.TMLayoutId).ToList();
 
-            return areas.Count == 0 ? _tmeventService.Create(tmevent) : throw new NotImplementedException();
+            return areas.Count == 0 ? _tmeventService.CreateTMEvent(tmevent) : tmevent;
         }
     }
 }

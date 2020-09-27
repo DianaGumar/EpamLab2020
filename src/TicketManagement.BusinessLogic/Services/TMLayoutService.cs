@@ -5,18 +5,30 @@ using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.BusinessLogic
 {
-    internal class TMLayoutService : TMLayoutRepository, ITMLayoutService
+    internal class TMLayoutService : ITMLayoutService
     {
-        internal TMLayoutService(string connectStr)
-            : base(connectStr)
+        private readonly ITMLayoutRepository _tmlayoutRepository;
+
+        internal TMLayoutService(ITMLayoutRepository tmlayoutRepository)
         {
+            _tmlayoutRepository = tmlayoutRepository;
+        }
+
+        public int RemoveTMLayout(int id)
+        {
+            return _tmlayoutRepository.Remove(id);
+        }
+
+        public List<TMLayout> GetAllTMLayout()
+        {
+            return _tmlayoutRepository.GetAll().ToList();
         }
 
         public TMLayout CreateTMLayout(TMLayout obj)
         {
-            List<TMLayout> objs = GetAll()
+            List<TMLayout> objs = _tmlayoutRepository.GetAll()
                .Where(a => a.VenueId == obj.VenueId && a.Description == obj.Description).ToList();
-            return objs.Count == 0 ? Create(obj) : objs.ElementAt(0);
+            return objs.Count == 0 ? _tmlayoutRepository.Create(obj) : objs.ElementAt(0);
         }
     }
 }

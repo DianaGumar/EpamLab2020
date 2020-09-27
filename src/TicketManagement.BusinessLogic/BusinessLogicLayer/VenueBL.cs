@@ -3,8 +3,6 @@ using System.Linq;
 using Ticketmanagement.BusinessLogic.BusinessLogicLayer;
 using TicketManagement.DataAccess.Model;
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TicketManagement.UnitTests")]
-
 namespace TicketManagement.BusinessLogic.BusinessLogicLayer
 {
     internal class VenueBL : IVenueBL
@@ -25,45 +23,53 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
 
         public Area CreateArea(Area area, ref List<Seat> seats)
         {
-            area = _areaService.Create(area);
+            area = _areaService.CreateArea(area);
             seats.ForEach(s => s.AreaId = area.Id);
-            seats.ForEach(s => s.Id = _seatService.Create(s).Id);
+            seats.ForEach(s => s.Id = _seatService.CreateSeat(s).Id);
 
             return area;
         }
 
         public TMLayout CreateLayout(TMLayout layout)
         {
-            return _tmlayoutService.Create(layout);
+            return _tmlayoutService.CreateTMLayout(layout);
         }
 
         public void RemoveLayout(int layoutId)
         {
-            _tmlayoutService.Remove(layoutId);
-
             // for transaction
-            List<Area> areas = _areaService.GetAll().Where(a => a.TMLayoutId == layoutId).ToList();
-            List<Seat> seats = _seatService.GetAll().Where(s => areas.Any(a => a.Id == s.AreaId)).ToList();
+            List<Area> areas = _areaService.GetAllArea().Where(a => a.TMLayoutId == layoutId).ToList();
+            List<Seat> seats = _seatService.GetAllSeat().Where(s => areas.Any(a => a.Id == s.AreaId)).ToList();
 
-            seats.ForEach(s => _seatService.Remove(s.Id));
-            areas.ForEach(a => _areaService.Remove(a.Id));
+            seats.ForEach(s => _seatService.RemoveSeat(s.Id));
+            areas.ForEach(a => _areaService.RemoveArea(a.Id));
+
+            try
+            {
+                _tmlayoutService.RemoveTMLayout(layoutId);
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                areas.ForEach(a => _areaService.CreateArea(a));
+                seats.ForEach(s => _seatService.CreateSeat(s));
+            }
         }
 
-        // create with defalt layout
         public Venue CreateVenue(Venue obj)
         {
             obj = _venueService.CreateVenue(obj);
 
-            TMLayout layout = _tmlayoutService.Create(new TMLayout { Description = "defailt", VenueId = obj.Id });
+            // create default layout
+            TMLayout layout = _tmlayoutService.CreateTMLayout(new TMLayout { Description = "defailt", VenueId = obj.Id });
 
-            Area area = _areaService.Create(
+            Area area = _areaService.CreateArea(
                 new Area { CoordX = 0, CoordY = 0, Description = "all size area", TMLayoutId = layout.Id });
 
             for (int j = 0; j < obj.Lenght; j++)
             {
                 for (int i = 0; i < obj.Weidth; i++)
                 {
-                    _seatService.Create(new Seat { Row = j, Number = i, AreaId = area.Id });
+                    _seatService.CreateSeat(new Seat { Row = j, Number = i, AreaId = area.Id });
                 }
             }
 
