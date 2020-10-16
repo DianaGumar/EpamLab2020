@@ -17,14 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.Integratio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{36299EA3-0F57-4055-A034-B5AD529F0758}"
 	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
 		EPAM.Trainings.ruleset = EPAM.Trainings.ruleset
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TicketManagement.Database", "src\TicketManagement.Database\TicketManagement.Database.sqlproj", "{CA8B11A8-5C57-4B30-9F47-BD746FF085E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.ASPMVC", "src\TicketManagement.ASPMVC\TicketManagement.ASPMVC.csproj", "{D6ABE745-F44F-48D4-B594-A7F566A597B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.Web", "src\TicketManagement.Web\TicketManagement.Web.csproj", "{959D56EB-6FE9-4E04-9189-0A62D7D4B73D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,10 +53,10 @@ Global
 		{CA8B11A8-5C57-4B30-9F47-BD746FF085E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA8B11A8-5C57-4B30-9F47-BD746FF085E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA8B11A8-5C57-4B30-9F47-BD746FF085E9}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{D6ABE745-F44F-48D4-B594-A7F566A597B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6ABE745-F44F-48D4-B594-A7F566A597B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6ABE745-F44F-48D4-B594-A7F566A597B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6ABE745-F44F-48D4-B594-A7F566A597B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{959D56EB-6FE9-4E04-9189-0A62D7D4B73D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{959D56EB-6FE9-4E04-9189-0A62D7D4B73D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{959D56EB-6FE9-4E04-9189-0A62D7D4B73D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{959D56EB-6FE9-4E04-9189-0A62D7D4B73D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,7 +67,7 @@ Global
 		{607F76B8-3B42-4FEE-A986-295CD4F94E23} = {9C280FDA-A325-4950-B4A6-33CE274C6EC2}
 		{4E39C7A8-235B-4051-A28B-C93788917627} = {9C280FDA-A325-4950-B4A6-33CE274C6EC2}
 		{CA8B11A8-5C57-4B30-9F47-BD746FF085E9} = {502C7BF9-0688-4EB0-ADDE-BE35C207FA89}
-		{D6ABE745-F44F-48D4-B594-A7F566A597B0} = {502C7BF9-0688-4EB0-ADDE-BE35C207FA89}
+		{959D56EB-6FE9-4E04-9189-0A62D7D4B73D} = {502C7BF9-0688-4EB0-ADDE-BE35C207FA89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8FCBA386-043C-4C32-82A6-14ABB78C7FEC}
