@@ -7,7 +7,10 @@ How to start checking DAL and BL projects
 
 How to start Web proj
 
-1. unload and reload TicketManagement.Web project 
-(that's create roslyn\csc.exe and fix start trouble)
+1. Drop and re add App_Data folder (optional?);
+2. unload and reload TicketManagement.Web project 
+(that's create roslyn\csc.exe and fix start trouble);
+3. build TicketManagement solution
 
-2. Drop and re add App_Data folder (optional?)
+(repeat 2 and 3 cases until broken references become normal 
+ and project start become without errors)
