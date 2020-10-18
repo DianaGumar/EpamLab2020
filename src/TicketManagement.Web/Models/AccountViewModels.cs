@@ -12,14 +12,17 @@ namespace TicketManagement.Web.Models
 
     public class ExternalLoginListViewModel
     {
-        public string ReturnUrl { get; set; }
+        public string ReturnURl { get; set; }
     }
 
     public class SendCodeViewModel
     {
         public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
-        public string ReturnUrl { get; set; }
+
+        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; internal set; }
+
+        public string ReturnURl { get; set; }
+
         public bool RememberMe { get; set; }
     }
 
@@ -31,7 +34,8 @@ namespace TicketManagement.Web.Models
         [Required]
         [Display(Name = "Code")]
         public string Code { get; set; }
-        public string ReturnUrl { get; set; }
+
+        public string ReturnURl { get; set; }
 
         [Display(Name = "Remember this browser?")]
         public bool RememberBrowser { get; set; }

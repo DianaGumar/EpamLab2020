@@ -17,7 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.Integratio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{36299EA3-0F57-4055-A034-B5AD529F0758}"
 	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
 		EPAM.Trainings.ruleset = EPAM.Trainings.ruleset
 		stylecop.json = stylecop.json
 	EndProjectSection

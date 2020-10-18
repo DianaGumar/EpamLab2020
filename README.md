@@ -9,3 +9,5 @@ How to start Web proj
 
 1. unload and reload TicketManagement.Web project 
 (that's create roslyn\csc.exe and fix start trouble)
+
+2. Drop and re add App_Data folder (optional?)

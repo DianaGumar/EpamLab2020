@@ -2,11 +2,16 @@
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(TicketManagement.Web.Startup))]
+
 namespace TicketManagement.Web
 {
-    public partial class Startup
+    public sealed partial class Startup
     {
-        public void Configuration(IAppBuilder app)
+        private Startup()
+        {
+        }
+
+        public static void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
         }

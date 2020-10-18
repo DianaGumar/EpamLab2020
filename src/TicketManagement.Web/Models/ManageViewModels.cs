@@ -8,16 +8,21 @@ namespace TicketManagement.Web.Models
     public class IndexViewModel
     {
         public bool HasPassword { get; set; }
-        public IList<UserLoginInfo> Logins { get; set; }
+
+        public IList<UserLoginInfo> Logins { get; internal set; }
+
         public string PhoneNumber { get; set; }
+
         public bool TwoFactor { get; set; }
+
         public bool BrowserRemembered { get; set; }
     }
 
     public class ManageLoginsViewModel
     {
-        public IList<UserLoginInfo> CurrentLogins { get; set; }
-        public IList<AuthenticationDescription> OtherLogins { get; set; }
+        public IList<UserLoginInfo> CurrentLogins { get; internal set; }
+
+        public IList<AuthenticationDescription> OtherLogins { get; internal set; }
     }
 
     public class FactorViewModel
@@ -81,6 +86,7 @@ namespace TicketManagement.Web.Models
     public class ConfigureTwoFactorViewModel
     {
         public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+
+        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; internal set; }
     }
 }
