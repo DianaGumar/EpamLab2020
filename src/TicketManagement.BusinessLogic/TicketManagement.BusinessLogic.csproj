@@ -66,6 +66,10 @@
       <Project>{f3fb2891-8d14-47eb-a4a6-5acce066408c}</Project>
       <Name>TicketManagement.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TicketManagement.Domain\TicketManagement.Domain.csproj">
+      <Project>{db8851cc-04d9-4b86-86ea-c0da62cbc7cf}</Project>
+      <Name>TicketManagement.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using TicketManagement.BusinessLogic;
 using Ticketmanagement.BusinessLogic.BusinessLogicLayer;
 using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain;
 
 namespace TicketManagement.UnitTests
 {
@@ -14,11 +15,13 @@ namespace TicketManagement.UnitTests
         [Test]
         public void CreateEventWithoutSeats()
         {
-            Mock<ITMEventService> mockTMEventService = new Mock<ITMEventService>();
-            Mock<IAreaService> mockAreaService = new Mock<IAreaService>();
-            Mock<ISeatService> mockSeatService = new Mock<ISeatService>();
+            var mockTMEventService = new Mock<ITMEventService>();
+            var mockAreaService = new Mock<IAreaService>();
+            var mockSeatService = new Mock<ISeatService>();
+            var mocktmeventSeatService = new Mock<ITMEventSeatService>();
+            var mocktmeventAreaService = new Mock<ITMEventAreaService>();
 
-            TMEvent tmeventPre = new TMEvent
+            var tmeventPre = new TMEventModels
             {
                 Name = "a2",
                 Description = "d2",
@@ -27,7 +30,26 @@ namespace TicketManagement.UnitTests
                 TMLayoutId = 1,
             };
 
-            TMEvent tmeventPostReal = new TMEvent
+            var tmeventPre_dal = new TMEvent
+            {
+                Name = "a2",
+                Description = "d2",
+                StartEvent = DateTime.Now.Date.AddDays(3),
+                EndEvent = DateTime.Now.Date.AddDays(4),
+                TMLayoutId = 1,
+            };
+
+            var tmeventPostReal = new TMEventModels
+            {
+                TMEventId = 1,
+                Name = "a2",
+                Description = "d2",
+                StartEvent = DateTime.Now.Date.AddDays(3),
+                EndEvent = DateTime.Now.Date.AddDays(4),
+                TMLayoutId = 1,
+            };
+
+            var tmeventPostReal_dal = new TMEvent
             {
                 Id = 1,
                 Name = "a2",
@@ -40,11 +62,16 @@ namespace TicketManagement.UnitTests
             mockSeatService.Setup(m => m.GetAllSeat()).Returns(new List<Seat>());
             mockAreaService.Setup(m => m.GetAllArea())
                 .Returns(new List<Area> { new Area { Id = 1, TMLayoutId = tmeventPre.TMLayoutId } });
-            mockTMEventService.Setup(m => m.CreateTMEvent(tmeventPre)).Returns(tmeventPostReal);
+            mockTMEventService.Setup(m => m.CreateTMEvent(tmeventPre_dal)).Returns(tmeventPostReal_dal);
 
-            ITMEventBL tmeventBL = new TMEventBL(mockTMEventService.Object, mockAreaService.Object, mockSeatService.Object);
+            ITMEventBL tmeventBL = new TMEventBL(
+                mockTMEventService.Object,
+                mockAreaService.Object,
+                mockSeatService.Object,
+                mocktmeventAreaService.Object,
+                mocktmeventSeatService.Object);
 
-            TMEvent tmeventPost = tmeventBL.CreateTMEvent(tmeventPre);
+            TMEventModels tmeventPost = tmeventBL.CreateTMEvent(tmeventPre);
 
             tmeventPost.Should().NotBeEquivalentTo(tmeventPostReal);
             tmeventPost.Should().BeEquivalentTo(tmeventPre);
@@ -53,11 +80,13 @@ namespace TicketManagement.UnitTests
         [Test]
         public void CreateEventWithSeats()
         {
-            Mock<ITMEventService> mockTMEventService = new Mock<ITMEventService>();
-            Mock<IAreaService> mockAreaService = new Mock<IAreaService>();
-            Mock<ISeatService> mockSeatService = new Mock<ISeatService>();
+            var mockTMEventService = new Mock<ITMEventService>();
+            var mockAreaService = new Mock<IAreaService>();
+            var mockSeatService = new Mock<ISeatService>();
+            var mocktmeventSeatService = new Mock<ITMEventSeatService>();
+            var mocktmeventAreaService = new Mock<ITMEventAreaService>();
 
-            TMEvent tmeventPre = new TMEvent
+            var tmeventPre = new TMEventModels
             {
                 Name = "a2",
                 Description = "d2",
@@ -66,7 +95,26 @@ namespace TicketManagement.UnitTests
                 TMLayoutId = 1,
             };
 
-            TMEvent tmeventPostReal = new TMEvent
+            var tmeventPostReal = new TMEventModels
+            {
+                TMEventId = 1,
+                Name = "a2",
+                Description = "d2",
+                StartEvent = DateTime.Now.Date.AddDays(3),
+                EndEvent = DateTime.Now.Date.AddDays(4),
+                TMLayoutId = 1,
+            };
+
+            var tmeventPre_dal = new TMEvent
+            {
+                Name = "a2",
+                Description = "d2",
+                StartEvent = DateTime.Now.Date.AddDays(3),
+                EndEvent = DateTime.Now.Date.AddDays(4),
+                TMLayoutId = 1,
+            };
+
+            var tmeventPostReal_dal = new TMEvent
             {
                 Id = 1,
                 Name = "a2",
@@ -79,11 +127,16 @@ namespace TicketManagement.UnitTests
             mockSeatService.Setup(m => m.GetAllSeat()).Returns(new List<Seat> { new Seat { AreaId = 1 } });
             mockAreaService.Setup(m => m.GetAllArea())
                 .Returns(new List<Area> { new Area { Id = 1, TMLayoutId = tmeventPre.TMLayoutId } });
-            mockTMEventService.Setup(m => m.CreateTMEvent(tmeventPre)).Returns(tmeventPostReal);
+            mockTMEventService.Setup(m => m.CreateTMEvent(tmeventPre_dal)).Returns(tmeventPostReal_dal);
 
-            ITMEventBL tmeventBL = new TMEventBL(mockTMEventService.Object, mockAreaService.Object, mockSeatService.Object);
+            ITMEventBL tmeventBL = new TMEventBL(
+                mockTMEventService.Object,
+                mockAreaService.Object,
+                mockSeatService.Object,
+                mocktmeventAreaService.Object,
+                mocktmeventSeatService.Object);
 
-            TMEvent tmeventPost = tmeventBL.CreateTMEvent(tmeventPre);
+            TMEventModels tmeventPost = tmeventBL.CreateTMEvent(tmeventPre);
 
             tmeventPost.Should().BeEquivalentTo(tmeventPostReal);
         }

@@ -7,6 +7,8 @@ namespace TicketManagement.BusinessLogic
     {
         int RemoveTMEvent(int id);
 
+        TMEvent GetTMEvent(int id);
+
         List<TMEvent> GetAllTMEvent();
 
         TMEvent CreateTMEvent(TMEvent obj);

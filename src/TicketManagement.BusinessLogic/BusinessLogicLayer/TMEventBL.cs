@@ -2,6 +2,7 @@
 using System.Linq;
 using TicketManagement.BusinessLogic;
 using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain;
 
 namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 {
@@ -9,21 +10,89 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
     {
         private readonly IAreaService _areaService;
         private readonly ISeatService _seatService;
-        private readonly ITMEventService _tmeventService;
 
-        internal TMEventBL(ITMEventService tmeventService, IAreaService areaService, ISeatService seatService)
+        private readonly ITMEventService _tmeventService;
+        private readonly ITMEventAreaService _tmeventAreaService;
+        private readonly ITMEventSeatService _tmeventSeatService;
+
+        internal TMEventBL(
+            ITMEventService tmeventService,
+            IAreaService areaService,
+            ISeatService seatService,
+            ITMEventAreaService tmeventAreaService,
+            ITMEventSeatService tmeventSeatService)
         {
             _seatService = seatService;
             _areaService = areaService;
             _tmeventService = tmeventService;
+            _tmeventAreaService = tmeventAreaService;
+            _tmeventSeatService = tmeventSeatService;
         }
 
-        public TMEvent CreateTMEvent(TMEvent tmevent)
+        public List<TMEventModels> GetAllTMEvent()
+        {
+            List<TMEvent> models = _tmeventService.GetAllTMEvent();
+            var tmemodels = new List<TMEventModels>();
+
+            foreach (var model in models)
+            {
+                tmemodels.Add(CreateTMEventModelsFromTMEvent(model));
+            }
+
+            return tmemodels;
+        }
+
+        public TMEventModels GetTMEvent(int id)
+        {
+            TMEvent model = _tmeventService.GetTMEvent(id);
+
+            return CreateTMEventModelsFromTMEvent(model);
+        }
+
+        private TMEventModels CreateTMEventModelsFromTMEvent(TMEvent model)
+        {
+            List<TMEventArea> areas =
+                _tmeventAreaService.GetAllTMEventArea().Where(a => a.TMEventId == model.Id).ToList();
+            List<TMEventSeat> seats =
+                _tmeventSeatService.GetAllTMEventSeat().Where(s => areas.Any(a => a.Id == s.TMEventAreaId)).ToList();
+
+            return new TMEventModels
+            {
+                Description = model.Description,
+                Name = model.Name,
+                EndEvent = model.EndEvent,
+                StartEvent = model.StartEvent,
+                TMLayoutId = model.TMLayoutId,
+                AllSeats = seats.Count,
+                BusySeats = seats.Where(s => s.State == 1).ToList().Count,
+                TMEventId = model.Id,
+            };
+        }
+
+        public TMEventModels CreateTMEvent(TMEventModels tmevent)
         {
             List<Area> areas = _areaService.GetAllArea().Where(a => a.TMLayoutId == tmevent.TMLayoutId).ToList();
             List<Seat> seats = _seatService.GetAllSeat().Where(s => areas.Any(a => a.Id == s.AreaId)).ToList();
 
-            return seats.Count > 0 ? _tmeventService.CreateTMEvent(tmevent) : tmevent;
+            if (seats.Count <= 0)
+            {
+                return tmevent;
+            }
+
+            var model = new TMEvent
+            {
+                Description = tmevent.Description,
+                Name = tmevent.Name,
+                EndEvent = tmevent.EndEvent,
+                StartEvent = tmevent.StartEvent,
+                TMLayoutId = tmevent.TMLayoutId,
+            };
+
+            tmevent.TMEventId = _tmeventService.CreateTMEvent(model).Id;
+            tmevent.AllSeats = seats.Count;
+            tmevent.BusySeats = 0;
+
+            return tmevent;
         }
     }
 }

@@ -1,9 +1,14 @@
-﻿using TicketManagement.DataAccess.Model;
+﻿using System.Collections.Generic;
+using TicketManagement.Domain;
 
 namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 {
     internal interface ITMEventBL
     {
-        TMEvent CreateTMEvent(TMEvent tmevent);
+        List<TMEventModels> GetAllTMEvent();
+
+        TMEventModels GetTMEvent(int id);
+
+        TMEventModels CreateTMEvent(TMEventModels tmevent);
     }
 }

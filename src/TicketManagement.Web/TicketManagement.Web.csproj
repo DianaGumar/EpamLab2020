@@ -170,7 +170,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\TMEventController.cs" />
+    <Compile Include="Controllers\TMEventModelsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -236,6 +236,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\TMEventModels\ReadAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -258,6 +259,14 @@
     <ProjectReference Include="..\Ticketmanagement.BusinessLogic\TicketManagement.BusinessLogic.csproj">
       <Project>{196fd5b1-50f2-4958-939b-4e762a689a25}</Project>
       <Name>TicketManagement.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TicketManagement.DataAccess\TicketManagement.DataAccess.csproj">
+      <Project>{f3fb2891-8d14-47eb-a4a6-5acce066408c}</Project>
+      <Name>TicketManagement.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TicketManagement.Domain\TicketManagement.Domain.csproj">
+      <Project>{db8851cc-04d9-4b86-86ea-c0da62cbc7cf}</Project>
+      <Name>TicketManagement.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

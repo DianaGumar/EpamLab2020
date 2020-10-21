@@ -1,4 +1,6 @@
-﻿using TicketManagement.DataAccess.DAL;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TicketManagement.DataAccess.DAL;
 using TicketManagement.DataAccess.Model;
 
 namespace TicketManagement.BusinessLogic
@@ -10,6 +12,11 @@ namespace TicketManagement.BusinessLogic
         internal TMEventAreaService(ITMEventAreaRepository tmeventAreaRepository)
         {
             _tmeventAreaRepository = tmeventAreaRepository;
+        }
+
+        public List<TMEventArea> GetAllTMEventArea()
+        {
+            return _tmeventAreaRepository.GetAll().ToList();
         }
 
         public void SetPrice(int tmeventAreaId, decimal price)
