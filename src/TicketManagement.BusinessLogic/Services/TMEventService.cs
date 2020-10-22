@@ -42,5 +42,10 @@ namespace TicketManagement.BusinessLogic
         {
             return _tmeventRepository.GetById(id);
         }
+
+        public int UpdateTMEvent(TMEvent obj)
+        {
+            return _tmeventRepository.Update(obj);
+        }
     }
 }

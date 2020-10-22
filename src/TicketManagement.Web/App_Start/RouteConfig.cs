@@ -13,12 +13,10 @@ namespace TicketManagement.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            // TMEventModelsController
-            // ReadAll
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "TMEventModels", action = "ReadAll", id = UrlParameter.Optional });
+                defaults: new { controller = "TMEventModels", action = "Index", id = UrlParameter.Optional });
         }
     }
 }

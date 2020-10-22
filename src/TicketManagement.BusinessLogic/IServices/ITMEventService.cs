@@ -12,5 +12,7 @@ namespace TicketManagement.BusinessLogic
         List<TMEvent> GetAllTMEvent();
 
         TMEvent CreateTMEvent(TMEvent obj);
+
+        int UpdateTMEvent(TMEvent obj);
     }
 }

@@ -19,6 +19,7 @@ AS
 	TMLayoutId = @LayoutId, 
 	StartEvent = @StartEvent, 
 	EndEvent = @EndEvent
+	where Id = @TMEventId
 
 
 	if @pastLayoutId <> @LayoutId 

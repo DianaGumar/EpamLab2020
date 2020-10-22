@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Web.Mvc;
 using TicketManagement.BusinessLogic;
 using Ticketmanagement.BusinessLogic.BusinessLogicLayer;
-
-// until dependensy ingection is include
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.Domain;
 
@@ -30,32 +28,81 @@ namespace TicketManagement.Web.Controllers
 
         // GET: TMEventModels
         [HttpGet]
-        public ActionResult ReadAll()
+        public ActionResult Index()
         {
-            var tmeventPre = new TMEventModels
-            {
-                Name = "a2333",
-                Description = "d2333",
-                StartEvent = DateTime.Now.Date.AddDays(10),
-                EndEvent = DateTime.Now.Date.AddDays(11),
-                TMLayoutId = 1,
-            };
-
-            var tmeventPre2 = new TMEventModels
-            {
-                Name = "a2222",
-                Description = "d2222",
-                StartEvent = DateTime.Now.Date.AddDays(5),
-                EndEvent = DateTime.Now.Date.AddDays(6),
-                TMLayoutId = 1,
-            };
-
-            _tmeventbl.CreateTMEvent(tmeventPre);
-            _tmeventbl.CreateTMEvent(tmeventPre2);
-
-            List<TMEventModels> models = _tmeventbl.GetAllTMEvent();
+            List<TMEventModels> models =
+                _tmeventbl.GetAllTMEvent().OrderBy(u => u.StartEvent).Reverse().ToList();
 
             return View(models);
+        }
+
+        // GET: TMEventModels/Details/5
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            TMEventModels obj = _tmeventbl.GetTMEvent(id);
+
+            return View(obj);
+        }
+
+        // GET: TMEventModels/Create
+        [HttpGet]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: TMEventModels/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind] TMEventModels obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _tmeventbl.CreateTMEvent(obj);
+                return RedirectToAction("Index");
+            }
+
+            return View(obj);
+        }
+
+        // GET: TMEventModels/Edit/5
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            TMEventModels obj = _tmeventbl.GetTMEvent(id);
+
+            if (obj == null)
+            {
+                RedirectToAction("Index");
+            }
+
+            // return View()
+            return View(obj);
+        }
+
+        // POST: TMEventModels/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, [Bind] TMEventModels obj)
+        {
+            if (obj != null && ModelState.IsValid)
+            {
+                obj.TMEventId = id;
+                _tmeventbl.UpdateTMEvent(obj);
+                return RedirectToAction("Index");
+            }
+
+            return View(obj);
+        }
+
+        // POST: TMEventModels/Delete/5
+        [HttpGet]
+        public ActionResult Delete(int id = 0)
+        {
+            _tmeventbl.DeleteTMEvent(id);
+
+            return RedirectToAction("Index");
         }
     }
 }

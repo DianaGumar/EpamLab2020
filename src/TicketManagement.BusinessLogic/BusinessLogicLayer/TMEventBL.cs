@@ -29,6 +29,19 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
             _tmeventSeatService = tmeventSeatService;
         }
 
+        private static TMEvent CreateTMEventFromTMEventModels(TMEventModels tmevent)
+        {
+            return new TMEvent
+            {
+                Id = tmevent.TMEventId,
+                Description = tmevent.Description,
+                Name = tmevent.Name,
+                EndEvent = tmevent.EndEvent,
+                StartEvent = tmevent.StartEvent,
+                TMLayoutId = tmevent.TMLayoutId,
+            };
+        }
+
         public List<TMEventModels> GetAllTMEvent()
         {
             List<TMEvent> models = _tmeventService.GetAllTMEvent();
@@ -79,20 +92,25 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
                 return tmevent;
             }
 
-            var model = new TMEvent
-            {
-                Description = tmevent.Description,
-                Name = tmevent.Name,
-                EndEvent = tmevent.EndEvent,
-                StartEvent = tmevent.StartEvent,
-                TMLayoutId = tmevent.TMLayoutId,
-            };
+            TMEvent model = CreateTMEventFromTMEventModels(tmevent);
 
             tmevent.TMEventId = _tmeventService.CreateTMEvent(model).Id;
             tmevent.AllSeats = seats.Count;
             tmevent.BusySeats = 0;
 
             return tmevent;
+        }
+
+        public int UpdateTMEvent(TMEventModels tmevent)
+        {
+            TMEvent model = CreateTMEventFromTMEventModels(tmevent);
+
+            return _tmeventService.UpdateTMEvent(model);
+        }
+
+        public int DeleteTMEvent(int id)
+        {
+            return _tmeventService.RemoveTMEvent(id);
         }
     }
 }

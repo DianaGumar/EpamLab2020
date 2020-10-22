@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<TicketManagement.Domain.TMEventModels>
 
 @{
-    ViewBag.Title = "ReadAll";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -66,9 +66,9 @@
             @Html.DisplayFor(modelItem => item.BusySeats)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "Edit", new { id = item.TMEventId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TMEventId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TMEventId })
         </td>
     </tr>
 }

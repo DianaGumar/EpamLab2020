@@ -10,5 +10,9 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
         TMEventModels GetTMEvent(int id);
 
         TMEventModels CreateTMEvent(TMEventModels tmevent);
+
+        int UpdateTMEvent(TMEventModels tmevent);
+
+        int DeleteTMEvent(int id);
     }
 }

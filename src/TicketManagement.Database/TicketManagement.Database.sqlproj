@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TicketManagement.publish.xml" />
+    <None Include="TicketManagement.Database.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post\Script.TestEventSPData.sql" />
