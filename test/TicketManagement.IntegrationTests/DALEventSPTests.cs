@@ -1,51 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
-using Microsoft.Build.Execution;
-using Microsoft.Build.Framework;
 using Microsoft.SqlServer.Dac;
 using NUnit.Framework;
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.DataAccess.Model;
-using ILogger = Microsoft.Build.Framework.ILogger;
 
 namespace TicketManagement.IntegrationTests
 {
     public class DALEventSPTests
     {
+        private const string SCHEMANAME = "TicketManagement_Database_test";
+        private const string DACPACPATH =
+            "src/TicketManagement.Database/bin/Debug/TicketManagement.Database.dacpac";
+
         private static TextWriter _output = new StreamWriter("output.txt", false);
 
-        private readonly string _str = ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
+        private readonly string _str =
+            ConfigurationManager.ConnectionStrings["LocalSqlServer_test"].ConnectionString;
 
-        private bool CreateDataBase()
+        // Drop and create db will be created by EF for future
+        public static void DropSchema(string schemaName, string connStr)
         {
-            var props = new Dictionary<string, string>();
-            props.Add("UpdateDatabase", "True");
-            props.Add("SqlPublishProfilePath", "TicketManagement.Database/TicketManagement.publish.xml");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand command = new SqlCommand();
+            command.Connection = conn;
 
-            var projPath = "TicketManagement.Database/TicketManagement.Database.sqlproj";
+            command.CommandText = $"use master; DROP DATABASE " + schemaName;
 
-            var result = BuildManager.DefaultBuildManager.Build(
-                new BuildParameters { Loggers = new[] { new ConsoleLogger() } },
-                new BuildRequestData(new ProjectInstance(projPath, props, null), new[] { "Publish" }));
-
-            if (result.OverallResult == BuildResultCode.Success)
-            {
-                return true;
-            }
-
-            Create();
-
-            return false;
+            conn.Open();
+            command.ExecuteNonQuery();
+            command.Dispose();
+            conn.Close();
         }
 
-        private void Create()
+        private void CreateDataBase(string schemaName, string connStr, string dacPacFilePath)
         {
             // Class responsible for the deployment. (Connection string supplied by console input for now)
-            DacServices dbServices = new DacServices(_str);
+            DacServices dbServices = new DacServices(connStr);
 
             // Wire up events for Deploy messages and for task progress
             // (For less verbose output, don't subscribe to Message Event (handy for debugging perhaps?)
@@ -53,14 +49,15 @@ namespace TicketManagement.IntegrationTests
             dbServices.ProgressChanged += new EventHandler<DacProgressEventArgs>(DbServices_ProgressChanged);
 
             // This Snapshot should be created by our build process using MSDeploy
-            DacPackage dbPackage = DacPackage.Load(Console.ReadLine());
+            DacPackage dbPackage = DacPackage.Load(dacPacFilePath);
 
             DacDeployOptions dbDeployOptions = new DacDeployOptions();
 
             // Cut out a lot of options here for configuring deployment, but are all part of DacDeployOptions
             dbDeployOptions.SqlCommandVariableValues.Add("debug", "false");
 
-            dbServices.Deploy(dbPackage, "trunk", true, dbDeployOptions);
+            dbServices.Deploy(dbPackage, schemaName, true, dbDeployOptions);
+
             _output.Close();
         }
 
@@ -74,15 +71,11 @@ namespace TicketManagement.IntegrationTests
             _output.WriteLine(e.Status + ": " + e.Message);
         }
 
-        // Same test data are located
-        // TicketManagement.Database/Post/Script.TestEventSPData.sql
         [Test]
         public void CreateEventTest()
         {
-            if (!CreateDataBase())
-            {
-                 Assert.Fail();
-            }
+            // publish schema by dacpac
+            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
 
             // create tested data
             // arange
@@ -148,11 +141,17 @@ namespace TicketManagement.IntegrationTests
             tmeventseats.ForEach(ta => ta.Id = 0);
             seats.ForEach(ta => ta.Id = 0);
             tmeventseats.Should().BeEquivalentTo(seats, options => options.ExcludingMissingMembers());
+
+            // drop schema
+            DropSchema(SCHEMANAME, _str);
         }
 
         [Test]
         public void DeleteEventTest()
         {
+            // publish schema by dacpac
+            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+
             // create tested data
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -209,11 +208,17 @@ namespace TicketManagement.IntegrationTests
             tmeventareas.Count.Should().Be(0);
             tmeventseats.Count.Should().Be(0);
             tmeventFromBd.Count.Should().Be(0);
+
+            // drop schema
+            DropSchema(SCHEMANAME, _str);
         }
 
         [Test]
         public void UpdateEventLocalFieldsTest()
         {
+            // publish schema by dacpac
+            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+
             // create tested data
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -269,11 +274,17 @@ namespace TicketManagement.IntegrationTests
 
             // assert
             tmevent.Should().BeEquivalentTo(tmeventFromDB);
+
+            // drop schema
+            DropSchema(SCHEMANAME, _str);
         }
 
         [Test]
         public void UpdateEventLayoutTest()
         {
+            // publish schema by dacpac
+            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+
             // create tested data
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -359,35 +370,9 @@ namespace TicketManagement.IntegrationTests
             tmeventseats.ForEach(ta => ta.Id = 0);
             seats2.ForEach(ta => ta.Id = 0);
             tmeventseats.Should().BeEquivalentTo(seats2, options => options.ExcludingMissingMembers());
-        }
 
-        private class ConsoleLogger : ILogger
-        {
-            public LoggerVerbosity Verbosity { get; set; }
-
-            public string Parameters { get; set; }
-
-            public void Initialize(IEventSource eventSource)
-            {
-                eventSource.ErrorRaised += (sender, e) =>
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(e.Message);
-                    Console.ResetColor();
-                };
-                eventSource.MessageRaised += (sender, e) =>
-                {
-                    if (e.Importance != MessageImportance.Low)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                };
-            }
-
-            public void Shutdown()
-            {
-                throw new NotImplementedException();
-            }
+            // drop schema
+            DropSchema(SCHEMANAME, _str);
         }
     }
 }
