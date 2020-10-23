@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using FluentAssertions;
+using Microsoft.SqlServer.Dac;
 using NUnit.Framework;
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.DataAccess.Model;
@@ -11,13 +14,69 @@ namespace TicketManagement.IntegrationTests
 {
     public class DALEventSPTests
     {
-        private readonly string _str = ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
+        private const string SCHEMANAME = "TicketManagement_Database_test";
+        private const string DACPACPATH =
+            "src/TicketManagement.Database/bin/Debug/TicketManagement.Database.dacpac";
 
-        // Same test data are located
-        // TicketManagement.Database/Post/Script.TestEventSPData.sql
+        private static TextWriter _output = new StreamWriter("output.txt", false);
+
+        private readonly string _str =
+            ConfigurationManager.ConnectionStrings["LocalSqlServer_test"].ConnectionString;
+
+        // Drop and create db will be created by EF for future
+        public static void DropSchema(string schemaName, string connStr)
+        {
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand command = new SqlCommand();
+            command.Connection = conn;
+
+            command.CommandText = $"use master; DROP DATABASE " + schemaName;
+
+            conn.Open();
+            command.ExecuteNonQuery();
+            command.Dispose();
+            conn.Close();
+        }
+
+        private void CreateDataBase(string schemaName, string connStr, string dacPacFilePath)
+        {
+            // Class responsible for the deployment. (Connection string supplied by console input for now)
+            DacServices dbServices = new DacServices(connStr);
+
+            // Wire up events for Deploy messages and for task progress
+            // (For less verbose output, don't subscribe to Message Event (handy for debugging perhaps?)
+            dbServices.Message += new EventHandler<DacMessageEventArgs>(DbServices_Message);
+            dbServices.ProgressChanged += new EventHandler<DacProgressEventArgs>(DbServices_ProgressChanged);
+
+            // This Snapshot should be created by our build process using MSDeploy
+            DacPackage dbPackage = DacPackage.Load(dacPacFilePath);
+
+            DacDeployOptions dbDeployOptions = new DacDeployOptions();
+
+            // Cut out a lot of options here for configuring deployment, but are all part of DacDeployOptions
+            dbDeployOptions.SqlCommandVariableValues.Add("debug", "false");
+
+            dbServices.Deploy(dbPackage, schemaName, true, dbDeployOptions);
+
+            _output.Close();
+        }
+
+        private void DbServices_Message(object sender, DacMessageEventArgs e)
+        {
+            _output.WriteLine("DAC Message: {0}", e.Message);
+        }
+
+        private void DbServices_ProgressChanged(object sender, DacProgressEventArgs e)
+        {
+            _output.WriteLine(e.Status + ": " + e.Message);
+        }
+
         [Test]
         public void CreateEventTest()
         {
+            // publish schema by dacpac
+            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+
             // create tested data
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -82,11 +141,17 @@ namespace TicketManagement.IntegrationTests
             tmeventseats.ForEach(ta => ta.Id = 0);
             seats.ForEach(ta => ta.Id = 0);
             tmeventseats.Should().BeEquivalentTo(seats, options => options.ExcludingMissingMembers());
+
+            // drop schema
+            DropSchema(SCHEMANAME, _str);
         }
 
         [Test]
         public void DeleteEventTest()
         {
+            // publish schema by dacpac
+            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+
             // create tested data
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -143,11 +208,17 @@ namespace TicketManagement.IntegrationTests
             tmeventareas.Count.Should().Be(0);
             tmeventseats.Count.Should().Be(0);
             tmeventFromBd.Count.Should().Be(0);
+
+            // drop schema
+            DropSchema(SCHEMANAME, _str);
         }
 
         [Test]
         public void UpdateEventLocalFieldsTest()
         {
+            // publish schema by dacpac
+            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+
             // create tested data
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -213,11 +284,17 @@ namespace TicketManagement.IntegrationTests
 
             // assert
             tmevent.Should().BeEquivalentTo(tmeventFromDB);
+
+            // drop schema
+            DropSchema(SCHEMANAME, _str);
         }
 
         [Test]
         public void UpdateEventLayoutTest()
         {
+            // publish schema by dacpac
+            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+
             // create tested data
             // arange
             IVenueRepository venueRepository = new VenueRepository(_str);
@@ -303,6 +380,9 @@ namespace TicketManagement.IntegrationTests
             tmeventseats.ForEach(ta => ta.Id = 0);
             seats2.ForEach(ta => ta.Id = 0);
             tmeventseats.Should().BeEquivalentTo(seats2, options => options.ExcludingMissingMembers());
+
+            // drop schema
+            DropSchema(SCHEMANAME, _str);
         }
     }
 }

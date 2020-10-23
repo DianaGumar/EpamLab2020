@@ -63,6 +63,7 @@
     <Folder Include="Post" />
     <Folder Include="Programmability" />
     <Folder Include="Programmability\StoredProcedures" />
+    <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ForeignKeys\FK_Venue_TMLayout.sql" />
@@ -86,7 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TicketManagement.publish.xml" />
-    <None Include="TicketManagement.Database.publish.xml" />
+    <None Include="Snapshots\TicketManagement.Database_20201023_12-19-10.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post\Script.TestEventSPData.sql" />
