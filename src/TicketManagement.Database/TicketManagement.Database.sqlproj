@@ -61,21 +61,26 @@
     <Folder Include="ForeignKeys" />
     <Folder Include="Tables" />
     <Folder Include="Post" />
+    <Folder Include="Programmability" />
+    <Folder Include="Programmability\StoredProcedures" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="ForeignKeys\FK_Venue_Layout.sql" />
+    <Build Include="ForeignKeys\FK_Venue_TMLayout.sql" />
     <Build Include="Tables\Area.sql" />
-    <Build Include="ForeignKeys\FK_Layout_Area.sql" />
+    <Build Include="ForeignKeys\FK_TMLayout_Area.sql" />
     <Build Include="ForeignKeys\FK_Area_Seat.sql" />
-    <Build Include="ForeignKeys\FK_Layout_Event.sql" />
-    <Build Include="ForeignKeys\FK_Event_EventArea.sql" />
-    <Build Include="ForeignKeys\FK_Area_EventSeat.sql" />
+    <Build Include="ForeignKeys\FK_TMLayout_TMEvent.sql" />
+    <Build Include="ForeignKeys\FK_TMEvent_TMEventArea.sql" />
+    <Build Include="ForeignKeys\FK_Area_TMEventSeat.sql" />
+    <Build Include="Programmability\StoredProcedures\SP_Create_TMEvent.sql" />
+    <Build Include="Programmability\StoredProcedures\SP_Delete_TMEvent.sql" />
+    <Build Include="Programmability\StoredProcedures\SP_Update_TMEvent.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\Event.sql" />
-    <Build Include="Tables\EventArea.sql" />
-    <Build Include="Tables\EventSeat.sql" />
-    <Build Include="Tables\Layout.sql" />
+    <Build Include="Tables\TMEvent.sql" />
+    <Build Include="Tables\TMEventArea.sql" />
+    <Build Include="Tables\TMEventSeat.sql" />
+    <Build Include="Tables\TMLayout.sql" />
     <Build Include="Tables\Seat.sql" />
     <Build Include="Tables\Venue.sql" />
   </ItemGroup>
@@ -83,6 +88,6 @@
     <None Include="TicketManagement.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="Post\Script.PostDeployment.sql" />
+    <PostDeploy Include="Post\Script.TestEventSPData.sql" />
   </ItemGroup>
 </Project>
