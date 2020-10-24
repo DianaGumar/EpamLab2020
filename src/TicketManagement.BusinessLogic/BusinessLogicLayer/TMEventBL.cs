@@ -39,6 +39,7 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
                 EndEvent = tmevent.EndEvent,
                 StartEvent = tmevent.StartEvent,
                 TMLayoutId = tmevent.TMLayoutId,
+                Img = tmevent.Img,
             };
         }
 
@@ -79,6 +80,7 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
                 AllSeats = seats.Count,
                 BusySeats = seats.Where(s => s.State == 1).ToList().Count,
                 TMEventId = model.Id,
+                Img = model.Img,
             };
         }
 

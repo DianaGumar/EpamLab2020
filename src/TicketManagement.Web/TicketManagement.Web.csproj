@@ -234,14 +234,13 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\TMEventModels\Index.cshtml" />
-    <Content Include="Views\TMEventModels\Create.cshtml" />
     <Content Include="Views\TMEventModels\Edit.cshtml" />
     <Content Include="Views\TMEventModels\Details.cshtml" />
     <Content Include="Views\TMEventModels\Delete.cshtml" />
+    <Content Include="Views\TMEventModels\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\TMEvent\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

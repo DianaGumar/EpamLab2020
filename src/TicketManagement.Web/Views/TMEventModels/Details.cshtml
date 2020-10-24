@@ -5,12 +5,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Info</h2>
+<h2>Details</h2>
 
 <div>
     <h4>TMEventModels</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Img)
+        </dt>
+
+        <dd>
+            <div style="padding:10px;">
+                <img src=@Model.Img height="200px" />
+            </div>
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.TMEventId)
         </dt>

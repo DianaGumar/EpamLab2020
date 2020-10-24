@@ -4,7 +4,8 @@
 	@Description nvarchar(max),
 	@LayoutId int,
 	@StartEvent datetime,
-	@EndEvent datetime
+	@EndEvent datetime,
+	@Img nvarchar(max)
 AS
 	
 	BEGIN TRANSACTION;
@@ -18,7 +19,8 @@ AS
 	Description = @Description, 
 	TMLayoutId = @LayoutId, 
 	StartEvent = @StartEvent, 
-	EndEvent = @EndEvent
+	EndEvent = @EndEvent,
+	Img = @Img
     where Id = @TMEventId
 
 

@@ -3,15 +3,16 @@
 	@Description nvarchar(max),
 	@TMLayoutId int,
 	@StartEvent datetime,
-	@EndEvent datetime
+	@EndEvent datetime,
+	@Img nvarchar(max)
 AS
 	DECLARE @TMEventId int = 0
 	BEGIN TRANSACTION;
 
 	declare @TMEvent table (Id int)
-	insert into TMEvent (Name, Description, TMLayoutId, StartEvent, EndEvent) 
+	insert into TMEvent (Name, Description, TMLayoutId, StartEvent, EndEvent, Img) 
 		OUTPUT INSERTED.ID into @TMEvent
-		values (@Name, @Description, @TMLayoutId, @StartEvent, @EndEvent)
+		values (@Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img)
 
 	set @TMEventId = (SELECT TOP 1 Id FROM @TMEvent);
 	declare @TMEventArea table (Id int)

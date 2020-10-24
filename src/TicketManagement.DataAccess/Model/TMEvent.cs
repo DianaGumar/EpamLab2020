@@ -16,5 +16,7 @@ namespace TicketManagement.DataAccess.Model
         public DateTime StartEvent { get; set; }
 
         public DateTime EndEvent { get; set; }
+
+        public string Img { get; set; }
     }
 }

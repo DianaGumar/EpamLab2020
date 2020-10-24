@@ -5,6 +5,63 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="container">
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+        <div class="col-md-6 col-sm-10 col-xs-12">
+            <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+                <div class="row row-table">
+                    <div class="col-md-3 col-sm-3 col-xs-4">
+                        <picture class="lateral-picture">
+                            <img src="@item.Img" alt="" height="160px">
+                        </picture>
+                    </div>
+                    <div class="col-sm-8 col-md-9 col-xs-8">
+                        <div class="pull-right">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-primary" })
+                            @Html.ActionLink("Details", "Details", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-primary" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-danger" })
+                        </div>
+                        <p>
+                            <span class="text-capitalize text-danger" style="font-size:medium; font-weight: 600;">
+                                SEATS @Html.DisplayFor(modelItem => item.BusySeats) / @Html.DisplayFor(modelItem => item.AllSeats)
+                            </span>
+                        </p>
+                        <p>
+                            <span class="text-capitalize" style="font-size:xx-large; font-weight: 600;">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </span>
+                            <br />
+                            <span class="text-muted" style="font-size: medium; font-weight: 600;">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </span>
+                        </p>
+                        <p class="pull-left">
+                            <span class="text-info">@Html.DisplayFor(modelItem => item.StartEvent)</span>
+                            <br />
+                            <span class="text-info">@Html.DisplayFor(modelItem => item.EndEvent)</span>
+                        </p>
+                        <p class="pull-right">
+                            @Html.ActionLink("BUY TICKET", "BuyTicket", new { id = item.TMEventId }, new { @class = "btn btn-primary", @style = "font-weight: 600;" })
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+                }
+            
+
+        </div>
+</div>
+
+
+
+
+
+
+
 <h2>ReadAll</h2>
 
 <p>
@@ -12,6 +69,9 @@
 </p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Img)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.TMEventId)
         </th>
@@ -41,6 +101,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td style="max-width: 120px; overflow: hidden;">
+            @Html.DisplayFor(modelItem => item.Img)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.TMEventId)
         </td>
