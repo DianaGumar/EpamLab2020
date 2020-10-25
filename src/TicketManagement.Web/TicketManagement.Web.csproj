@@ -167,7 +167,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TMEventAreaModelsController.cs" />
     <Compile Include="Controllers\TMEventModelsController.cs" />
+    <Compile Include="Controllers\VenueModelsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -238,6 +240,10 @@
     <Content Include="Views\TMEventModels\Details.cshtml" />
     <Content Include="Views\TMEventModels\Delete.cshtml" />
     <Content Include="Views\TMEventModels\Create.cshtml" />
+    <Content Include="Views\TMEventAreaModels\_Index.cshtml" />
+    <Content Include="Views\TMEventAreaModels\_SetPrice.cshtml" />
+    <Content Include="Views\VenueModels\IndexVenueOnlyNames.cshtml" />
+    <Content Include="Views\VenueModels\_IndexLayoutOnlyNames.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

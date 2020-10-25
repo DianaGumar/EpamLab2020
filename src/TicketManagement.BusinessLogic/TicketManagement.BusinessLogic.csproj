@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogicLayer\ITMEventAreasBL.cs" />
     <Compile Include="BusinessLogicLayer\ITMEventBL.cs" />
     <Compile Include="BusinessLogicLayer\IVenueBL.cs" />
+    <Compile Include="BusinessLogicLayer\TMEventAreasBL.cs" />
     <Compile Include="BusinessLogicLayer\TMEventBL.cs" />
     <Compile Include="BusinessLogicLayer\VenueBL.cs" />
     <Compile Include="IServices\IAreaService.cs" />

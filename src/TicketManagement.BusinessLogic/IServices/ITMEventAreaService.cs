@@ -7,6 +7,8 @@ namespace TicketManagement.BusinessLogic
     {
         List<TMEventArea> GetAllTMEventArea();
 
+        TMEventArea GetTMEventArea(int id);
+
         void SetPrice(int tmeventAreaId, decimal price);
     }
 }

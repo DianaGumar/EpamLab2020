@@ -2,6 +2,7 @@
 using System.Linq;
 using Ticketmanagement.BusinessLogic.BusinessLogicLayer;
 using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain;
 
 namespace TicketManagement.BusinessLogic.BusinessLogicLayer
 {
@@ -21,18 +22,20 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
             _seatService = seatService;
         }
 
-        public Area CreateArea(Area area, ref List<Seat> seats)
+        public AreaModels CreateArea(AreaModels area, List<Seat> seats)
         {
-            area = _areaService.CreateArea(area);
-            seats.ForEach(s => s.AreaId = area.Id);
+            area = CreateAreaModelsFromArea(
+                _areaService.CreateArea(CreateAreaFromAreaModels(area)));
+            seats.ForEach(s => s.AreaId = area.AreaId);
             seats.ForEach(s => s.Id = _seatService.CreateSeat(s).Id);
 
             return area;
         }
 
-        public TMLayout CreateLayout(TMLayout layout)
+        public TMLayoutModels CreateLayout(TMLayoutModels layout)
         {
-            return _tmlayoutService.CreateTMLayout(layout);
+            return CreateTMLayoutModelsFromTMLayout(
+                _tmlayoutService.CreateTMLayout(CreateTMLayoutFromTMLayoutModels(layout)));
         }
 
         public void RemoveLayout(int layoutId)
@@ -55,15 +58,23 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
             }
         }
 
-        public Venue CreateVenue(Venue obj)
+        public VenueModels CreateVenue(VenueModels obj)
         {
-            obj = _venueService.CreateVenue(obj);
+            obj = CreateVenueModelsFromVenue(_venueService
+                .CreateVenue(CreateVenueFromVenueModels(obj)));
 
             // create default layout
-            TMLayout layout = _tmlayoutService.CreateTMLayout(new TMLayout { Description = "defailt", VenueId = obj.Id });
+            TMLayout layout = _tmlayoutService.CreateTMLayout(
+                new TMLayout { Description = "defailt", VenueId = obj.VenueId });
 
             Area area = _areaService.CreateArea(
-                new Area { CoordX = 0, CoordY = 0, Description = "all size area", TMLayoutId = layout.Id });
+                new Area
+                {
+                    CoordX = 0,
+                    CoordY = 0,
+                    Description = "all size area",
+                    TMLayoutId = layout.Id,
+                });
 
             for (int j = 0; j < obj.Lenght; j++)
             {
@@ -74,6 +85,104 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
             }
 
             return obj;
+        }
+
+        public List<VenueModels> GetAllVenues()
+        {
+            var retList = new List<VenueModels>();
+
+            List<Venue> list = _venueService.GetAllVenue().ToList();
+
+            foreach (var item in list)
+            {
+                retList.Add(CreateVenueModelsFromVenue(item));
+            }
+
+            return retList;
+        }
+
+        public List<TMLayoutModels> GetAllLayouts()
+        {
+            var retList = new List<TMLayoutModels>();
+
+            List<TMLayout> list = _tmlayoutService.GetAllTMLayout().ToList();
+
+            foreach (var item in list)
+            {
+                retList.Add(CreateTMLayoutModelsFromTMLayout(item));
+            }
+
+            return retList;
+        }
+
+        private static VenueModels CreateVenueModelsFromVenue(Venue obj)
+        {
+            return new VenueModels
+            {
+                Address = obj.Address,
+                Description = obj.Description,
+                Lenght = obj.Lenght,
+                Phone = obj.Phone,
+                VenueId = obj.Id,
+                Weidth = obj.Weidth,
+            };
+        }
+
+        private static Venue CreateVenueFromVenueModels(VenueModels obj)
+        {
+            return new Venue
+            {
+                Address = obj.Address,
+                Description = obj.Description,
+                Lenght = obj.Lenght,
+                Phone = obj.Phone,
+                Id = obj.VenueId,
+                Weidth = obj.Weidth,
+            };
+        }
+
+        private static TMLayoutModels CreateTMLayoutModelsFromTMLayout(TMLayout obj)
+        {
+            return new TMLayoutModels
+            {
+                TMLayoutId = obj.Id,
+                Description = obj.Description,
+                VenueId = obj.VenueId,
+            };
+        }
+
+        private static TMLayout CreateTMLayoutFromTMLayoutModels(TMLayoutModels obj)
+        {
+            return new TMLayout
+            {
+                Id = obj.TMLayoutId,
+                Description = obj.Description,
+                VenueId = obj.VenueId,
+            };
+        }
+
+        private static AreaModels CreateAreaModelsFromArea(Area obj)
+        {
+            return new AreaModels
+            {
+                AreaId = obj.Id,
+                TMLayoutId = obj.TMLayoutId,
+                Description = obj.Description,
+                CoordX = obj.CoordX,
+                CoordY = obj.CoordY,
+            };
+        }
+
+        private static Area CreateAreaFromAreaModels(AreaModels obj)
+        {
+            return new Area
+            {
+                Id = obj.AreaId,
+                TMLayoutId = obj.TMLayoutId,
+                Description = obj.Description,
+                CoordX = obj.CoordX,
+                CoordY = obj.CoordY,
+            };
         }
     }
 }

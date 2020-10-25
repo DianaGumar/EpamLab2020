@@ -41,8 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TMEventAreaModels.cs" />
     <Compile Include="TMEventModels.cs" />
+    <Compile Include="TMLayoutModels.cs" />
+    <Compile Include="VenueModels.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

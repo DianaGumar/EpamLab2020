@@ -19,6 +19,11 @@ namespace TicketManagement.BusinessLogic
             return _tmeventAreaRepository.GetAll().ToList();
         }
 
+        public TMEventArea GetTMEventArea(int id)
+        {
+            return _tmeventAreaRepository.GetById(id);
+        }
+
         public void SetPrice(int tmeventAreaId, decimal price)
         {
             TMEventArea tmeventArea = _tmeventAreaRepository.GetById(tmeventAreaId);

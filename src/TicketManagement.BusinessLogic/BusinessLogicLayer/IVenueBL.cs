@@ -1,16 +1,21 @@
 ﻿using System.Collections.Generic;
 using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain;
 
 namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 {
     internal interface IVenueBL
     {
-        Area CreateArea(Area area, ref List<Seat> seats);
+        AreaModels CreateArea(AreaModels area, List<Seat> seats);
 
-        TMLayout CreateLayout(TMLayout layout);
+        TMLayoutModels CreateLayout(TMLayoutModels layout);
 
         void RemoveLayout(int layoutId);
 
-        Venue CreateVenue(Venue obj);
+        VenueModels CreateVenue(VenueModels obj);
+
+        List<VenueModels> GetAllVenues();
+
+        List<TMLayoutModels> GetAllLayouts();
     }
 }

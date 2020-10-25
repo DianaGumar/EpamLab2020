@@ -21,5 +21,7 @@ namespace TicketManagement.Domain
         public int AllSeats { get; set; }
 
         public int BusySeats { get; set; }
+
+        public decimal MiddlePriceBySeat { get; set; }
     }
 }
