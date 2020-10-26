@@ -20,6 +20,8 @@
                     </div>
                     <div class="col-sm-8 col-md-9 col-xs-8">
                         <div class="pull-right">
+                            @Html.ActionLink("Set price", "Index", "TMEventAreaModels", 
+                           new { idEvent = item.TMEventId }, new { @class = "btn btn-sm btn-default" })
                             @Html.ActionLink("Edit", "Edit", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-primary" })
                             @Html.ActionLink("Details", "Details", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-primary" })
                             @Html.ActionLink("Delete", "Delete", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-danger" })

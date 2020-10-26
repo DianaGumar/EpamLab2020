@@ -240,10 +240,11 @@
     <Content Include="Views\TMEventModels\Details.cshtml" />
     <Content Include="Views\TMEventModels\Delete.cshtml" />
     <Content Include="Views\TMEventModels\Create.cshtml" />
-    <Content Include="Views\TMEventAreaModels\_Index.cshtml" />
     <Content Include="Views\TMEventAreaModels\_SetPrice.cshtml" />
-    <Content Include="Views\VenueModels\IndexVenueOnlyNames.cshtml" />
+    <Content Include="Views\VenueModels\Index.cshtml" />
+    <Content Include="Views\VenueModels\_IndexVenueOnlyNames.cshtml" />
     <Content Include="Views\VenueModels\_IndexLayoutOnlyNames.cshtml" />
+    <Content Include="Views\TMEventAreaModels\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

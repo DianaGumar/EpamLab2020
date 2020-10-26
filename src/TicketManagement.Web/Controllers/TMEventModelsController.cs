@@ -90,6 +90,7 @@ namespace TicketManagement.Web.Controllers
             {
                 obj.TMEventId = id;
                 _tmeventbl.UpdateTMEvent(obj);
+
                 return RedirectToAction("Index");
             }
 

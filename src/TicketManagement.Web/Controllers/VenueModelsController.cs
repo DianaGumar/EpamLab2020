@@ -26,22 +26,32 @@ namespace TicketManagement.Web.Controllers
                 new SeatService(new SeatRepository(_str)));
         }
 
-        // GET: VenueModels
         [HttpGet]
-        public ActionResult IndexVenueOnlyNames()
+        public ActionResult Index()
         {
             List<VenueModels> models =
-               _venuebl.GetAllVenues().OrderBy(u => u.Lenght + u.Weidth).ToList();
+               _venuebl.GetAllVenues().OrderBy(u => u.Lenght + u.Weidth).Reverse().ToList();
 
             return View(models);
         }
 
         // GET: VenueModels
         [HttpGet]
-        public ActionResult IndexLayoutOnlyNames(int venueId)
+        public PartialViewResult IndexVenueOnlyNames()
+        {
+            List<VenueModels> models =
+               _venuebl.GetAllVenues().OrderBy(u => u.Lenght + u.Weidth).ToList();
+
+            return PartialView("_IndexVenueOnlyNames", models);
+        }
+
+        // GET: VenueModels
+        [HttpGet]
+        [ChildActionOnly]
+        public PartialViewResult IndexLayoutOnlyNames(int venueId)
         {
             List<TMLayoutModels> models =
-               _venuebl.GetAllLayouts().Where(l => l.VenueId == venueId).ToList();
+                _venuebl.GetAllLayouts().Where(l => l.VenueId == venueId).ToList();
 
             return PartialView("_IndexLayoutOnlyNames", models);
         }

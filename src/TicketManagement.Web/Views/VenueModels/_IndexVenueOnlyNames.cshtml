@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TicketManagement.Domain.VenueModels>
+
+@*@{
+    ViewBag.Title = "IndexVenueOnlyNames";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
+
+<h2>Vievs and Layouts</h2>
+
+<!--<div class="form-group">
+    <label class="control-label col-4">Venue</label>
+
+    <asp:DropDownList id="ColorList"
+                      AutoPostBack="True"
+                      OnSelectedIndexChanged="Selection_Change"
+                      runat="server">-->
+
+        @*@foreach (var item in Model)
+        {
+            <asp:ListItem value="@item.VenueId">@item.Description @item.Address</asp:ListItem>
+        }*@
+
+    <!--</asp:DropDownList>
+
+
+    <select class="custom-select col-8" id="VenueSelect" name="VenueSelect">
+</div>-->
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.VenueId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            Layouts
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VenueId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.Action("IndexLayoutOnlyNames", new {venueId = item.VenueId})
+            </td>
+        </tr>
+    }
+
+</table>

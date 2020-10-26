@@ -21,30 +21,32 @@ namespace TicketManagement.Web.Controllers
             _tmeventareabl = new TMEventAreasBL(new TMEventAreaService(new TMEventAreaRepository(_str)));
         }
 
-        // GET: TMEventAreaModels/SetPrice/5
         [HttpGet]
-        public ActionResult Index(int idEvent)
+        public ActionResult Index(int idEvent = 0)
         {
             List<TMEventAreaModels> objs = _tmeventareabl.GetAllTMEventAreas()
                 .Where(a => a.TMEventId == idEvent).ToList();
 
-            // return View()
-            return PartialView("_Index", objs);
-        }
-
-        [HttpGet]
-        public ActionResult SetPrice(int id)
-        {
-            return PartialView("_SetPrice", _tmeventareabl.GetTMEventArea(id));
+            return View(objs);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SetPrice(int id, decimal prise)
+        public ActionResult SetPrice(int id, [Bind] TMEventAreaModels obj)
         {
-            _tmeventareabl.SetTMEventAreaPrice(id, prise);
+            if (obj != null)
+            {
+                obj.TMEventAreaId = id;
+                _tmeventareabl.SetTMEventAreaPrice(obj.TMEventAreaId, obj.Price);
+            }
 
-            return PartialView("_SetPrice");
+            return RedirectToAction("Index", new { idEvent = obj?.TMEventId });
+        }
+
+        [HttpGet]
+        public PartialViewResult SetPrice(int id = 0)
+        {
+            return PartialView("_SetPrice", _tmeventareabl.GetTMEventArea(id));
         }
     }
 }
