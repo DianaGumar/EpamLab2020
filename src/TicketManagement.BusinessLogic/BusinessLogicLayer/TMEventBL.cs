@@ -81,6 +81,7 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
                 BusySeats = seats.Where(s => s.State == 1).ToList().Count,
                 TMEventId = model.Id,
                 Img = model.Img,
+                MiddlePriceBySeat = areas.Sum(a => a.Price) / areas.Count,
             };
         }
 

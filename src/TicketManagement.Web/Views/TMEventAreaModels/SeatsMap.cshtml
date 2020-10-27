@@ -1,0 +1,22 @@
+﻿@model IEnumerable<TicketManagement.Domain.TMEventSeatModels>
+
+@{
+    ViewBag.Title = "SeatsMap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SeatsMap</h2>
+
+<div class="container" style="padding:5px; border:solid">
+
+    @foreach (var item in Model)
+    {
+        <div class="container" style="padding:5px; margin:5px; border:solid;
+        height: 10px; width: 10px;">
+
+            @item.State | @item.TMEventAreaId
+
+        </div>
+    }
+
+</div>

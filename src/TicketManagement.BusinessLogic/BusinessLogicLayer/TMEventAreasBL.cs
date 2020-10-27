@@ -9,10 +9,12 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
     internal class TMEventAreasBL : ITMEventAreasBL
     {
         private readonly ITMEventAreaService _tmeventAreaService;
+        private readonly ITMEventSeatService _tmeventSeatService;
 
-        internal TMEventAreasBL(ITMEventAreaService tmeventAreaService)
+        internal TMEventAreasBL(ITMEventAreaService tmeventAreaService, ITMEventSeatService tmeventSeatService)
         {
             _tmeventAreaService = tmeventAreaService;
+            _tmeventSeatService = tmeventSeatService;
         }
 
         public void SetTMEventAreaPrice(int areaId, decimal price)
@@ -22,7 +24,9 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 
         public TMEventAreaModels GetTMEventArea(int id)
         {
-            return CreateTMEventAreaModelsFromTMEventArea(_tmeventAreaService.GetTMEventArea(id));
+            TMEventArea tmea = _tmeventAreaService.GetTMEventArea(id);
+
+            return CreateTMEventAreaModelsFromTMEventArea(tmea, GetTMEventAreaSeats(tmea.Id));
         }
 
         public List<TMEventAreaModels> GetAllTMEventAreas()
@@ -33,13 +37,28 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 
             foreach (var item in list)
             {
-                retList.Add(CreateTMEventAreaModelsFromTMEventArea(item));
+                retList.Add(CreateTMEventAreaModelsFromTMEventArea(item, GetTMEventAreaSeats(item.Id)));
             }
 
             return retList;
         }
 
-        private static TMEventAreaModels CreateTMEventAreaModelsFromTMEventArea(TMEventArea obj)
+        public List<TMEventSeatModels> GetTMEventAreaSeats(int tmeventAreaId)
+        {
+            var seatsNew = new List<TMEventSeatModels>();
+            List<TMEventSeat> seats = _tmeventSeatService.GetAllTMEventSeat()
+                .Where(s => s.TMEventAreaId == tmeventAreaId).ToList();
+
+            foreach (var item in seats)
+            {
+                seatsNew.Add(CreateTMEventSeatModelsFromTMEventSeat(item));
+            }
+
+            return seatsNew;
+        }
+
+        private static TMEventAreaModels CreateTMEventAreaModelsFromTMEventArea(
+            TMEventArea obj, List<TMEventSeatModels> seats)
         {
             return new TMEventAreaModels
             {
@@ -49,6 +68,20 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
                 Description = obj.Description,
                 Price = obj.Price,
                 TMEventId = obj.TMEventId,
+                CountSeatsX = seats.Max(s => s.Number),
+                CountSeatsY = seats.Max(s => s.Row),
+            };
+        }
+
+        private static TMEventSeatModels CreateTMEventSeatModelsFromTMEventSeat(TMEventSeat obj)
+        {
+            return new TMEventSeatModels
+            {
+                TMEventAreaId = obj.TMEventAreaId,
+                Id = obj.Id,
+                Number = obj.Number,
+                Row = obj.Row,
+                State = obj.State,
             };
         }
     }

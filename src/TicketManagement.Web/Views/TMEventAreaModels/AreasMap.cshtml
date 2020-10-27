@@ -1,0 +1,52 @@
+﻿@model IEnumerable<TicketManagement.Domain.TMEventAreaModels>
+
+@{
+    ViewBag.Title = "AreasMap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int height_layout_i = 0;
+    int width_layout_i = 0;
+
+    int size = 100;
+
+    foreach (var item in Model)
+    {
+        item.CountSeatsYStr = item.CountSeatsY * size + "px";
+        item.CountSeatsXStr = item.CountSeatsX * size + "px";
+
+        item.CoordYStr = item.CoordY * size + "px";
+        item.CoordXStr = item.CoordX * size + "px";
+
+        width_layout_i += item.CoordX + item.CountSeatsX;
+        height_layout_i += item.CoordY + item.CountSeatsY;
+    }
+
+    string height_layout = height_layout_i * size + "px";
+    string width_layout = width_layout_i * size + "px";
+
+}
+
+    <h2>AreasMap</h2>
+
+    <div class="container text-center" style="align-items:center; align-content:center;">
+
+        @*<div class="container" style="padding:5px; position:absolute;
+        border:solid; width:@width_layout; height:@height_layout">*@
+
+            @foreach (var item in Model)
+            {
+                <div class="container col">
+                    <div class="container" style="padding:5px; border:solid;/* position:absolute;*/
+                height: @item.CountSeatsYStr;
+                width: @item.CountSeatsXStr;
+                margin-top:@item.CoordYStr; margin-left:@item.CoordXStr;">
+                        <p>@item.Description | @item.Price $</p>
+                    </div>
+
+                </div>
+            }
+
+        @*</div>*@
+    </div>
+
+

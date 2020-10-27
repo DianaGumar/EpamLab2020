@@ -18,7 +18,9 @@ namespace TicketManagement.Web.Controllers
         public TMEventAreaModelsController()
         {
             // until dependensy ingection is include
-            _tmeventareabl = new TMEventAreasBL(new TMEventAreaService(new TMEventAreaRepository(_str)));
+            _tmeventareabl = new TMEventAreasBL(
+                new TMEventAreaService(new TMEventAreaRepository(_str)),
+                new TMEventSeatService(new TMEventSeatRepository(_str)));
         }
 
         [HttpGet]
@@ -47,6 +49,23 @@ namespace TicketManagement.Web.Controllers
         public PartialViewResult SetPrice(int id = 0)
         {
             return PartialView("_SetPrice", _tmeventareabl.GetTMEventArea(id));
+        }
+
+        [HttpGet]
+        public ActionResult AreasMap(int idEvent)
+        {
+            List<TMEventAreaModels> objs = _tmeventareabl.GetAllTMEventAreas()
+                .Where(a => a.TMEventId == idEvent).ToList();
+
+            return View(objs);
+        }
+
+        [HttpGet]
+        public ActionResult SeatsMap(int idArea)
+        {
+            List<TMEventSeatModels> objs = _tmeventareabl.GetTMEventAreaSeats(idArea);
+
+            return View(objs);
         }
     }
 }

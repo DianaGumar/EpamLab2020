@@ -10,5 +10,7 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
         List<TMEventAreaModels> GetAllTMEventAreas();
 
         TMEventAreaModels GetTMEventArea(int id);
+
+        List<TMEventSeatModels> GetTMEventAreaSeats(int tmeventAreaId);
     }
 }
