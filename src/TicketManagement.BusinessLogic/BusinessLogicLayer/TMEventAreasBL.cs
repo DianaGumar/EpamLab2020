@@ -17,16 +17,18 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
             _tmeventSeatService = tmeventSeatService;
         }
 
-        public void SetTMEventAreaPrice(int areaId, decimal price)
+        public int SetTMEventAreaPrice(int areaId, decimal price)
         {
-            _tmeventAreaService.SetPrice(areaId, price);
+            TMEventArea obj = _tmeventAreaService.GetTMEventArea(areaId);
+            obj.Price = price;
+            return _tmeventAreaService.UpdateTMEventArea(obj);
         }
 
         public TMEventAreaModels GetTMEventArea(int id)
         {
             TMEventArea tmea = _tmeventAreaService.GetTMEventArea(id);
 
-            return CreateTMEventAreaModelsFromTMEventArea(tmea, GetTMEventAreaSeats(tmea.Id));
+            return CreateTMEventAreaModelsFromTMEventArea(tmea, GetTMEventSeats(tmea.Id));
         }
 
         public List<TMEventAreaModels> GetAllTMEventAreas()
@@ -37,13 +39,13 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 
             foreach (var item in list)
             {
-                retList.Add(CreateTMEventAreaModelsFromTMEventArea(item, GetTMEventAreaSeats(item.Id)));
+                retList.Add(CreateTMEventAreaModelsFromTMEventArea(item, GetTMEventSeats(item.Id)));
             }
 
             return retList;
         }
 
-        public List<TMEventSeatModels> GetTMEventAreaSeats(int tmeventAreaId)
+        public List<TMEventSeatModels> GetTMEventSeats(int tmeventAreaId)
         {
             var seatsNew = new List<TMEventSeatModels>();
             List<TMEventSeat> seats = _tmeventSeatService.GetAllTMEventSeat()
@@ -55,6 +57,13 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
             }
 
             return seatsNew;
+        }
+
+        public int SetTMEventSeatState(int tmeventSeatId, SeatState state)
+        {
+            TMEventSeat tmeventSeat = _tmeventSeatService.GetTMEventSeat(tmeventSeatId);
+            tmeventSeat.State = (int)state;
+            return _tmeventSeatService.UpdateTMEventSeat(tmeventSeat);
         }
 
         private static TMEventAreaModels CreateTMEventAreaModelsFromTMEventArea(
@@ -81,7 +90,7 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
                 Id = obj.Id,
                 Number = obj.Number,
                 Row = obj.Row,
-                State = obj.State,
+                State = (SeatState)obj.State,
             };
         }
     }

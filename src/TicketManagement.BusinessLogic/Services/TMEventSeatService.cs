@@ -24,11 +24,14 @@ namespace TicketManagement.BusinessLogic
             return _tmeventSeatRepository.GetAll().ToList();
         }
 
-        public void SetState(int tmeventSeatId, int state)
+        public int UpdateTMEventSeat(TMEventSeat obj)
         {
-            TMEventSeat tmeventSeat = _tmeventSeatRepository.GetById(tmeventSeatId);
-            tmeventSeat.State = state;
-            _tmeventSeatRepository.Update(tmeventSeat);
+            return _tmeventSeatRepository.Update(obj);
+        }
+
+        public TMEventSeat GetTMEventSeat(int id)
+        {
+            return _tmeventSeatRepository.GetById(id);
         }
     }
 }

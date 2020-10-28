@@ -6,47 +6,52 @@
 
     int height_layout_i = 0;
     int width_layout_i = 0;
+    double margin = 1.15;
 
-    int size = 100;
+    int size = 80;
 
     foreach (var item in Model)
     {
         item.CountSeatsYStr = item.CountSeatsY * size + "px";
         item.CountSeatsXStr = item.CountSeatsX * size + "px";
 
-        item.CoordYStr = item.CoordY * size + "px";
-        item.CoordXStr = item.CoordX * size + "px";
+        item.CoordYStr = item.CoordY * size * margin + 20 + "px";
+        item.CoordXStr = item.CoordX * size * margin + "px";
 
         width_layout_i += item.CoordX + item.CountSeatsX;
         height_layout_i += item.CoordY + item.CountSeatsY;
     }
 
-    string height_layout = height_layout_i * size + "px";
-    string width_layout = width_layout_i * size + "px";
+    string height_layout = height_layout_i * size / 1.2 + "px";
+    string width_layout = width_layout_i * size / 1.2 + "px";
 
 }
 
-    <h2>AreasMap</h2>
+<h2>AreasMap</h2>
 
-    <div class="container text-center" style="align-items:center; align-content:center;">
+<div class="container" style="align-content:center; height: 65vh;">
 
-        @*<div class="container" style="padding:5px; position:absolute;
-        border:solid; width:@width_layout; height:@height_layout">*@
+    @foreach (var item in Model)
+    {
+        <div class="container">
+            <div class="container"
+                 style="
+                    padding: 5px;
+                    background-color: lightgray;
+                    position: absolute;
+                    height: @item.CountSeatsYStr;
+                    width: @item.CountSeatsXStr;
+                    margin-top: @item.CoordYStr;
+                    margin-left: @item.CoordXStr;">
 
-            @foreach (var item in Model)
-            {
-                <div class="container col">
-                    <div class="container" style="padding:5px; border:solid;/* position:absolute;*/
-                height: @item.CountSeatsYStr;
-                width: @item.CountSeatsXStr;
-                margin-top:@item.CoordYStr; margin-left:@item.CoordXStr;">
-                        <p>@item.Description | @item.Price $</p>
-                    </div>
-
+                <div class="text-info" style="position: relative; margin-top:-25px; width: 300px">
+                    @item.Description | @item.Price$
                 </div>
-            }
 
-        @*</div>*@
-    </div>
+                @Html.Action("SeatsMap", "TMEventAreaModels", new { idArea = item.TMEventAreaId })
 
+            </div>
+        </div>
+    }
 
+</div>

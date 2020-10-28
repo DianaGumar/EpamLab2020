@@ -5,12 +5,14 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 {
     internal interface ITMEventAreasBL
     {
-        void SetTMEventAreaPrice(int areaId, decimal price);
+        int SetTMEventAreaPrice(int areaId, decimal price);
 
         List<TMEventAreaModels> GetAllTMEventAreas();
 
         TMEventAreaModels GetTMEventArea(int id);
 
-        List<TMEventSeatModels> GetTMEventAreaSeats(int tmeventAreaId);
+        List<TMEventSeatModels> GetTMEventSeats(int tmeventAreaId);
+
+        int SetTMEventSeatState(int tmeventSeatId, SeatState state);
     }
 }

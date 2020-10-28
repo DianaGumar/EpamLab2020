@@ -9,6 +9,8 @@ namespace TicketManagement.BusinessLogic
 
         List<TMEventSeat> GetAllTMEventSeat();
 
-        void SetState(int tmeventSeatId, int state);
+        int UpdateTMEventSeat(TMEventSeat obj);
+
+        TMEventSeat GetTMEventSeat(int id);
     }
 }

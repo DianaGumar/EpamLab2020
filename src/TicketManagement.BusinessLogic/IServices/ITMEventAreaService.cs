@@ -9,6 +9,6 @@ namespace TicketManagement.BusinessLogic
 
         TMEventArea GetTMEventArea(int id);
 
-        void SetPrice(int tmeventAreaId, decimal price);
+        int UpdateTMEventArea(TMEventArea obj);
     }
 }

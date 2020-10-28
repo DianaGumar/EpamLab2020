@@ -24,11 +24,9 @@ namespace TicketManagement.BusinessLogic
             return _tmeventAreaRepository.GetById(id);
         }
 
-        public void SetPrice(int tmeventAreaId, decimal price)
+        public int UpdateTMEventArea(TMEventArea obj)
         {
-            TMEventArea tmeventArea = _tmeventAreaRepository.GetById(tmeventAreaId);
-            tmeventArea.Price = price;
-            _tmeventAreaRepository.Update(tmeventArea);
+            return _tmeventAreaRepository.Update(obj);
         }
     }
 }

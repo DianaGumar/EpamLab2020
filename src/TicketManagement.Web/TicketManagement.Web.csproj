@@ -246,7 +246,7 @@
     <Content Include="Views\VenueModels\_IndexLayoutOnlyNames.cshtml" />
     <Content Include="Views\TMEventAreaModels\Index.cshtml" />
     <Content Include="Views\TMEventAreaModels\AreasMap.cshtml" />
-    <Content Include="Views\TMEventAreaModels\SeatsMap.cshtml" />
+    <Content Include="Views\TMEventAreaModels\_SeatsMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

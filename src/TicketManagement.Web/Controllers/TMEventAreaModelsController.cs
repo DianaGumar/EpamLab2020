@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
@@ -61,11 +62,23 @@ namespace TicketManagement.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult SeatsMap(int idArea)
+        public PartialViewResult SeatsMap(int idArea)
         {
-            List<TMEventSeatModels> objs = _tmeventareabl.GetTMEventAreaSeats(idArea);
+            List<TMEventSeatModels> objs = _tmeventareabl.GetTMEventSeats(idArea);
 
-            return View(objs);
+            return PartialView("_SeatsMap", objs);
+        }
+
+        [HttpGet]
+        public ActionResult ChangeSeatState(int id = 0, SeatState state = 0, int areaId = 0)
+        {
+            state = (int)state < Enum.GetNames(typeof(SeatState)).Length - 1 ? state + 1 : 0;
+
+            _tmeventareabl.SetTMEventSeatState(id, state);
+
+            int idEvent = _tmeventareabl.GetTMEventArea(areaId).TMEventId;
+
+            return RedirectToAction("AreasMap", new { idEvent });
         }
     }
 }
