@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.BusinessLogic
 {
@@ -29,6 +29,16 @@ namespace TicketManagement.BusinessLogic
             List<TMLayout> objs = _tmlayoutRepository.GetAll()
                .Where(a => a.VenueId == obj.VenueId && a.Description == obj.Description).ToList();
             return objs.Count == 0 ? _tmlayoutRepository.Create(obj) : objs.ElementAt(0);
+        }
+
+        public TMLayout GetTMLayout(int id)
+        {
+            return _tmlayoutRepository.GetById(id);
+        }
+
+        public int UpdateTMLayout(TMLayout obj)
+        {
+            return _tmlayoutRepository.Update(obj);
         }
     }
 }

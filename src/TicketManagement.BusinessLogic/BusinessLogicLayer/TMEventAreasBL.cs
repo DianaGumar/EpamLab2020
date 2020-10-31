@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.BusinessLogic;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 using TicketManagement.Domain;
 
 namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer

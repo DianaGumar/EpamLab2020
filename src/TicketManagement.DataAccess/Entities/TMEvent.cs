@@ -1,6 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace TicketManagement.DataAccess.Model
+namespace TicketManagement.DataAccess.Entities
 {
     // renamed by code controle
     public class TMEvent
@@ -9,10 +10,13 @@ namespace TicketManagement.DataAccess.Model
 
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(10, MinimumLength = 3)]
         public string Description { get; set; }
 
         public int TMLayoutId { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime StartEvent { get; set; }
 
         public DateTime EndEvent { get; set; }

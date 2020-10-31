@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
@@ -7,8 +7,12 @@ namespace TicketManagement.BusinessLogic
     {
         int RemoveSeat(int id);
 
-        List<Seat> GetAllSeat();
+        List<SeatDto> GetAllSeat();
 
-        Seat CreateSeat(Seat obj);
+        SeatDto GetSeat(int id);
+
+        SeatDto CreateSeat(SeatDto obj);
+
+        int UpdateSeat(SeatDto obj);
     }
 }

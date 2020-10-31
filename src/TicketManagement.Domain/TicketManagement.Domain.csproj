@@ -42,6 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaModels.cs" />
+    <Compile Include="DTO\AreaDto.cs" />
+    <Compile Include="DTO\SeatDto.cs" />
+    <Compile Include="DTO\TMEventAreaDto.cs" />
+    <Compile Include="DTO\TMEventDto.cs" />
+    <Compile Include="DTO\TMEventSeatDto.cs" />
+    <Compile Include="DTO\TMLayoutDto.cs" />
+    <Compile Include="DTO\VenueDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TMEventAreaModels.cs" />
     <Compile Include="TMEventModels.cs" />

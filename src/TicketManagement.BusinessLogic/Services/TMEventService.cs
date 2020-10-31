@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.BusinessLogic
 {

@@ -1,4 +1,4 @@
-﻿namespace TicketManagement.DataAccess.Model
+﻿namespace TicketManagement.DataAccess.Entities
 {
     public class TMEventSeat
     {

@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
     internal interface IAreaService
     {
-        int RemoveArea(int id);
+        int RemoveArea(int areaId);
 
-        List<Area> GetAllArea();
+        List<AreaDto> GetAllArea();
 
-        Area CreateArea(Area obj);
+        AreaDto GetArea(int id);
+
+        AreaDto CreateArea(AreaDto obj);
+
+        int UpdateArea(AreaDto obj);
     }
 }

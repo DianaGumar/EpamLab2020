@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
@@ -7,8 +7,12 @@ namespace TicketManagement.BusinessLogic
     {
         int RemoveTMLayout(int id);
 
-        List<TMLayout> GetAllTMLayout();
+        List<TMLayoutDto> GetAllTMLayout();
 
-        TMLayout CreateTMLayout(TMLayout obj);
+        TMLayoutDto GetTMLayout(int id);
+
+        TMLayoutDto CreateTMLayout(TMLayoutDto obj);
+
+        int UpdateTMLayout(TMLayoutDto obj);
     }
 }

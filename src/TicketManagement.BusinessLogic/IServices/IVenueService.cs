@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
@@ -7,8 +7,12 @@ namespace TicketManagement.BusinessLogic
     {
         int RemoveVenue(int id);
 
-        List<Venue> GetAllVenue();
+        List<VenueDto> GetAllVenue();
 
-        Venue CreateVenue(Venue obj);
+        VenueDto GetVenue(int id);
+
+        VenueDto CreateVenue(VenueDto obj);
+
+        int UpdateVenue(VenueDto obj);
     }
 }

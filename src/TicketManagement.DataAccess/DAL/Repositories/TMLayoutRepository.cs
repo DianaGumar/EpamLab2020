@@ -1,5 +1,5 @@
 ﻿using System.Data.SqlClient;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {

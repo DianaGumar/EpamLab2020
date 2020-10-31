@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.BusinessLogic
 {
@@ -32,6 +32,11 @@ namespace TicketManagement.BusinessLogic
         public TMEventSeat GetTMEventSeat(int id)
         {
             return _tmeventSeatRepository.GetById(id);
+        }
+
+        public TMEventSeat CreateTMEventSeat(TMEventSeat obj)
+        {
+            return _tmeventSeatRepository.Create(obj);
         }
     }
 }

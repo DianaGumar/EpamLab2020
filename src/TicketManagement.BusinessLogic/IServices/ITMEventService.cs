@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
@@ -7,12 +7,12 @@ namespace TicketManagement.BusinessLogic
     {
         int RemoveTMEvent(int id);
 
-        TMEvent GetTMEvent(int id);
+        TMEventDto GetTMEvent(int id);
 
-        List<TMEvent> GetAllTMEvent();
+        List<TMEventDto> GetAllTMEvent();
 
-        TMEvent CreateTMEvent(TMEvent obj);
+        TMEventDto CreateTMEvent(TMEventDto obj);
 
-        int UpdateTMEvent(TMEvent obj);
+        int UpdateTMEvent(TMEventDto obj);
     }
 }

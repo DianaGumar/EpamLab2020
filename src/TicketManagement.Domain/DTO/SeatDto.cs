@@ -1,10 +1,11 @@
-﻿namespace TicketManagement.DataAccess.Model
+﻿namespace TicketManagement.Domain.DTO
 {
-    public class Seat
+    // value obj ?
+    public class SeatDto
     {
         public int Id { get; set; }
 
-        public int AreaId { get; set; }
+        public AreaDto Area { get; set; }
 
         public int Row { get; set; }
 

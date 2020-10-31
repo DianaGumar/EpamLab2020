@@ -1,6 +1,6 @@
-﻿namespace TicketManagement.DataAccess.Model
+﻿namespace TicketManagement.Domain.DTO
 {
-    public class Venue
+    public class VenueDto
     {
         public int Id { get; set; }
 
@@ -13,6 +13,7 @@
         // in meters
         public int Weidth { get; set; }
 
+        // public IEnumerable<TMLayoutDto> TMLayouts
         public int Lenght { get; set; }
     }
 }

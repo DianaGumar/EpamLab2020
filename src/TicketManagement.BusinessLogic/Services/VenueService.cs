@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.BusinessLogic
 {
@@ -29,6 +29,16 @@ namespace TicketManagement.BusinessLogic
             List<Venue> objs = _venueRepository.GetAll()
                 .Where(a => a.Address == obj.Address && a.Description == obj.Description).ToList();
             return objs.Count == 0 ? _venueRepository.Create(obj) : objs.ElementAt(0);
+        }
+
+        public Venue GetVenue(int id)
+        {
+            return _venueRepository.GetById(id);
+        }
+
+        public int UpdateVenue(Venue obj)
+        {
+            return _venueRepository.Update(obj);
         }
     }
 }

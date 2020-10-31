@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
     internal interface ITMEventAreaService
     {
-        List<TMEventArea> GetAllTMEventArea();
+        List<TMEventAreaDto> GetAllTMEventArea();
 
-        TMEventArea GetTMEventArea(int id);
+        TMEventAreaDto GetTMEventArea(int id);
 
-        int UpdateTMEventArea(TMEventArea obj);
+        int UpdateTMEventArea(TMEventAreaDto obj);
+
+        int RemoveTMEventArea(int id);
+
+        TMEventAreaDto CreateTMEventArea(TMEventAreaDto obj);
     }
 }
