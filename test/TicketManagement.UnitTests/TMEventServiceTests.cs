@@ -5,7 +5,7 @@ using Moq;
 using NUnit.Framework;
 using TicketManagement.BusinessLogic;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.UnitTests
 {

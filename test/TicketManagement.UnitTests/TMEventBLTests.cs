@@ -5,7 +5,7 @@ using Moq;
 using NUnit.Framework;
 using TicketManagement.BusinessLogic;
 using Ticketmanagement.BusinessLogic.BusinessLogicLayer;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 using TicketManagement.Domain;
 
 namespace TicketManagement.UnitTests

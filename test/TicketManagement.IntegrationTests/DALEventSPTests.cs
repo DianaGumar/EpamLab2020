@@ -8,7 +8,7 @@ using FluentAssertions;
 using Microsoft.SqlServer.Dac;
 using NUnit.Framework;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.IntegrationTests
 {
