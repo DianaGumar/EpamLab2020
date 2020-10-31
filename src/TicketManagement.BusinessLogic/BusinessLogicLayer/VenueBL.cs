@@ -2,7 +2,7 @@
 using System.Linq;
 using Ticketmanagement.BusinessLogic.BusinessLogicLayer;
 using TicketManagement.DataAccess.Entities;
-using TicketManagement.Domain;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic.BusinessLogicLayer
 {
@@ -22,7 +22,7 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
             _seatService = seatService;
         }
 
-        public AreaModels CreateArea(AreaModels area, List<Seat> seats)
+        public AreaDto CreateArea(AreaDto area, List<Seat> seats)
         {
             area = CreateAreaModelsFromArea(
                 _areaService.CreateArea(CreateAreaFromAreaModels(area)));
@@ -32,7 +32,7 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
             return area;
         }
 
-        public TMLayoutModels CreateLayout(TMLayoutModels layout)
+        public TMLayoutDto CreateLayout(TMLayoutDto layout)
         {
             return CreateTMLayoutModelsFromTMLayout(
                 _tmlayoutService.CreateTMLayout(CreateTMLayoutFromTMLayoutModels(layout)));
@@ -58,7 +58,7 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
             }
         }
 
-        public VenueModels CreateVenue(VenueModels obj)
+        public VenueDto CreateVenue(VenueDto obj)
         {
             obj = CreateVenueModelsFromVenue(_venueService
                 .CreateVenue(CreateVenueFromVenueModels(obj)));
@@ -87,7 +87,7 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
             return obj;
         }
 
-        public List<VenueModels> GetAllVenues()
+        public List<VenueDto> GetAllVenues()
         {
             var retList = new List<VenueModels>();
 
@@ -101,88 +101,11 @@ namespace TicketManagement.BusinessLogic.BusinessLogicLayer
             return retList;
         }
 
-        public List<TMLayoutModels> GetAllLayouts()
+        public List<TMLayoutDto> GetAllLayouts()
         {
-            var retList = new List<TMLayoutModels>();
-
-            List<TMLayout> list = _tmlayoutService.GetAllTMLayout().ToList();
-
-            foreach (var item in list)
-            {
-                retList.Add(CreateTMLayoutModelsFromTMLayout(item));
-            }
+            List<TMLayoutDto> list = _tmlayoutService.GetAllTMLayout().ToList();
 
             return retList;
-        }
-
-        private static VenueModels CreateVenueModelsFromVenue(Venue obj)
-        {
-            return new VenueModels
-            {
-                Address = obj.Address,
-                Description = obj.Description,
-                Lenght = obj.Lenght,
-                Phone = obj.Phone,
-                VenueId = obj.Id,
-                Weidth = obj.Weidth,
-            };
-        }
-
-        private static Venue CreateVenueFromVenueModels(VenueModels obj)
-        {
-            return new Venue
-            {
-                Address = obj.Address,
-                Description = obj.Description,
-                Lenght = obj.Lenght,
-                Phone = obj.Phone,
-                Id = obj.VenueId,
-                Weidth = obj.Weidth,
-            };
-        }
-
-        private static TMLayoutModels CreateTMLayoutModelsFromTMLayout(TMLayout obj)
-        {
-            return new TMLayoutModels
-            {
-                TMLayoutId = obj.Id,
-                Description = obj.Description,
-                VenueId = obj.VenueId,
-            };
-        }
-
-        private static TMLayout CreateTMLayoutFromTMLayoutModels(TMLayoutModels obj)
-        {
-            return new TMLayout
-            {
-                Id = obj.TMLayoutId,
-                Description = obj.Description,
-                VenueId = obj.VenueId,
-            };
-        }
-
-        private static AreaModels CreateAreaModelsFromArea(Area obj)
-        {
-            return new AreaModels
-            {
-                AreaId = obj.Id,
-                TMLayoutId = obj.TMLayoutId,
-                Description = obj.Description,
-                CoordX = obj.CoordX,
-                CoordY = obj.CoordY,
-            };
-        }
-
-        private static Area CreateAreaFromAreaModels(AreaModels obj)
-        {
-            return new Area
-            {
-                Id = obj.AreaId,
-                TMLayoutId = obj.TMLayoutId,
-                Description = obj.Description,
-                CoordX = obj.CoordX,
-                CoordY = obj.CoordY,
-            };
         }
     }
 }

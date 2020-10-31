@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
-using TicketManagement.Domain;
+using TicketManagement.Domain.DTO;
 
 namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 {
     internal interface ITMEventBL
     {
-        List<TMEventModels> GetAllTMEvent();
+        List<TMEventDto> GetAllTMEvent();
 
-        TMEventModels GetTMEvent(int id);
+        TMEventDto GetTMEvent(int id);
 
-        TMEventModels CreateTMEvent(TMEventModels tmevent);
+        TMEventDto CreateTMEvent(TMEventDto tmevent);
 
-        int UpdateTMEvent(TMEventModels tmevent);
+        int UpdateTMEvent(TMEventDto tmevent);
 
         int DeleteTMEvent(int id);
     }

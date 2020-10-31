@@ -20,7 +20,8 @@ namespace TicketManagement.Web.Controllers
         {
             // until dependensy ingection is include
             _tmeventareabl = new TMEventAreasBL(
-                new TMEventAreaService(new TMEventAreaRepository(_str)),
+                new TMEventAreaService(new TMEventAreaRepository(_str),
+                    new TMEventService(new TMEventRepository(_str))),
                 new TMEventSeatService(new TMEventSeatRepository(_str)));
         }
 

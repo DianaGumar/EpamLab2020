@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TicketManagement.Domain;
+using TicketManagement.Domain.DTO;
 
 namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
 {
@@ -7,11 +8,11 @@ namespace Ticketmanagement.BusinessLogic.BusinessLogicLayer
     {
         int SetTMEventAreaPrice(int areaId, decimal price);
 
-        List<TMEventAreaModels> GetAllTMEventAreas();
+        List<TMEventAreaDto> GetAllTMEventAreas();
 
-        TMEventAreaModels GetTMEventArea(int id);
+        TMEventAreaDto GetTMEventArea(int id);
 
-        List<TMEventSeatModels> GetTMEventSeats(int tmeventAreaId);
+        List<TMEventAreaDto> GetTMEventSeats(int tmeventAreaId);
 
         int SetTMEventSeatState(int tmeventSeatId, SeatState state);
     }
