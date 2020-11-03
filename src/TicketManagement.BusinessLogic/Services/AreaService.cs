@@ -10,16 +10,13 @@ namespace TicketManagement.BusinessLogic
     internal class AreaService : IAreaService
     {
         private readonly IAreaRepository _areaRepository;
-        private readonly ITMLayoutService _tmlayoutService;
 
-        internal AreaService(IAreaRepository areaRepository,
-            ITMLayoutService tmlayoutService)
+        internal AreaService(IAreaRepository areaRepository)
         {
             _areaRepository = areaRepository;
-            _tmlayoutService = tmlayoutService;
         }
 
-        private static AreaDto ConvertToDto(Area obj, TMLayoutDto layout)
+        private static AreaDto ConvertToDto(Area obj)
         {
             return new AreaDto
             {
@@ -27,7 +24,7 @@ namespace TicketManagement.BusinessLogic
                 CoordX = obj.CoordX,
                 CoordY = obj.CoordY,
                 Description = obj.Description,
-                TMLayout = layout,
+                TMLayoutId = obj.TMLayoutId,
             };
         }
 
@@ -39,7 +36,7 @@ namespace TicketManagement.BusinessLogic
                 Description = obj.Description,
                 CoordX = obj.CoordX,
                 CoordY = obj.CoordY,
-                TMLayoutId = obj.TMLayout.Id,
+                TMLayoutId = obj.TMLayoutId,
             };
         }
 
@@ -50,8 +47,7 @@ namespace TicketManagement.BusinessLogic
 
             foreach (var item in areas)
             {
-                areasDto.Add(ConvertToDto(item,
-                    _tmlayoutService.GetTMLayout(item.TMLayoutId)));
+                areasDto.Add(ConvertToDto(item));
             }
 
             return areasDto;
@@ -67,7 +63,7 @@ namespace TicketManagement.BusinessLogic
         {
             // find the same in schema
             List<Area> objs = _areaRepository.GetAll()
-               .Where(a => a.TMLayoutId == obj.TMLayout.Id &&
+               .Where(a => a.TMLayoutId == obj.TMLayoutId &&
                a.CoordX == obj.CoordX &&
                a.CoordY == obj.CoordY).ToList();
 
@@ -80,16 +76,14 @@ namespace TicketManagement.BusinessLogic
                 return obj;
             }
 
-            return ConvertToDto(objs.ElementAt(0),
-                _tmlayoutService.GetTMLayout(objs.ElementAt(0).TMLayoutId));
+            return ConvertToDto(objs.ElementAt(0));
         }
 
         // to do validation, check clone and create domain model in dafferent methods
         public AreaDto GetArea(int id)
         {
             Area area = _areaRepository.GetById(id);
-            var areaDto = ConvertToDto(area,
-                _tmlayoutService.GetTMLayout(area.TMLayoutId));
+            var areaDto = ConvertToDto(area);
 
             return areaDto;
         }

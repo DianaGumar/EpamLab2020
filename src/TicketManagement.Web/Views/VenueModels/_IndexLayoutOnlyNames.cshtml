@@ -1,8 +1,8 @@
-﻿@model IEnumerable<TicketManagement.Domain.TMLayoutModels>
+﻿@model IEnumerable<TicketManagement.Domain.DTO.TMLayoutDto>
 
 @foreach (var item in Model)
 {
-    <span>@item.TMLayoutId @item.Description</span><br />
+    <span>@item.Id @item.Description</span><br />
 }
 
 

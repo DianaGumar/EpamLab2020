@@ -1,4 +1,4 @@
-﻿@model TicketManagement.Domain.TMEventModels
+﻿@model TicketManagement.Domain.DTO.TMEventDto
 
 @{
     ViewBag.Title = "Delete";
@@ -13,11 +13,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.TMEventId)
+            @Html.DisplayNameFor(model => model.Id)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TMEventId)
+            @Html.DisplayFor(model => model.Id)
         </dd>
 
         <dt>

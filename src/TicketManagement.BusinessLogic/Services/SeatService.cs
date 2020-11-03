@@ -9,20 +9,18 @@ namespace TicketManagement.BusinessLogic
     internal class SeatService : ISeatService
     {
         private readonly ISeatRepository _seatRepository;
-        private readonly IAreaService _areaService;
 
-        internal SeatService(ISeatRepository seatRepository, IAreaService areaService)
+        internal SeatService(ISeatRepository seatRepository)
         {
             _seatRepository = seatRepository;
-            _areaService = areaService;
         }
 
-        private static SeatDto ConvertToDto(Seat obj, AreaDto area)
+        private static SeatDto ConvertToDto(Seat obj)
         {
             return new SeatDto
             {
                 Id = obj.Id,
-                Area = area,
+                AreaId = obj.AreaId,
                 Number = obj.Number,
                 Row = obj.Row,
             };
@@ -33,7 +31,7 @@ namespace TicketManagement.BusinessLogic
             return new Seat
             {
                 Id = obj.Id,
-                AreaId = obj.Area.Id,
+                AreaId = obj.AreaId,
                 Number = obj.Number,
                 Row = obj.Row,
             };
@@ -42,15 +40,12 @@ namespace TicketManagement.BusinessLogic
         public SeatDto CreateSeat(SeatDto obj)
         {
             List<Seat> objs = _seatRepository.GetAll()
-               .Where(a => a.AreaId == obj.Area.Id
+               .Where(a => a.AreaId == obj.AreaId
                && a.Row == obj.Row && a.Number == obj.Number).ToList();
 
             return objs.Count == 0
-                ? ConvertToDto(
-                    _seatRepository.Create(ConvertToEntity(obj)),
-                    _areaService.GetArea(obj.Area.Id))
-                : ConvertToDto(objs.ElementAt(0),
-                    _areaService.GetArea(objs.ElementAt(0).AreaId));
+                ? ConvertToDto(_seatRepository.Create(ConvertToEntity(obj)))
+                : ConvertToDto(objs.ElementAt(0));
         }
 
         public int RemoveSeat(int id)
@@ -65,8 +60,7 @@ namespace TicketManagement.BusinessLogic
 
             foreach (var item in seats)
             {
-                seatsDto.Add(ConvertToDto(item,
-                    _areaService.GetArea(item.AreaId)));
+                seatsDto.Add(ConvertToDto(item));
             }
 
             return seatsDto;
@@ -75,8 +69,7 @@ namespace TicketManagement.BusinessLogic
         public SeatDto GetSeat(int id)
         {
             Seat seat = _seatRepository.GetById(id);
-            var seatDto = ConvertToDto(seat,
-                _areaService.GetArea(seat.AreaId));
+            var seatDto = ConvertToDto(seat);
 
             return seatDto;
         }

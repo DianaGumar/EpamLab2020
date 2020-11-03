@@ -9,16 +9,16 @@ namespace TicketManagement.BusinessLogic
     internal class TMEventAreaService : ITMEventAreaService
     {
         private readonly ITMEventAreaRepository _tmeventAreaRepository;
-        private readonly ITMEventService _tmeventService;
+        private readonly ITMEventSeatService _tmeventSeatService;
 
         internal TMEventAreaService(ITMEventAreaRepository tmeventAreaRepository,
-            ITMEventService tmeventService)
+            ITMEventSeatService tmeventSeatService)
         {
             _tmeventAreaRepository = tmeventAreaRepository;
-            _tmeventService = tmeventService;
+            _tmeventSeatService = tmeventSeatService;
         }
 
-        private static TMEventAreaDto ConvertToDto(TMEventArea obj, TMEventDto tmevent)
+        private static TMEventAreaDto ConvertToDto(TMEventArea obj, List<TMEventSeatDto> seats)
         {
             return new TMEventAreaDto
             {
@@ -27,7 +27,9 @@ namespace TicketManagement.BusinessLogic
                 CoordY = obj.CoordY,
                 Description = obj.Description,
                 Price = obj.Price,
-                TMEvent = tmevent,
+                TMEventId = obj.TMEventId,
+                CountSeatsX = seats.Max(s => s.Number),
+                CountSeatsY = seats.Max(s => s.Row),
             };
         }
 
@@ -40,14 +42,15 @@ namespace TicketManagement.BusinessLogic
                 CoordY = obj.CoordY,
                 Description = obj.Description,
                 Price = obj.Price,
-                TMEventId = obj.TMEvent.Id,
+                TMEventId = obj.TMEventId,
             };
         }
 
         public TMEventAreaDto CreateTMEventArea(TMEventAreaDto obj)
         {
-            return ConvertToDto(_tmeventAreaRepository.Create(ConvertToEntity(obj)),
-                _tmeventService.GetTMEvent(obj.TMEvent.Id));
+            return ConvertToDto(
+                _tmeventAreaRepository.Create(ConvertToEntity(obj)),
+                GetTMEventSeatsByArea(obj.Id));
         }
 
         public List<TMEventAreaDto> GetAllTMEventArea()
@@ -57,7 +60,7 @@ namespace TicketManagement.BusinessLogic
 
             foreach (var item in areas)
             {
-                areasDto.Add(ConvertToDto(item, _tmeventService.GetTMEvent(item.TMEventId)));
+                areasDto.Add(ConvertToDto(item, GetTMEventSeatsByArea(item.Id)));
             }
 
             return areasDto;
@@ -67,7 +70,7 @@ namespace TicketManagement.BusinessLogic
         {
             TMEventArea area = _tmeventAreaRepository.GetById(id);
 
-            return ConvertToDto(area, _tmeventService.GetTMEvent(area.TMEventId));
+            return ConvertToDto(area, GetTMEventSeatsByArea(id));
         }
 
         public int RemoveTMEventArea(int id)
@@ -78,6 +81,26 @@ namespace TicketManagement.BusinessLogic
         public int UpdateTMEventArea(TMEventAreaDto obj)
         {
             return _tmeventAreaRepository.Update(ConvertToEntity(obj));
+        }
+
+        public int SetTMEventAreaPrice(int areaId, decimal price)
+        {
+            TMEventAreaDto tmeventAreaDto = GetTMEventArea(areaId);
+            tmeventAreaDto.Price = price;
+            return UpdateTMEventArea(tmeventAreaDto);
+        }
+
+        public List<TMEventSeatDto> GetTMEventSeatsByArea(int tmeventAreaId)
+        {
+            return _tmeventSeatService.GetAllTMEventSeat()
+                .Where(a => a.TMEventAreaId == tmeventAreaId).ToList();
+        }
+
+        public int SetTMEventSeatState(int tmeventSeatId, SeatState state)
+        {
+            TMEventSeatDto tmeventSeatDto = _tmeventSeatService.GetTMEventSeat(tmeventSeatId);
+            tmeventSeatDto.State = state;
+            return _tmeventSeatService.UpdateTMEventSeat(tmeventSeatDto);
         }
     }
 }

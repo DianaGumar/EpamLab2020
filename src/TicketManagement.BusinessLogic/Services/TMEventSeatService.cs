@@ -2,7 +2,6 @@
 using System.Linq;
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.DataAccess.Entities;
-using TicketManagement.Domain;
 using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
@@ -10,16 +9,13 @@ namespace TicketManagement.BusinessLogic
     internal class TMEventSeatService : ITMEventSeatService
     {
         private readonly ITMEventSeatRepository _tmeventSeatRepository;
-        private readonly ITMEventAreaService _tmeventAreaService;
 
-        internal TMEventSeatService(ITMEventSeatRepository tmeventSeatRepository,
-            ITMEventAreaService tmeventAreaService)
+        internal TMEventSeatService(ITMEventSeatRepository tmeventSeatRepository)
         {
             _tmeventSeatRepository = tmeventSeatRepository;
-            _tmeventAreaService = tmeventAreaService;
         }
 
-        private static TMEventSeatDto ConvertToDto(TMEventSeat obj, TMEventAreaDto tmeventarea)
+        private static TMEventSeatDto ConvertToDto(TMEventSeat obj)
         {
             return new TMEventSeatDto
             {
@@ -27,7 +23,7 @@ namespace TicketManagement.BusinessLogic
                 Number = obj.Number,
                 Row = obj.Row,
                 State = (SeatState)obj.State,
-                TMEventArea = tmeventarea,
+                TMEventAreaId = obj.TMEventAreaId,
             };
         }
 
@@ -39,7 +35,7 @@ namespace TicketManagement.BusinessLogic
                 Number = obj.Number,
                 Row = obj.Row,
                 State = (int)obj.State,
-                TMEventAreaId = obj.TMEventArea.Id,
+                TMEventAreaId = obj.TMEventAreaId,
             };
         }
 
@@ -55,8 +51,7 @@ namespace TicketManagement.BusinessLogic
 
             foreach (var item in objs)
             {
-                objsDto.Add(ConvertToDto(item,
-                    _tmeventAreaService.GetTMEventArea(item.TMEventAreaId)));
+                objsDto.Add(ConvertToDto(item));
             }
 
             return objsDto;
@@ -70,13 +65,12 @@ namespace TicketManagement.BusinessLogic
         public TMEventSeatDto GetTMEventSeat(int id)
         {
             TMEventSeat seat = _tmeventSeatRepository.GetById(id);
-            return ConvertToDto(seat, _tmeventAreaService.GetTMEventArea(seat.TMEventAreaId));
+            return ConvertToDto(seat);
         }
 
         public TMEventSeatDto CreateTMEventSeat(TMEventSeatDto obj)
         {
-            return ConvertToDto(_tmeventSeatRepository.Create(ConvertToEntity(obj)),
-                _tmeventAreaService.GetTMEventArea(obj.TMEventArea.Id));
+            return ConvertToDto(_tmeventSeatRepository.Create(ConvertToEntity(obj)));
         }
     }
 }

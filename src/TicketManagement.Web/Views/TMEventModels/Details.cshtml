@@ -1,4 +1,4 @@
-﻿@model TicketManagement.Domain.TMEventModels
+﻿@model TicketManagement.Domain.DTO.TMEventDto
 
 @{
     ViewBag.Title = "Details";
@@ -6,7 +6,7 @@
 }
 <p></p>
 <span>
-    @Html.ActionLink("< Back to List", "Index", null, new { @style = "font-weight: 600; font-size:medium" })
+    @Html.ActionLink("< Back to List", "Index", null, new { @style = "font-size:medium" })
 </span>
 
 <div class="col">
@@ -20,10 +20,10 @@
             <div class="col-lg-8">
                 <div class="pull-right">
                     @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
-                           new { idEvent = Model.TMEventId }, new { @class = "btn btn-sm btn-default" })
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.TMEventId }, new { @class = "btn btn-sm btn-primary" })
-                    @Html.ActionLink("Details", "Details", new { id = Model.TMEventId }, new { @class = "btn btn-sm btn-primary" })
-                    @Html.ActionLink("Delete", "Delete", new { id = Model.TMEventId }, new { @class = "btn btn-sm btn-danger" })
+                           new { idEvent = Model.Id }, new { @class = "btn btn-sm btn-default" })
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+                    @Html.ActionLink("Details", "Details", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-sm btn-danger" })
                 </div>
                 <p>
                     <span class="text-info">@Html.DisplayFor(modelItem => Model.StartEvent)</span> --
@@ -33,20 +33,22 @@
                 <br />
                 <p>
                     <span class="text-muted" style="font-size: medium; font-weight: 600;">
-                        in @Html.DisplayFor(modelItem => Model.TMLayoutId)
+                        in layout id @Html.DisplayFor(modelItem => Model.TMLayoutId)
                     </span>
                     <br />
                     <span class="text-capitalize" style="font-size:xx-large; font-weight: 600;">
                         @Html.DisplayFor(modelItem => Model.Name)
                     </span>
                     <br />
-                    <span class="text-muted" style="font-size: medium; font-weight: 600;">
+                    <span class="text-muted" style="font-size: medium;">
                         @Html.DisplayFor(modelItem => Model.Description)
                     </span>
                 </p>
                 <div style="margin-top:20px;">
                     <span class="text-capitalize text-danger" style="font-size:medium; font-weight: 600;">
-                        SEATS @Html.DisplayFor(modelItem => Model.BusySeats) / @Html.DisplayFor(modelItem => Model.AllSeats)
+                        Busy seats @Html.DisplayFor(modelItem => Model.BusySeats)
+                        <br />
+                        All seats @Html.DisplayFor(modelItem => Model.AllSeats)
                     </span>
                     <br />
                     <span class="text-success" style="font-size:medium; font-weight: 600;">
@@ -54,7 +56,7 @@
                     </span>
                     <p class="pull-right">
                         @Html.ActionLink("SHOUSE SEATS", "AreasMap", "TMEventAreaModels", 
-                       new { idEvent = Model.TMEventId }, 
+                       new { idEvent = Model.Id }, 
                        new { @class = "btn btn-primary", @style = "font-weight: 600;" })
                     </p>
                 </div>

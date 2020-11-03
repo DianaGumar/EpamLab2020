@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public TMEventDto TMEvent { get; set; }
+        public int TMEventId { get; set; }
 
         public string Description { get; set; }
 

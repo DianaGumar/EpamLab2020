@@ -6,6 +6,7 @@ using NUnit.Framework;
 using TicketManagement.BusinessLogic;
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.DataAccess.Entities;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.UnitTests
 {
@@ -32,12 +33,34 @@ namespace TicketManagement.UnitTests
                 EndEvent = DateTime.Now.Date.AddDays(4),
             });
 
+            List<TMEventDto> events_dto = new List<TMEventDto>();
+            events_dto.Add(new TMEventDto
+            {
+                Id = 1,
+                Name = "a",
+                Description = "d",
+                StartEvent = DateTime.Now.Date.AddDays(1),
+                EndEvent = DateTime.Now.Date.AddDays(2),
+            });
+            events_dto.Add(new TMEventDto
+            {
+                Id = 2,
+                Name = "a2",
+                Description = "d2",
+                StartEvent = DateTime.Now.Date.AddDays(3),
+                EndEvent = DateTime.Now.Date.AddDays(4),
+            });
+
             Mock<ITMEventRepository> mockTMEventRepository = new Mock<ITMEventRepository>();
             mockTMEventRepository.Setup(x => x.GetAll()).Returns(events);
 
-            TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object);
+            Mock<ITMLayoutService> mockTMLayoutService = new Mock<ITMLayoutService>();
 
-            TMEvent tmevent = tmeventService.CreateTMEvent(new TMEvent
+            // mockTMLayoutService.Setup(x => x.GetTMLayout(1)).Returns(events)
+            TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object,
+                mockTMLayoutService.Object);
+
+            TMEventDto tmevent = tmeventService.CreateTMEvent(new TMEventDto
             {
                 Name = "a",
                 Description = "d",
@@ -45,7 +68,7 @@ namespace TicketManagement.UnitTests
                 EndEvent = DateTime.Now.Date.AddDays(2),
             });
 
-            tmevent.Should().BeEquivalentTo(events[0]);
+            tmevent.Should().BeEquivalentTo(events_dto[0]);
         }
 
         [Test]
@@ -72,9 +95,12 @@ namespace TicketManagement.UnitTests
             Mock<ITMEventRepository> mockTMEventRepository = new Mock<ITMEventRepository>();
             mockTMEventRepository.Setup(x => x.GetAll()).Returns(events);
 
-            TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object);
+            Mock<ITMLayoutService> mockTMLayoutService = new Mock<ITMLayoutService>();
 
-            TMEvent tmeventPre = new TMEvent
+            TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object,
+                mockTMLayoutService.Object);
+
+            TMEventDto tmeventPre_dto = new TMEventDto
             {
                 Name = "a",
                 Description = "d",
@@ -82,9 +108,9 @@ namespace TicketManagement.UnitTests
                 EndEvent = DateTime.Now.Date,
             };
 
-            TMEvent tmeventPast = tmeventService.CreateTMEvent(tmeventPre);
+            TMEventDto tmeventPast = tmeventService.CreateTMEvent(tmeventPre_dto);
 
-            tmeventPast.Should().BeEquivalentTo(tmeventPre);
+            tmeventPast.Should().BeEquivalentTo(tmeventPre_dto);
         }
 
         [Test]
@@ -111,9 +137,12 @@ namespace TicketManagement.UnitTests
             Mock<ITMEventRepository> mockTMEventRepository = new Mock<ITMEventRepository>();
             mockTMEventRepository.Setup(x => x.GetAll()).Returns(events);
 
-            TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object);
+            Mock<ITMLayoutService> mockTMLayoutService = new Mock<ITMLayoutService>();
 
-            TMEvent tmeventPre = new TMEvent
+            TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object,
+                mockTMLayoutService.Object);
+
+            TMEventDto tmeventPre_dto = new TMEventDto
             {
                 Name = "a",
                 Description = "d",
@@ -121,9 +150,9 @@ namespace TicketManagement.UnitTests
                 EndEvent = DateTime.Now.Date.AddDays(2),
             };
 
-            TMEvent tmeventPast = tmeventService.CreateTMEvent(tmeventPre);
+            TMEventDto tmeventPast = tmeventService.CreateTMEvent(tmeventPre_dto);
 
-            tmeventPast.Should().BeEquivalentTo(tmeventPre);
+            tmeventPast.Should().BeEquivalentTo(tmeventPre_dto);
         }
     }
 }

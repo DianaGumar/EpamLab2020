@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public TMEventAreaDto TMEventArea { get; set; }
+        public int TMEventAreaId { get; set; }
 
         public int Row { get; set; }
 

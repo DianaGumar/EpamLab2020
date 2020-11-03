@@ -14,5 +14,11 @@ namespace TicketManagement.BusinessLogic
         int RemoveTMEventArea(int id);
 
         TMEventAreaDto CreateTMEventArea(TMEventAreaDto obj);
+
+        List<TMEventSeatDto> GetTMEventSeatsByArea(int tmeventAreaId);
+
+        int SetTMEventSeatState(int tmeventSeatId, SeatState state);
+
+        int SetTMEventAreaPrice(int areaId, decimal price);
     }
 }

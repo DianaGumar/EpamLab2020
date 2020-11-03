@@ -12,7 +12,7 @@ namespace TicketManagement.Domain.DTO
 
         public string Description { get; set; }
 
-        public TMLayoutDto TMLayout { get; set; }
+        public int TMLayoutId { get; set; }
 
         public DateTime StartEvent { get; set; }
 

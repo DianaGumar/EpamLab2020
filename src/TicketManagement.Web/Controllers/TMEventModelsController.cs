@@ -3,9 +3,8 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using TicketManagement.BusinessLogic;
-using Ticketmanagement.BusinessLogic.BusinessLogicLayer;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.Domain;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.Web.Controllers
 {
@@ -13,25 +12,26 @@ namespace TicketManagement.Web.Controllers
     {
         private readonly string _str = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-        private readonly ITMEventBL _tmeventbl;
+        private readonly ITMEventService _tmeventService;
 
         public TMEventModelsController()
         {
+            var tmeventSeatService = new TMEventSeatService(new TMEventSeatRepository(_str));
+
+            var tmeventAreaService = new TMEventAreaService(new TMEventAreaRepository(_str),
+                    tmeventSeatService);
+
             // until dependensy ingection is include
-            _tmeventbl = new TMEventBL(
-                new TMEventService(new TMEventRepository(_str)),
-                new AreaService(new AreaRepository(_str)),
-                new SeatService(new SeatRepository(_str)),
-                new TMEventAreaService(new TMEventAreaRepository(_str)),
-                new TMEventSeatService(new TMEventSeatRepository(_str)));
+            _tmeventService = new TMEventService(new TMEventRepository(_str),
+                tmeventAreaService, tmeventSeatService);
         }
 
         // GET: TMEventModels
         [HttpGet]
         public ActionResult Index()
         {
-            List<TMEventModels> models =
-                _tmeventbl.GetAllTMEvent().OrderBy(u => u.StartEvent).Reverse().ToList();
+            List<TMEventDto> models =
+                _tmeventService.GetAllTMEvent().OrderBy(u => u.StartEvent).Reverse().ToList();
 
             return View(models);
         }
@@ -40,7 +40,7 @@ namespace TicketManagement.Web.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
-            TMEventModels obj = _tmeventbl.GetTMEvent(id);
+            TMEventDto obj = _tmeventService.GetTMEvent(id);
 
             return View(obj);
         }
@@ -55,11 +55,11 @@ namespace TicketManagement.Web.Controllers
         // POST: TMEventModels/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind] TMEventModels obj)
+        public ActionResult Create([Bind] TMEventDto obj)
         {
             if (ModelState.IsValid)
             {
-                _tmeventbl.CreateTMEvent(obj);
+                _tmeventService.CreateTMEvent(obj);
                 return RedirectToAction("Index");
             }
 
@@ -70,7 +70,7 @@ namespace TicketManagement.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            TMEventModels obj = _tmeventbl.GetTMEvent(id);
+            TMEventDto obj = _tmeventService.GetTMEvent(id);
 
             if (obj == null)
             {
@@ -84,12 +84,12 @@ namespace TicketManagement.Web.Controllers
         // POST: TMEventModels/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, [Bind] TMEventModels obj)
+        public ActionResult Edit(int id, [Bind] TMEventDto obj)
         {
             if (obj != null && ModelState.IsValid)
             {
-                obj.TMEventId = id;
-                _tmeventbl.UpdateTMEvent(obj);
+                obj.Id = id;
+                _tmeventService.UpdateTMEvent(obj);
 
                 return RedirectToAction("Index");
             }
@@ -101,7 +101,7 @@ namespace TicketManagement.Web.Controllers
         [HttpGet]
         public ActionResult Delete(int id = 0)
         {
-            _tmeventbl.DeleteTMEvent(id);
+            _tmeventService.RemoveTMEvent(id);
 
             return RedirectToAction("Index");
         }

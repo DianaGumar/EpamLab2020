@@ -14,5 +14,9 @@ namespace TicketManagement.BusinessLogic
         TMEventDto CreateTMEvent(TMEventDto obj);
 
         int UpdateTMEvent(TMEventDto obj);
+
+        List<TMEventSeatDto> GetTMEventSeatByEvent(int eventId);
+
+        List<TMEventAreaDto> GetTMEventAreaByEvent(int eventId);
     }
 }

@@ -4,31 +4,30 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using TicketManagement.BusinessLogic;
-using Ticketmanagement.BusinessLogic.BusinessLogicLayer;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.Domain;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.Web.Controllers
 {
     public class TMEventAreaModelsController : Controller
     {
-        private readonly string _str = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private readonly string _str = ConfigurationManager
+            .ConnectionStrings["DefaultConnection"].ConnectionString;
 
-        private readonly ITMEventAreasBL _tmeventareabl;
+        private readonly ITMEventAreaService _tmeventareaService;
 
         public TMEventAreaModelsController()
         {
-            // until dependensy ingection is include
-            _tmeventareabl = new TMEventAreasBL(
-                new TMEventAreaService(new TMEventAreaRepository(_str),
-                    new TMEventService(new TMEventRepository(_str))),
+            _tmeventareaService = new TMEventAreaService(new TMEventAreaRepository(_str),
                 new TMEventSeatService(new TMEventSeatRepository(_str)));
+
+            // until dependensy ingection is include
         }
 
         [HttpGet]
         public ActionResult Index(int idEvent = 0)
         {
-            List<TMEventAreaModels> objs = _tmeventareabl.GetAllTMEventAreas()
+            List<TMEventAreaDto> objs = _tmeventareaService.GetAllTMEventArea()
                 .Where(a => a.TMEventId == idEvent).ToList();
 
             return View(objs);
@@ -36,12 +35,12 @@ namespace TicketManagement.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SetPrice(int id, [Bind] TMEventAreaModels obj)
+        public ActionResult SetPrice(int id, [Bind] TMEventAreaDto obj)
         {
             if (obj != null)
             {
-                obj.TMEventAreaId = id;
-                _tmeventareabl.SetTMEventAreaPrice(obj.TMEventAreaId, obj.Price);
+                obj.Id = id;
+                _tmeventareaService.SetTMEventAreaPrice(obj.Id, obj.Price);
             }
 
             return RedirectToAction("Index", new { idEvent = obj?.TMEventId });
@@ -50,13 +49,13 @@ namespace TicketManagement.Web.Controllers
         [HttpGet]
         public PartialViewResult SetPrice(int id = 0)
         {
-            return PartialView("_SetPrice", _tmeventareabl.GetTMEventArea(id));
+            return PartialView("_SetPrice", _tmeventareaService.GetTMEventArea(id));
         }
 
         [HttpGet]
         public ActionResult AreasMap(int idEvent)
         {
-            List<TMEventAreaModels> objs = _tmeventareabl.GetAllTMEventAreas()
+            List<TMEventAreaDto> objs = _tmeventareaService.GetAllTMEventArea()
                 .Where(a => a.TMEventId == idEvent).ToList();
 
             return View(objs);
@@ -65,7 +64,7 @@ namespace TicketManagement.Web.Controllers
         [HttpGet]
         public PartialViewResult SeatsMap(int idArea)
         {
-            List<TMEventSeatModels> objs = _tmeventareabl.GetTMEventSeats(idArea);
+            List<TMEventSeatDto> objs = _tmeventareaService.GetTMEventSeatsByArea(idArea);
 
             return PartialView("_SeatsMap", objs);
         }
@@ -75,9 +74,9 @@ namespace TicketManagement.Web.Controllers
         {
             state = (int)state < Enum.GetNames(typeof(SeatState)).Length - 1 ? state + 1 : 0;
 
-            _tmeventareabl.SetTMEventSeatState(id, state);
+            _tmeventareaService.SetTMEventSeatState(id, state);
 
-            int idEvent = _tmeventareabl.GetTMEventArea(areaId).TMEventId;
+            int idEvent = _tmeventareaService.GetTMEventArea(areaId).TMEventId;
 
             return RedirectToAction("AreasMap", new { idEvent });
         }

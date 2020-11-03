@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TicketManagement.Domain.TMEventAreaModels>
+﻿@model IEnumerable<TicketManagement.Domain.DTO.TMEventAreaDto>
 
 @{
     ViewBag.Title = "Index";
@@ -10,7 +10,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.TMEventAreaId)
+            @Html.DisplayNameFor(model => model.Id)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
@@ -28,7 +28,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TMEventAreaId)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -37,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.TMEventId)
             </td>
             <td>
-                @Html.Action("SetPrice", new { id = item.TMEventAreaId })
+                @Html.Action("SetPrice", new { id = item.Id })
             </td>
         </tr>
     }

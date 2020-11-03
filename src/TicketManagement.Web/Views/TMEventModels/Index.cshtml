@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TicketManagement.Domain.TMEventModels>
+﻿@model IEnumerable<TicketManagement.Domain.DTO.TMEventDto>
 
 @{
     ViewBag.Title = "Index";
@@ -21,10 +21,10 @@
                     <div class="col-sm-8 col-md-9 col-xs-8">
                         <div class="pull-right">
                             @Html.ActionLink("Set price", "Index", "TMEventAreaModels", 
-                           new { idEvent = item.TMEventId }, new { @class = "btn btn-sm btn-default" })
-                            @Html.ActionLink("Edit", "Edit", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-primary" })
-                            @Html.ActionLink("Details", "Details", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-primary" })
-                            @Html.ActionLink("Delete", "Delete", new { id = item.TMEventId }, new { @class = "btn btn-sm btn-danger" })
+                           new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default" })
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
                         </div>
                         <p>
                             <span class="text-capitalize text-danger" style="font-size:medium; font-weight: 600;">
@@ -46,7 +46,7 @@
                             <span class="text-info">@Html.DisplayFor(modelItem => item.EndEvent)</span>
                         </p>
                         <p class="pull-right">
-                            @Html.ActionLink("BUY TICKET", "Details", new { id = item.TMEventId }, new { @class = "btn btn-primary", @style = "font-weight: 600;" })
+                            @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary", @style = "font-weight: 600;" })
                         </p>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
             @Html.DisplayNameFor(model => model.Img)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TMEventId)
+            @Html.DisplayNameFor(model => model.Id)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -107,7 +107,7 @@
             @Html.DisplayFor(modelItem => item.Img)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TMEventId)
+            @Html.DisplayFor(modelItem => item.Id)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
@@ -131,9 +131,9 @@
             @Html.DisplayFor(modelItem => item.BusySeats)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.TMEventId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TMEventId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TMEventId })
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

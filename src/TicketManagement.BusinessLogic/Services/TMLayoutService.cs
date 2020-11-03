@@ -9,22 +9,19 @@ namespace TicketManagement.BusinessLogic
     internal class TMLayoutService : ITMLayoutService
     {
         private readonly ITMLayoutRepository _tmlayoutRepository;
-        private readonly IVenueService _venueService;
 
-        internal TMLayoutService(ITMLayoutRepository tmlayoutRepository,
-            IVenueService venueService)
+        internal TMLayoutService(ITMLayoutRepository tmlayoutRepository)
         {
             _tmlayoutRepository = tmlayoutRepository;
-            _venueService = venueService;
         }
 
-        private static TMLayoutDto ConvertToDto(TMLayout obj, VenueDto venue)
+        private static TMLayoutDto ConvertToDto(TMLayout obj)
         {
             return new TMLayoutDto
             {
                 Id = obj.Id,
                 Description = obj.Description,
-                Venue = venue,
+                VenueId = obj.VenueId,
             };
         }
 
@@ -34,7 +31,7 @@ namespace TicketManagement.BusinessLogic
             {
                 Id = obj.Id,
                 Description = obj.Description,
-                VenueId = obj.Venue.Id,
+                VenueId = obj.VenueId,
             };
         }
 
@@ -50,8 +47,7 @@ namespace TicketManagement.BusinessLogic
 
             foreach (var item in objs)
             {
-                objsDto.Add(ConvertToDto(item,
-                    _venueService.GetVenue(item.VenueId)));
+                objsDto.Add(ConvertToDto(item));
             }
 
             return objsDto;
@@ -60,7 +56,7 @@ namespace TicketManagement.BusinessLogic
         public TMLayoutDto CreateTMLayout(TMLayoutDto obj)
         {
             List<TMLayout> objs = _tmlayoutRepository.GetAll()
-               .Where(a => a.VenueId == obj.Venue.Id
+               .Where(a => a.VenueId == obj.VenueId
                && a.Description == obj.Description).ToList();
 
             if (objs.Count == 0)
@@ -72,8 +68,7 @@ namespace TicketManagement.BusinessLogic
             }
             else
             {
-                return ConvertToDto(objs.ElementAt(0),
-                    _venueService.GetVenue(objs.ElementAt(0).VenueId));
+                return ConvertToDto(objs.ElementAt(0));
             }
         }
 
@@ -81,7 +76,7 @@ namespace TicketManagement.BusinessLogic
         {
             TMLayout obj = _tmlayoutRepository.GetById(id);
 
-            return ConvertToDto(obj, _venueService.GetVenue(obj.VenueId));
+            return ConvertToDto(obj);
         }
 
         public int UpdateTMLayout(TMLayoutDto obj)
