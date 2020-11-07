@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace TicketManagement.DataAccess.DAL
 {
@@ -24,8 +25,6 @@ namespace TicketManagement.DataAccess.DAL
 
         IEnumerable<T> Update(IEnumerable<T> objs);
 
-        IEnumerable<T> Find(Func<T, bool> p);
-
-        // for future- Find()
+        IEnumerable<T> Find(Expression<Func<T, bool>> p);
     }
 }

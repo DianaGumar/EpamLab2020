@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
@@ -304,9 +305,9 @@ namespace TicketManagement.DataAccess.DAL
             return values;
         }
 
-        public IEnumerable<T> Find(Func<T, bool> p)
+        public IEnumerable<T> Find(Expression<Func<T, bool>> p)
         {
-            return GetAll().Where(p);
+            throw new NotImplementedException();
         }
     }
 }
