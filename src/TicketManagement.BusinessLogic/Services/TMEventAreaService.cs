@@ -75,12 +75,18 @@ namespace TicketManagement.BusinessLogic
 
         public int RemoveTMEventArea(int id)
         {
-            return _tmeventAreaRepository.Remove(id);
+            _tmeventAreaRepository.Remove(id);
+
+            TMEventArea obj = _tmeventAreaRepository.GetById(id);
+
+            return obj == null ? 1 : 0;
         }
 
         public int UpdateTMEventArea(TMEventAreaDto obj)
         {
-            return _tmeventAreaRepository.Update(ConvertToEntity(obj));
+            _tmeventAreaRepository.Update(ConvertToEntity(obj));
+
+            return 1;
         }
 
         public int SetTMEventAreaPrice(int areaId, decimal price)

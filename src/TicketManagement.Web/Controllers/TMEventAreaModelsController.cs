@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using TicketManagement.BusinessLogic;
+using TicketManagement.DataAccess;
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.Domain.DTO;
 
@@ -11,15 +11,16 @@ namespace TicketManagement.Web.Controllers
 {
     public class TMEventAreaModelsController : Controller
     {
-        private readonly string _str = ConfigurationManager
-            .ConnectionStrings["DefaultConnection"].ConnectionString;
+        private readonly TMContext _context;
 
         private readonly ITMEventAreaService _tmeventareaService;
 
         public TMEventAreaModelsController()
         {
-            _tmeventareaService = new TMEventAreaService(new TMEventAreaRepository(_str),
-                new TMEventSeatService(new TMEventSeatRepository(_str)));
+            _context = new TMContext();
+
+            _tmeventareaService = new TMEventAreaService(new TMEventAreaRepositoryEF(_context),
+                new TMEventSeatService(new TMEventSeatRepositoryEF(_context)));
 
             // until dependensy ingection is include
         }
@@ -79,6 +80,12 @@ namespace TicketManagement.Web.Controllers
             int idEvent = _tmeventareaService.GetTMEventArea(areaId).TMEventId;
 
             return RedirectToAction("AreasMap", new { idEvent });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

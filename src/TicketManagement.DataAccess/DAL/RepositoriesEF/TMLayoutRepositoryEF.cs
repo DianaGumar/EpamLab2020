@@ -1,11 +1,10 @@
-﻿using System.Data.Entity;
-using TicketManagement.DataAccess.Entities;
+﻿using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {
     public class TMLayoutRepositoryEF : RepositoryEF<TMLayout>, ITMLayoutRepository
     {
-        public TMLayoutRepositoryEF(DbContext conn)
+        public TMLayoutRepositoryEF(TMContext conn)
             : base(conn)
         {
         }

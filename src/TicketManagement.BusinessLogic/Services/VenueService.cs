@@ -50,7 +50,11 @@ namespace TicketManagement.BusinessLogic
 
         public int RemoveVenue(int id)
         {
-            return _venueRepository.Remove(id);
+            _venueRepository.Remove(id);
+
+            Venue obj = _venueRepository.GetById(id);
+
+            return obj == null ? 1 : 0;
         }
 
         public List<VenueDto> GetAllVenue()
@@ -93,7 +97,9 @@ namespace TicketManagement.BusinessLogic
 
         public int UpdateVenue(VenueDto obj)
         {
-            return _venueRepository.Update(ConvertToEntity(obj));
+            _venueRepository.Update(ConvertToEntity(obj));
+
+            return 1;
         }
 
         public AreaDto CreateArea(AreaDto area, List<SeatDto> seats)

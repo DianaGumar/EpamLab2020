@@ -3,70 +3,71 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {
     public class RepositoryEF<T> : IRepository<T>
-        where T : class, new()
+        where T : class, IEntity, new()
     {
-        public RepositoryEF(DbContext dbContext)
+        public RepositoryEF(DbContext context)
         {
-            DbContext = dbContext;
+            Context = context;
+            DataBaseSet = Context.Set<T>();
         }
 
-        protected DbContext DbContext { get; }
+        protected DbContext Context { get; }
+
+        protected DbSet<T> DataBaseSet { get; }
 
         public T Create(T obj)
         {
-            // what will be returned ?
-            return DbContext.Set<T>().Add(obj);
+            obj = Context.Set<T>().Add(obj);
+            Context.SaveChanges();
+
+            return obj;
         }
 
-        public IEnumerable<T> Create(IEnumerable<T> objs)
+        public IQueryable<T> Find(Expression<Func<T, bool>> p)
         {
-            return DbContext.Set<T>().AddRange(objs);
-        }
+            var query = DataBaseSet.Where(p);
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> p)
-        {
-            return DbContext.Set<T>().Where(p);
+            return query;
         }
 
         public IEnumerable<T> GetAll()
         {
-            return DbContext.Set<T>().ToList();
+            return DataBaseSet.ToList();
         }
 
         public T GetById(int id)
         {
-            return DbContext.Set<T>().Find(id);
+            return DataBaseSet.Find(id);
         }
 
-        public int Remove(T obj)
+        public void Remove(T obj)
         {
-            T robj = DbContext.Set<T>().Remove(obj);
-            return robj == null ? 0 : 1;
+            DataBaseSet.Remove(obj);
+            Context.SaveChanges();
         }
 
-        public int Remove(int id)
+        public void Remove(int id)
         {
             T obj = GetById(id);
-            return Remove(obj);
+            Remove(obj);
         }
 
-        public IEnumerable<T> Remove(IEnumerable<T> objs)
+        public void Update(T obj)
         {
-            throw new NotImplementedException();
-        }
+            var entity = DataBaseSet.Find(obj?.Id);
+            if (entity == null)
+            {
+                return;
+            }
 
-        public int Update(T obj)
-        {
-            throw new NotImplementedException();
-        }
+            Context.Entry(entity).CurrentValues.SetValues(obj);
 
-        public IEnumerable<T> Update(IEnumerable<T> objs)
-        {
-            throw new NotImplementedException();
+            Context.SaveChanges();
         }
     }
 }

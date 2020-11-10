@@ -34,7 +34,7 @@ AS
 		declare @TMEventArea table (Id int)
 
 		INSERT INTO TMEventArea (TMEventId, Description, CoordX, CoordY, Price) 
-		OUTPUT INSERTED.ID into @TMEventArea
+		OUTPUT INSERTED.Id into @TMEventArea
 		SELECT @TMEventId, Area.Description, Area.CoordX, Area.CoordY, 0
 		FROM Area WHERE Area.TMLayoutId = @LayoutId;
 

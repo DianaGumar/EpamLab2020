@@ -41,7 +41,11 @@ namespace TicketManagement.BusinessLogic
 
         public int RemoveTMEventSeat(int id)
         {
-            return _tmeventSeatRepository.Remove(id);
+            _tmeventSeatRepository.Remove(id);
+
+            TMEventSeat obj = _tmeventSeatRepository.GetById(id);
+
+            return obj == null ? 1 : 0;
         }
 
         public List<TMEventSeatDto> GetAllTMEventSeat()
@@ -59,7 +63,9 @@ namespace TicketManagement.BusinessLogic
 
         public int UpdateTMEventSeat(TMEventSeatDto obj)
         {
-            return _tmeventSeatRepository.Update(ConvertToEntity(obj));
+            _tmeventSeatRepository.Update(ConvertToEntity(obj));
+
+            return 1;
         }
 
         public TMEventSeatDto GetTMEventSeat(int id)

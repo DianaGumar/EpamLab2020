@@ -37,7 +37,11 @@ namespace TicketManagement.BusinessLogic
 
         public int RemoveTMLayout(int id)
         {
-            return _tmlayoutRepository.Remove(id);
+            _tmlayoutRepository.Remove(id);
+
+            TMLayout obj = _tmlayoutRepository.GetById(id);
+
+            return obj == null ? 1 : 0;
         }
 
         public List<TMLayoutDto> GetAllTMLayout()
@@ -81,7 +85,9 @@ namespace TicketManagement.BusinessLogic
 
         public int UpdateTMLayout(TMLayoutDto obj)
         {
-            return _tmlayoutRepository.Update(ConvertToEntity(obj));
+            _tmlayoutRepository.Update(ConvertToEntity(obj));
+
+            return 1;
         }
     }
 }

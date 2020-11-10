@@ -3,15 +3,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.DataAccess.Entities
 {
-    public class Area
+    public interface IEntity
+    {
+        int Id { get; set; }
+    }
+
+    [Table("Area")]
+    public class Area : IEntity
     {
         [Key]
         public int Id { get; set; }
 
-        [Key]
+        // [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int TMLayoutId { get; set; }
+
+        [ForeignKey("TMLayoutId")]
+        private TMLayout TMLayout { get; set; }
 
         [MaxLength(200)]
         public string Description { get; set; }

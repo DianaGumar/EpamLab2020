@@ -1,25 +1,39 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.DataAccess.Entities
 {
     // renamed by code controle
-    public class TMEvent
+    [Table("TMEvent")]
+    public class TMEvent : IEntity
     {
+        [Key]
         public int Id { get; set; }
 
+        [MaxLength(120)]
+        [Required]
         public string Name { get; set; }
 
-        // [Required]
-        // [StringLength(10, MinimumLength = 3)]
+        [MaxLength(int.MaxValue)]
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public int TMLayoutId { get; set; }
 
-        // [DataType(DataType.Date)]
+        [ForeignKey("TMLayoutId")]
+        private TMLayout TMLayout { get; set; }
+
+        [DataType(DataType.Date)]
+        [Required]
         public DateTime StartEvent { get; set; }
 
+        [DataType(DataType.Date)]
+        [Required]
         public DateTime EndEvent { get; set; }
 
+        [MaxLength(int.MaxValue)]
         public string Img { get; set; }
     }
 }

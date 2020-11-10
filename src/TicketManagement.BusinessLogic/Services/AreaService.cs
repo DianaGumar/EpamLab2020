@@ -56,7 +56,11 @@ namespace TicketManagement.BusinessLogic
         public int RemoveArea(int areaId)
         {
             // _seatService.RemoveSeatInArea(areaId)
-            return _areaRepository.Remove(areaId);
+            _areaRepository.Remove(areaId);
+
+            Area area = _areaRepository.GetById(areaId);
+
+            return area == null ? 1 : 0;
         }
 
         public AreaDto CreateArea(AreaDto obj)
@@ -91,7 +95,9 @@ namespace TicketManagement.BusinessLogic
         public int UpdateArea(AreaDto obj)
         {
             // _seatService.UpdateSeatInArea(obj.Seats, obj.AreaId)
-            return _areaRepository.Update(ConvertToEntity(obj));
+            _areaRepository.Update(ConvertToEntity(obj));
+
+            return 1;
         }
     }
 }

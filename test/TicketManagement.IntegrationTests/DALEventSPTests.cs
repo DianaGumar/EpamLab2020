@@ -112,8 +112,8 @@ namespace TicketManagement.IntegrationTests
                     Name = "big event22",
                     Description = "some event desc22",
                     TMLayoutId = layout.Id,
-                    StartEvent = new DateTime(2020, 9, 25),
-                    EndEvent = new DateTime(2020, 9, 26),
+                    StartEvent = DateTime.Now.Date.AddDays(3),
+                    EndEvent = DateTime.Now.Date.AddDays(4),
                 });
 
             List<TMEventArea> tmeventareas = eventAreaRepository.GetAll().Where(a => a.TMEventId == tmevent.Id).ToList();
@@ -186,8 +186,8 @@ namespace TicketManagement.IntegrationTests
                     Name = "big event22",
                     Description = "some event desc22",
                     TMLayoutId = layout.Id,
-                    StartEvent = new DateTime(2020, 9, 25),
-                    EndEvent = new DateTime(2020, 9, 26),
+                    StartEvent = DateTime.Now.Date.AddDays(3),
+                    EndEvent = DateTime.Now.Date.AddDays(4),
                 });
 
             // delete tested data
@@ -251,24 +251,15 @@ namespace TicketManagement.IntegrationTests
                     Name = "big event22",
                     Description = "some event desc22",
                     TMLayoutId = layout.Id,
-                    StartEvent = new DateTime(2020, 10, 25),
-                    EndEvent = new DateTime(2020, 10, 26),
+                    StartEvent = DateTime.Now.Date.AddDays(3),
+                    EndEvent = DateTime.Now.Date.AddDays(4),
                 });
 
-            eventRepository.Create(
-                new TMEvent
-                {
-                    Name = "big",
-                    Description = "some event desc22",
-                    TMLayoutId = layout.Id,
-                    StartEvent = new DateTime(2020, 10, 28),
-                    EndEvent = new DateTime(2020, 10, 29),
-                });
-
+            // was some second create
             // act
             tmevent.Description = "new desc";
-            tmevent.StartEvent = new DateTime(2020, 11, 25);
-            tmevent.EndEvent = new DateTime(2020, 11, 26);
+            tmevent.StartEvent = DateTime.Now.Date.AddDays(5);
+            tmevent.EndEvent = DateTime.Now.Date.AddDays(6);
 
             eventRepository.Update(tmevent);
 

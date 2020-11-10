@@ -1,11 +1,10 @@
-﻿using System.Data.Entity;
-using TicketManagement.DataAccess.Entities;
+﻿using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {
     public class TMEventSeatRepositoryEF : RepositoryEF<TMEventSeat>, ITMEventSeatRepository
     {
-        public TMEventSeatRepositoryEF(DbContext conn)
+        public TMEventSeatRepositoryEF(TMContext conn)
             : base(conn)
         {
         }

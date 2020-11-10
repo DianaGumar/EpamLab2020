@@ -50,7 +50,11 @@ namespace TicketManagement.BusinessLogic
 
         public int RemoveSeat(int id)
         {
-            return _seatRepository.Remove(id);
+            _seatRepository.Remove(id);
+
+            Seat obj = _seatRepository.GetById(id);
+
+            return obj == null ? 1 : 0;
         }
 
         public List<SeatDto> GetAllSeat()
@@ -76,7 +80,9 @@ namespace TicketManagement.BusinessLogic
 
         public int UpdateSeat(SeatDto obj)
         {
-            return _seatRepository.Update(ConvertToEntity(obj));
+            _seatRepository.Update(ConvertToEntity(obj));
+
+            return 1;
         }
     }
 }
