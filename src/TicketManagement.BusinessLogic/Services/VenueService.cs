@@ -6,6 +6,27 @@ using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
+    public interface IVenueService
+    {
+        int RemoveVenue(int id);
+
+        List<VenueDto> GetAllVenue();
+
+        VenueDto GetVenue(int id);
+
+        VenueDto CreateVenue(VenueDto obj);
+
+        int UpdateVenue(VenueDto obj);
+
+        AreaDto CreateArea(AreaDto area, List<SeatDto> seats);
+
+        TMLayoutDto CreateLayout(TMLayoutDto layout, List<AreaDto> areas, List<SeatDto> seats);
+
+        void RemoveLayout(int layoutId);
+
+        List<TMLayoutDto> GetAllLayoutByVenue(int venueId);
+    }
+
     internal class VenueService : IVenueService
     {
         private readonly IVenueRepository _venueRepository;

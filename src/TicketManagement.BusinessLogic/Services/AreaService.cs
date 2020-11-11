@@ -6,6 +6,19 @@ using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
+    public interface IAreaService
+    {
+        int RemoveArea(int areaId);
+
+        List<AreaDto> GetAllArea();
+
+        AreaDto GetArea(int id);
+
+        AreaDto CreateArea(AreaDto obj);
+
+        int UpdateArea(AreaDto obj);
+    }
+
     // servise work -- is the validation and the convertation dbModel in Domain model
     internal class AreaService : IAreaService
     {

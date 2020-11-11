@@ -6,11 +6,13 @@ How to start checking DAL and BL projects
 4. start tests
 
 How to start Web proj
-0. Drop DirectoryBuild.props
-1. Drop and re add App_Data folder (optional?);
-2. unload and reload TicketManagement.Web project 
-(that's create roslyn\csc.exe and fix start trouble);
-3. build TicketManagement solution
 
-(repeat 2 and 3 cases until broken references become normal 
- and project start become without errors)
+1. Drop DirectoryBuild.props
+2. Drop and re add App_Data folder (optional?);
+3. Unload TicketManagement.Web project 
+(that's create roslyn\csc.exe and fix start trouble);
+4. Build TicketManagement solution
+5. Reload TicketManagement.Web project (that's fix broken links)
+6. Add DirectoryBuild.props
+7. Restart IDE
+

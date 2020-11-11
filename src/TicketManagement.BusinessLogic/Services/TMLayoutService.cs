@@ -6,6 +6,19 @@ using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
+    public interface ITMLayoutService
+    {
+        int RemoveTMLayout(int id);
+
+        List<TMLayoutDto> GetAllTMLayout();
+
+        TMLayoutDto GetTMLayout(int id);
+
+        TMLayoutDto CreateTMLayout(TMLayoutDto obj);
+
+        int UpdateTMLayout(TMLayoutDto obj);
+    }
+
     internal class TMLayoutService : ITMLayoutService
     {
         private readonly ITMLayoutRepository _tmlayoutRepository;

@@ -6,6 +6,19 @@ using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
+    public interface ISeatService
+    {
+        int RemoveSeat(int id);
+
+        List<SeatDto> GetAllSeat();
+
+        SeatDto GetSeat(int id);
+
+        SeatDto CreateSeat(SeatDto obj);
+
+        int UpdateSeat(SeatDto obj);
+    }
+
     internal class SeatService : ISeatService
     {
         private readonly ISeatRepository _seatRepository;

@@ -7,6 +7,23 @@ using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
+    public interface ITMEventService
+    {
+        int RemoveTMEvent(int id);
+
+        TMEventDto GetTMEvent(int id);
+
+        List<TMEventDto> GetAllTMEvent();
+
+        TMEventDto CreateTMEvent(TMEventDto obj);
+
+        int UpdateTMEvent(TMEventDto obj);
+
+        List<TMEventSeatDto> GetTMEventSeatByEvent(int eventId);
+
+        List<TMEventAreaDto> GetTMEventAreaByEvent(int eventId);
+    }
+
     internal class TMEventService : ITMEventService
     {
         private readonly ITMEventRepository _tmeventRepository;
