@@ -24,7 +24,7 @@ namespace TicketManagement.BusinessLogic
     {
         private readonly IAreaRepository _areaRepository;
 
-        internal AreaService(IAreaRepository areaRepository)
+        public AreaService(IAreaRepository areaRepository)
         {
             _areaRepository = areaRepository;
         }

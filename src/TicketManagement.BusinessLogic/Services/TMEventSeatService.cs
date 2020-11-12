@@ -23,7 +23,7 @@ namespace TicketManagement.BusinessLogic
     {
         private readonly ITMEventSeatRepository _tmeventSeatRepository;
 
-        internal TMEventSeatService(ITMEventSeatRepository tmeventSeatRepository)
+        public TMEventSeatService(ITMEventSeatRepository tmeventSeatRepository)
         {
             _tmeventSeatRepository = tmeventSeatRepository;
         }

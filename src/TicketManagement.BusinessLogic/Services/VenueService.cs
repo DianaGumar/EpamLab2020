@@ -34,7 +34,7 @@ namespace TicketManagement.BusinessLogic
         private readonly IAreaService _areaService;
         private readonly ISeatService _seatService;
 
-        internal VenueService(IVenueRepository venueRepository, ITMLayoutService tmlayoutService,
+        public VenueService(IVenueRepository venueRepository, ITMLayoutService tmlayoutService,
             IAreaService areaService, ISeatService seatService)
         {
             _venueRepository = venueRepository;

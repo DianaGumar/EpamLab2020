@@ -16,7 +16,6 @@ namespace TicketManagement.Web
             var builder = new ContainerBuilder();
             builder.RegisterModule<AutofacWebTypesModule>();
             builder.RegisterInstance(RouteTable.Routes).As<IEnumerable<RouteBase>>();
-            builder.RegisterModule<DbRepositoryModule>();
             builder.RegisterModule<DbServiceModule>();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             var container = builder.Build();

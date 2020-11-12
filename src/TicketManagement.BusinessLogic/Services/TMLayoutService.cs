@@ -23,7 +23,7 @@ namespace TicketManagement.BusinessLogic
     {
         private readonly ITMLayoutRepository _tmlayoutRepository;
 
-        internal TMLayoutService(ITMLayoutRepository tmlayoutRepository)
+        public TMLayoutService(ITMLayoutRepository tmlayoutRepository)
         {
             _tmlayoutRepository = tmlayoutRepository;
         }

@@ -30,7 +30,7 @@ namespace TicketManagement.BusinessLogic
         private readonly ITMEventAreaService _tmeventAreaService;
         private readonly ITMEventSeatService _tmeventSeatService;
 
-        internal TMEventService(ITMEventRepository tmeventRepository,
+        public TMEventService(ITMEventRepository tmeventRepository,
             ITMEventAreaService tmeventAreaService, ITMEventSeatService tmeventSeatService)
         {
             _tmeventRepository = tmeventRepository;

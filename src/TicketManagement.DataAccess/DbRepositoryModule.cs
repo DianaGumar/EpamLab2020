@@ -9,20 +9,19 @@ namespace TicketManagement.Web
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-            builder.RegisterType<AreaRepository>().As<IAreaRepository>();
-            builder.RegisterType<SeatRepository>().As<ISeatRepository>();
-            builder.RegisterType<TMEventAreaRepository>().As<ITMEventAreaRepository>();
-            builder.RegisterType<TMEventSeatRepository>().As<ITMEventSeatRepository>();
-            builder.RegisterType<TMEventRepository>().As<ITMEventRepository>();
-            builder.RegisterType<VenueRepository>().As<IVenueRepository>();
-            builder.RegisterType<TMLayoutRepository>().As<ITMLayoutRepository>();
-
+            builder.RegisterType<TMContext>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterGeneric(typeof(RepositoryEF<>)).As(typeof(IRepository<>));
 
-            using (var context = new TMContext())
-            {
+            builder.RegisterType<AreaRepositoryEF>().As<IAreaRepository>();
+            builder.RegisterType<SeatRepositoryEF>().As<ISeatRepository>();
+            builder.RegisterType<TMEventAreaRepositoryEF>().As<ITMEventAreaRepository>();
+            builder.RegisterType<TMEventSeatRepositoryEF>().As<ITMEventSeatRepository>();
+            builder.RegisterType<TMEventRepositoryEF>().As<ITMEventRepository>();
+            builder.RegisterType<VenueRepositoryEF>().As<IVenueRepository>();
+            builder.RegisterType<TMLayoutRepositoryEF>().As<ITMLayoutRepository>();
+
+            // using (var context = new TMContext())
                 ////context.Database.Initialize(false);
-            }
         }
     }
 }

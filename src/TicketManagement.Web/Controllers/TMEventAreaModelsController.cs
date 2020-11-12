@@ -3,26 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using TicketManagement.BusinessLogic;
-using TicketManagement.DataAccess;
-using TicketManagement.DataAccess.DAL;
 using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.Web.Controllers
 {
     public class TMEventAreaModelsController : Controller
     {
-        private readonly TMContext _context;
-
         private readonly ITMEventAreaService _tmeventareaService;
 
-        public TMEventAreaModelsController()
+        public TMEventAreaModelsController(ITMEventAreaService tmeventareaService)
         {
-            _context = new TMContext();
-
-            _tmeventareaService = new TMEventAreaService(new TMEventAreaRepositoryEF(_context),
-                new TMEventSeatService(new TMEventSeatRepositoryEF(_context)));
-
-            // until dependensy ingection is include
+            _tmeventareaService = tmeventareaService;
         }
 
         [HttpGet]
@@ -80,12 +71,6 @@ namespace TicketManagement.Web.Controllers
             int idEvent = _tmeventareaService.GetTMEventArea(areaId).TMEventId;
 
             return RedirectToAction("AreasMap", new { idEvent });
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

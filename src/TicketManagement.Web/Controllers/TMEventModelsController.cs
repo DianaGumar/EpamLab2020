@@ -2,30 +2,17 @@
 using System.Linq;
 using System.Web.Mvc;
 using TicketManagement.BusinessLogic;
-using TicketManagement.DataAccess;
-using TicketManagement.DataAccess.DAL;
 using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.Web.Controllers
 {
     public class TMEventModelsController : Controller
     {
-        private readonly TMContext _context;
-
         private readonly ITMEventService _tmeventService;
 
-        public TMEventModelsController()
+        public TMEventModelsController(ITMEventService tmeventService)
         {
-            _context = new TMContext();
-
-            var tmeventSeatService = new TMEventSeatService(new TMEventSeatRepositoryEF(_context));
-
-            var tmeventAreaService = new TMEventAreaService(new TMEventAreaRepositoryEF(_context),
-                    tmeventSeatService);
-
-            // until dependensy ingection is include
-            _tmeventService = new TMEventService(new TMEventRepositoryEF(_context),
-                tmeventAreaService, tmeventSeatService);
+            _tmeventService = tmeventService;
         }
 
         // GET: TMEventModels
@@ -108,10 +95,10 @@ namespace TicketManagement.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
-            base.Dispose(disposing);
-        }
+        ////protected override void Dispose(bool disposing)
+        ////{
+        ////    _context.Dispose();
+        ////    base.Dispose(disposing);
+        ////}
     }
 }

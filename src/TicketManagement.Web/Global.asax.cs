@@ -10,6 +10,7 @@ namespace TicketManagement.Web
         protected void Application_Start()
 #pragma warning restore CA1822 // Mark members as static
         {
+            ResolverConfig.RegisterResolver();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
