@@ -32,11 +32,11 @@
                 </p>
                 <br />
                 <p>
-                    <span class="text-muted" style="font-size: medium; font-weight: 600;">
+                    <span class="text-muted" style="font-size: medium; ">
                         in layout id @Html.DisplayFor(modelItem => Model.TMLayoutId)
                     </span>
                     <br />
-                    <span class="text-capitalize" style="font-size:xx-large; font-weight: 600;">
+                    <span class="text-capitalize" style="font-size:xx-large; ">
                         @Html.DisplayFor(modelItem => Model.Name)
                     </span>
                     <br />
@@ -45,19 +45,19 @@
                     </span>
                 </p>
                 <div style="margin-top:20px;">
-                    <span class="text-capitalize text-danger" style="font-size:medium; font-weight: 600;">
+                    <span class="text-capitalize text-danger" style="font-size:medium; ">
                         Busy seats @Html.DisplayFor(modelItem => Model.BusySeats)
                         <br />
                         All seats @Html.DisplayFor(modelItem => Model.AllSeats)
                     </span>
                     <br />
-                    <span class="text-success" style="font-size:medium; font-weight: 600;">
+                    <span class="text-success" style="font-size:medium; ">
                         MIDDLE PRISE BY SEAT @Html.DisplayFor(modelItem => Model.MiddlePriceBySeat) $
                     </span>
                     <p class="pull-right">
                         @Html.ActionLink("SHOUSE SEATS", "AreasMap", "TMEventAreaModels", 
                        new { idEvent = Model.Id }, 
-                       new { @class = "btn btn-primary", @style = "font-weight: 600;" })
+                       new { @class = "btn btn-primary" })
                     </p>
                 </div>
             </div>

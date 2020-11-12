@@ -39,11 +39,12 @@ namespace TicketManagement.Web
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            ApplicationUserManager manager =
-                new ApplicationUserManager(
 #pragma warning disable CA2000 // Dispose objects before losing scope
-                    new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var userStore = new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>());
 #pragma warning restore CA2000 // Dispose objects before losing scope
+
+            ApplicationUserManager manager =
+                new ApplicationUserManager(userStore);
 
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
@@ -118,6 +119,28 @@ namespace TicketManagement.Web
         {
             // ?
             return user?.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+        }
+    }
+
+    // Configure the application role manager which is used in this application.
+    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    {
+        public ApplicationRoleManager(RoleStore<IdentityRole> roleStore)
+            : base(roleStore)
+        {
+        }
+
+        public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
+        {
+            _ = options;
+
+            var applicationDbContext = context.Get<ApplicationDbContext>();
+#pragma warning disable CA2000 // Dispose objects before losing scope
+            var roleStore = new RoleStore<IdentityRole>(applicationDbContext);
+#pragma warning restore CA2000 // Dispose objects before losing scope
+            var manager = new ApplicationRoleManager(roleStore);
+
+            return manager;
         }
     }
 }

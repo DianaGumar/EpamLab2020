@@ -1,10 +1,3 @@
-How to start checking DAL and BL projects
-
-1. build TicketManagement solution;
-2. publich TicketManagement.Database;
-3. in TicketManagement.IntegrationTests/App.config change connectionStrings if you need;
-4. start tests
-
 How to start Web proj
 
 1. Drop DirectoryBuild.props
@@ -16,3 +9,4 @@ How to start Web proj
 6. Add DirectoryBuild.props
 7. Restart IDE
 
+! you should run a web project once, before publishing the database project

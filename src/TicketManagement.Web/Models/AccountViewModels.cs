@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.Web.Models
 {
@@ -83,6 +84,14 @@ namespace TicketManagement.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "UserRole")]
+        [NotMapped]
+        public string UserRole { get; set; }
+
+        [NotMapped]
+        public List<System.Web.Mvc.SelectListItem> Roles { get; internal set; }
     }
 
     public class ResetPasswordViewModel

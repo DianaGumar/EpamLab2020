@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TicketManagement.Web.Models;
@@ -17,15 +19,18 @@ namespace TicketManagement.Web.Controllers
 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public AccountController(ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager, ApplicationRoleManager roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         private IAuthenticationManager AuthenticationManager
@@ -59,6 +64,19 @@ namespace TicketManagement.Web.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -149,7 +167,11 @@ namespace TicketManagement.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            var roles = RoleManager.Roles.ToList();
+            var items = new List<SelectListItem>();
+            roles.ForEach(r => items.Add(new SelectListItem { Text = r.Name, Value = r.Name }));
+
+            return View(new RegisterViewModel { Roles = items });
         }
 
         // POST: /Account/Register
@@ -164,6 +186,14 @@ namespace TicketManagement.Web.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // fill dropdown list roles again
+                    var roles = RoleManager.Roles.ToList();
+                    var items = new List<SelectListItem>();
+                    roles.ForEach(r => items.Add(new SelectListItem { Text = r.Name, Value = r.Name }));
+                    model.Roles = items;
+
+                    await UserManager.AddToRoleAsync(user.Id, model.UserRole);
+
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     return RedirectToAction("Index", "Home");
@@ -418,6 +448,12 @@ namespace TicketManagement.Web.Controllers
                 {
                     _signInManager.Dispose();
                     _signInManager = null;
+                }
+
+                if (_roleManager != null)
+                {
+                    _roleManager.Dispose();
+                    _roleManager = null;
                 }
             }
 

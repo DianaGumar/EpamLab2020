@@ -11,7 +11,7 @@
         @foreach (var item in Model)
         {
         <div class="col-md-6 col-sm-10 col-xs-12">
-            <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+            <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
                 <div class="row row-table">
                     <div class="col-md-3 col-sm-3 col-xs-4">
                         <picture class="lateral-picture">
@@ -27,12 +27,12 @@
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
                         </div>
                         <p>
-                            <span class="text-capitalize text-danger" style="font-size:medium; font-weight: 600;">
+                            <span class="text-capitalize text-danger" style="font-size:medium; ">
                                 SEATS @Html.DisplayFor(modelItem => item.BusySeats) / @Html.DisplayFor(modelItem => item.AllSeats)
                             </span>
                         </p>
                         <p>
-                            <span class="text-capitalize" style="font-size:xx-large; font-weight: 600;">
+                            <span class="text-capitalize" style="font-size:xx-large; ">
                                 @Html.DisplayFor(modelItem => item.Name)
                             </span>
                             <br />
@@ -46,7 +46,7 @@
                             <span class="text-info">@Html.DisplayFor(modelItem => item.EndEvent)</span>
                         </p>
                         <p class="pull-right">
-                            @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary", @style = "font-weight: 600;" })
+                            @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
                         </p>
                     </div>
                 </div>

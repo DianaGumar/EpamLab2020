@@ -26,6 +26,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         // GET: TMEventModels/Details/5
+        [Authorize(Roles = "authorized_user")]
         [HttpGet]
         public ActionResult Details(int id)
         {
@@ -35,6 +36,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         // GET: TMEventModels/Create
+        [Authorize(Roles = "authorized_user")]
         [HttpGet]
         public ActionResult Create()
         {
@@ -42,6 +44,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         // POST: TMEventModels/Create
+        [Authorize(Roles = "authorized_user")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind] TMEventDto obj)
@@ -56,6 +59,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         // GET: TMEventModels/Edit/5
+        [Authorize(Roles = "authorized_user")]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -71,6 +75,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         // POST: TMEventModels/Edit/5
+        [Authorize(Roles = "authorized_user")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, [Bind] TMEventDto obj)
@@ -87,6 +92,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         // POST: TMEventModels/Delete/5
+        [Authorize(Roles = "authorized_user")]
         [HttpGet]
         public ActionResult Delete(int id = 0)
         {
@@ -94,11 +100,5 @@ namespace TicketManagement.Web.Controllers
 
             return RedirectToAction("Index");
         }
-
-        ////protected override void Dispose(bool disposing)
-        ////{
-        ////    _context.Dispose();
-        ////    base.Dispose(disposing);
-        ////}
     }
 }
