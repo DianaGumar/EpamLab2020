@@ -26,6 +26,7 @@ namespace TicketManagement.Web.Controllers
 
         // GET: VenueModels
         [HttpGet]
+        [Authorize(Roles = "authorized_user")]
         public PartialViewResult IndexVenueOnlyNames()
         {
             List<VenueDto> models =
@@ -37,6 +38,7 @@ namespace TicketManagement.Web.Controllers
         // GET: VenueModels
         [HttpGet]
         [ChildActionOnly]
+        [Authorize(Roles = "authorized_user")]
         public PartialViewResult IndexLayoutOnlyNames(int venueId)
         {
             List<TMLayoutDto> models = _venueService.GetAllLayoutByVenue(venueId);

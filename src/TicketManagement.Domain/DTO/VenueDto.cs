@@ -13,7 +13,6 @@
         // in meters
         public int Weidth { get; set; }
 
-        // public IEnumerable<TMLayoutDto> TMLayouts
         public int Lenght { get; set; }
     }
 }

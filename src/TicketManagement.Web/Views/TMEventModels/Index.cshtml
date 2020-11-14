@@ -10,52 +10,89 @@
 
         @foreach (var item in Model)
         {
-        <div class="col-md-6 col-sm-10 col-xs-12">
-            <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
-                <div class="row row-table">
-                    <div class="col-md-3 col-sm-3 col-xs-4">
-                        <picture class="lateral-picture">
-                            <img src="@item.Img" alt="" height="160px">
-                        </picture>
+            @*<div class="card bg-light border-dark mb-3" style="max-width: 540px; margin-top: 20px; padding:5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="@item.Img" class="card-img" height="160px">
                     </div>
-                    <div class="col-sm-8 col-md-9 col-xs-8">
-                        <div class="pull-right">
-                            @Html.ActionLink("Set price", "Index", "TMEventAreaModels", 
-                           new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default" })
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
+                    <div class="col-md-8">
+                        <div class="card-header">
+                            SEATS @Html.DisplayFor(modelItem => item.BusySeats) / @Html.DisplayFor(modelItem => item.AllSeats)
+                            <div class="pull-right">
+                                @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
+                               new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default" })
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
+                            </div>
                         </div>
-                        <p>
-                            <span class="text-capitalize text-danger" style="font-size:medium; ">
-                                SEATS @Html.DisplayFor(modelItem => item.BusySeats) / @Html.DisplayFor(modelItem => item.AllSeats)
-                            </span>
-                        </p>
-                        <p>
-                            <span class="text-capitalize" style="font-size:xx-large; ">
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </span>
-                            <br />
-                            <span class="text-muted" style="">
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </span>
-                        </p>
-                        <p class="pull-left">
-                            <span class="text-info">@Html.DisplayFor(modelItem => item.StartEvent)</span>
-                            <br />
-                            <span class="text-info">@Html.DisplayFor(modelItem => item.EndEvent)</span>
-                        </p>
-                        <p class="pull-right">
-                            @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
-                        </p>
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: x-large;" >@Html.DisplayFor(modelItem => item.Name)</h5>
+                            <p class="card-text"> @Html.DisplayFor(modelItem => item.Description)</p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    @Html.DisplayFor(modelItem => item.StartEvent)
+                                    <br />
+                                    @Html.DisplayFor(modelItem => item.EndEvent)
+                                </small>
+                            </p>
+                            <p class="pull-right">
+                                @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+
+
+
+
+            <div class="col-md-6 col-sm-10 col-xs-12">
+                <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+                    <div class="row row-table">
+                        <div class="col-md-3 col-sm-3 col-xs-4">
+                            <div class="container" style="max-width:145px; overflow:hidden; margin-left:-15px">
+                                <img src="@item.Img" height="180">
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-md-9 col-xs-8">
+                            <div class="pull-right">
+                                @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
+                               new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default" })
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
+                            </div>
+                            <p>
+                                <span class="text-capitalize text-danger" style="font-size:medium; ">
+                                    SEATS @Html.DisplayFor(modelItem => item.BusySeats) / @Html.DisplayFor(modelItem => item.AllSeats)
+                                </span>
+                            </p>
+                            <p>
+                                <span class="text-capitalize" style="font-size:xx-large; ">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </span>
+                                <br />
+                                <span class="text-muted" style="">
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </span>
+                            </p>
+                            <p class="pull-left">
+                                <span class="text-info">@Html.DisplayFor(modelItem => item.StartEvent)</span>
+                                <br />
+                                <span class="text-info">@Html.DisplayFor(modelItem => item.EndEvent)</span>
+                            </p>
+                            <p class="pull-right">
+                                @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-                }
-            
+        }
 
-        </div>
+
+    </div>
 </div>
 
 

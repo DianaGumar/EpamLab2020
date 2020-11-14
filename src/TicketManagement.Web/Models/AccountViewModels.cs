@@ -86,7 +86,6 @@ namespace TicketManagement.Web.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
-        [Display(Name = "UserRole")]
         [NotMapped]
         public string UserRole { get; set; }
 

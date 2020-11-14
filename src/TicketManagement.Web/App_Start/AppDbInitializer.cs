@@ -16,14 +16,9 @@ namespace TicketManagement.Web
             var roleManager = new RoleManager<IdentityRole>(roleStore);
 
             // create roles
-            var venueManager = new IdentityRole { Name = "venue_manager" };
-            var eventManager = new IdentityRole { Name = "event_manager" };
-            var authorizedUser = new IdentityRole { Name = "authorized_user" };
-
-            // add roles to db
-            roleManager.Create(venueManager);
-            roleManager.Create(eventManager);
-            roleManager.Create(authorizedUser);
+            roleManager.Create(new IdentityRole { Name = "event_manager" });
+            roleManager.Create(new IdentityRole { Name = "authorized_user" });
+            roleManager.Create(new IdentityRole { Name = "venue_manager" });
 
             userManager.Dispose();
             roleManager.Dispose();

@@ -6,7 +6,6 @@
 
         public int VenueId { get; set; }
 
-        // public IEnumerable<AreaDto> Areas
         public string Description { get; set; }
     }
 }
