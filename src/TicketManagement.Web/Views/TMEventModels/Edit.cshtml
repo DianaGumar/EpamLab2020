@@ -5,7 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Update</h2>
+<h2>Update TMEventModels</h2>
+<hr />
 <div class="row">
     <div class="col-lg-6">
 
@@ -14,8 +15,6 @@
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <h4>TMEventModels</h4>
-                <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -81,13 +80,22 @@
 
     </div>
 
-    <div class="col-md-3 col-sm-3 col-xs-4">
+    <div class="col-lg-6">
+        <h5>Image</h5>
+        <div style="margin-left: 30px;">
+            <img src="@Model.Img" alt="no img" id="event_img_view" height="100">
+        </div>
+        <h5>Layout id = 1</h5>
+
         <div class="container">
-            <img src="" alt="no img" id="event_img_view" class="img-thumbnail" height="180">
+            @Html.Action("LayoutMap", "VenueModels",
+            new { idlayout = 1 })
         </div>
     </div>
 
+
 </div>
+
 
 @section Scripts
 {
@@ -100,6 +108,13 @@
             });
         });
 
+        $("#layout_list").on("input", function () {
+
+            var param1 = $(this).val();
+
+        })
+
+
+
     </script>
 }
-

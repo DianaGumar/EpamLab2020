@@ -15,6 +15,8 @@ namespace TicketManagement.BusinessLogic
 
         List<TMEventDto> GetAllTMEvent();
 
+        List<TMEventDto> GetAllRelevantTMEvent();
+
         TMEventDto CreateTMEvent(TMEventDto obj);
 
         int UpdateTMEvent(TMEventDto obj);
@@ -82,11 +84,16 @@ namespace TicketManagement.BusinessLogic
 
         public int RemoveTMEvent(int id)
         {
-            _tmeventRepository.Remove(id);
+            if (GetTMEventSeatByEvent(id).Where(s => s.State == SeatState.Busy).ToList().Count == 0)
+            {
+                _tmeventRepository.Remove(id);
 
-            TMEvent obj = _tmeventRepository.GetById(id);
+                TMEvent obj = _tmeventRepository.GetById(id);
 
-            return obj == null ? 1 : 0;
+                return obj == null ? 1 : 0;
+            }
+
+            return 0;
         }
 
         public List<TMEventDto> GetAllTMEvent()
@@ -98,6 +105,25 @@ namespace TicketManagement.BusinessLogic
             {
                 objsDto.Add(ConvertToDto(item, GetTMEventAreaByEvent(item.Id),
                         GetTMEventSeatByEvent(item.Id)));
+            }
+
+            return objsDto;
+        }
+
+        public List<TMEventDto> GetAllRelevantTMEvent()
+        {
+            List<TMEvent> objs = _tmeventRepository.GetAll().ToList();
+            List<TMEventAreaDto> areas = _tmeventAreaService.GetAllTMEventArea();
+
+            var objsDto = new List<TMEventDto>();
+
+            foreach (var item in objs)
+            {
+                if (areas.Where(a => a.TMEventId == item.Id && a.Price == 0).ToList().Count == 0)
+                {
+                    objsDto.Add(ConvertToDto(item, GetTMEventAreaByEvent(item.Id),
+                        GetTMEventSeatByEvent(item.Id)));
+                }
             }
 
             return objsDto;

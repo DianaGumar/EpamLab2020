@@ -19,13 +19,16 @@
                             </div>
                         </div>
                         <div class="col-sm-8 col-md-9 col-xs-8">
-                            <div class="pull-right">
-                                @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
-                               new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default" })
-                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
-                            </div>
+                           @if (User.IsInRole("eventmanager"))
+                            {
+                                <div class="pull-right">
+                                    @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
+                                        new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default" })
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
+                                </div>
+                            }
                             <p>
                                 <span class="text-capitalize text-danger" style="font-size:medium; ">
                                     SEATS @Html.DisplayFor(modelItem => item.BusySeats) / @Html.DisplayFor(modelItem => item.AllSeats)
@@ -66,9 +69,19 @@
 
 <h2>ReadAll</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (User.IsInRole("eventmanager"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+
+    <p>
+        @Html.ActionLink("See all events", "ListAllExistingItems")
+        <br/>
+        @Html.ActionLink("See all relevant events", "Index")
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
@@ -101,41 +114,45 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td style="max-width: 120px; overflow: hidden;">
-            @Html.DisplayFor(modelItem => item.Img)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TMLayoutId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartEvent)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndEvent)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AllSeats)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BusySeats)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="max-width: 120px; overflow: hidden;">
+                @Html.DisplayFor(modelItem => item.Img)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TMLayoutId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BusySeats)
+            </td>
+            @if (User.IsInRole("eventmanager"))
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            }
+        </tr>
+    }
 
 </table>

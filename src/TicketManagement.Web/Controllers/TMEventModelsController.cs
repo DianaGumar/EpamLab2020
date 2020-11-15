@@ -28,9 +28,20 @@ namespace TicketManagement.Web.Controllers
         public ActionResult Index()
         {
             List<TMEventDto> models =
-                _tmeventService.GetAllTMEvent().OrderBy(u => u.StartEvent).Reverse().ToList();
+                _tmeventService.GetAllRelevantTMEvent().OrderBy(u => u.StartEvent).Reverse().ToList();
 
             return View(models);
+        }
+
+        // GET: TMEventModels
+        [HttpGet]
+        [Authorize(Roles = "eventmanager")]
+        public ActionResult ListAllExistingItems()
+        {
+            List<TMEventDto> models =
+                _tmeventService.GetAllTMEvent().OrderBy(u => u.StartEvent).Reverse().ToList();
+
+            return View("Index", models);
         }
 
         // GET: TMEventModels/Details/5
@@ -86,10 +97,11 @@ namespace TicketManagement.Web.Controllers
         [Authorize(Roles = "eventmanager")]
         public ActionResult Create([Bind] TMEventViewModel obj)
         {
-            if (ModelState.IsValid)
+            if (obj != null && ModelState.IsValid )
             {
-                _tmeventService.CreateTMEvent(obj?.TMEvent);
-                return RedirectToAction("Index");
+                obj.TMEvent = _tmeventService.CreateTMEvent(obj.TMEvent);
+
+                return RedirectToAction("Index", "TMEventAreaModels", new { idEvent = obj.TMEvent.Id });
             }
 
             obj = obj ?? new TMEventViewModel { TMEvent = new TMEventDto() };

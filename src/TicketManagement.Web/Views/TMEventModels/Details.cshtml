@@ -18,13 +18,16 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <div class="pull-right">
-                    @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
-                           new { idEvent = Model.Id }, new { @class = "btn btn-sm btn-default" })
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
-                    @Html.ActionLink("Details", "Details", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
-                    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-sm btn-danger" })
-                </div>
+                @if (User.IsInRole("eventmanager"))
+                {
+                    <div class="pull-right">
+                        @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
+                               new { idEvent = Model.Id }, new { @class = "btn btn-sm btn-default" })
+                        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+                        @Html.ActionLink("Details", "Details", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
+                        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-sm btn-danger" })
+                    </div>
+                }
                 <p>
                     <span class="text-info">@Html.DisplayFor(modelItem => Model.StartEvent)</span> --
 
@@ -55,8 +58,8 @@
                         MIDDLE PRISE BY SEAT @Html.DisplayFor(modelItem => Model.MiddlePriceBySeat) $
                     </span>
                     <p class="pull-right">
-                        @Html.ActionLink("SHOUSE SEATS", "AreasMap", "TMEventAreaModels", 
-                       new { idEvent = Model.Id }, 
+                        @Html.ActionLink("SHOUSE SEATS", "AreasMap", "TMEventAreaModels",
+                       new { idEvent = Model.Id },
                        new { @class = "btn btn-primary" })
                     </p>
                 </div>
