@@ -12,11 +12,14 @@ namespace TicketManagement.Web.Controllers
     public class TMEventModelsController : Controller
     {
         private readonly ITMEventService _tmeventService;
+        private readonly ITMLayoutService _tmlayoutService;
         private readonly IVenueService _venueService;
 
-        public TMEventModelsController(ITMEventService tmeventService, IVenueService venueService)
+        public TMEventModelsController(ITMEventService tmeventService,
+            ITMLayoutService tmlayoutService, IVenueService venueService)
         {
             _tmeventService = tmeventService;
+            _tmlayoutService = tmlayoutService;
             _venueService = venueService;
         }
 
@@ -42,20 +45,21 @@ namespace TicketManagement.Web.Controllers
         private List<SelectListItem> GetVenueLayoutNames()
         {
             List<VenueDto> venues = _venueService.GetAllVenue();
-            List<TMLayoutVievModel> layouts = new List<TMLayoutVievModel>();
+            List<TMLayoutDto> layouts = _tmlayoutService.GetAllTMLayout();
+            List<TMLayoutVenueViewModel> layoutsView = new List<TMLayoutVenueViewModel>();
 
             foreach (var item in venues)
             {
-                _venueService.GetAllLayoutByVenue(item.Id).ForEach(l =>
+                layouts.Where(l => l.VenueId == item.Id).ToList().ForEach(l =>
                 {
-                    layouts.Add(new TMLayoutVievModel { TMLayout = l, VenueName = item.Description });
+                    layoutsView.Add(new TMLayoutVenueViewModel { TMLayout = l, VenueName = item.Description });
                 });
             }
 
             CultureInfo cultures = CultureInfo.CreateSpecificCulture("en-US");
 
             var items = new List<SelectListItem>();
-            layouts.ForEach(l => items.Add(new SelectListItem
+            layoutsView.ForEach(l => items.Add(new SelectListItem
             {
                 Text = l.VenueName + "--" + l.TMLayout.Description,
                 Value = l.TMLayout.Id.ToString("G", cultures),
@@ -66,7 +70,7 @@ namespace TicketManagement.Web.Controllers
 
         // GET: TMEventModels/Create
         [HttpGet]
-        ////[Authorize(Roles = "event_manager")]
+        [Authorize(Roles = "eventmanager")]
         public ActionResult Create()
         {
             return View(new TMEventViewModel
@@ -79,7 +83,7 @@ namespace TicketManagement.Web.Controllers
         // POST: TMEventModels/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        ////[Authorize(Roles = "event_manager")]
+        [Authorize(Roles = "eventmanager")]
         public ActionResult Create([Bind] TMEventViewModel obj)
         {
             if (ModelState.IsValid)
@@ -97,7 +101,7 @@ namespace TicketManagement.Web.Controllers
 
         // GET: TMEventModels/Edit/5
         [HttpGet]
-        ////[Authorize(Roles = "event_manager")]
+        [Authorize(Roles = "eventmanager")]
         public ActionResult Edit(int id)
         {
             TMEventDto obj = _tmeventService.GetTMEvent(id);
@@ -114,7 +118,7 @@ namespace TicketManagement.Web.Controllers
         // POST: TMEventModels/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        ////[Authorize(Roles = "event_manager")]
+        [Authorize(Roles = "eventmanager")]
         public ActionResult Edit(int id, [Bind] TMEventDto obj)
         {
             if (obj != null && ModelState.IsValid)
@@ -130,7 +134,7 @@ namespace TicketManagement.Web.Controllers
 
         // POST: TMEventModels/Delete/5
         [HttpGet]
-        [Authorize(Roles = "event_manager")]
+        [Authorize(Roles = "eventmanager")]
         public ActionResult Delete(int id = 0)
         {
             _tmeventService.RemoveTMEvent(id);

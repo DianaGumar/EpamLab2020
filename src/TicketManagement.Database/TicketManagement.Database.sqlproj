@@ -86,8 +86,6 @@
     <Build Include="Tables\Venue.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TicketManagement.publish.xml" />
-    <None Include="TicketManagement_1.Database.publish.xml" />
     <None Include="Snapshots\TicketManagement.Database_20201025_02-29-54.dacpac" />
   </ItemGroup>
   <ItemGroup>

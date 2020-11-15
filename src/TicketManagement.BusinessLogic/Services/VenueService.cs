@@ -23,8 +23,6 @@ namespace TicketManagement.BusinessLogic
         TMLayoutDto CreateLayout(TMLayoutDto layout, List<AreaDto> areas, List<SeatDto> seats);
 
         void RemoveLayout(int layoutId);
-
-        List<TMLayoutDto> GetAllLayoutByVenue(int venueId);
     }
 
     internal class VenueService : IVenueService
@@ -173,11 +171,6 @@ namespace TicketManagement.BusinessLogic
                 areas.ForEach(a => _areaService.CreateArea(a));
                 seats.ForEach(s => _seatService.CreateSeat(s));
             }
-        }
-
-        public List<TMLayoutDto> GetAllLayoutByVenue(int venueId)
-        {
-            return _tmlayoutService.GetAllTMLayout().Where(l => l.VenueId == venueId).ToList();
         }
 
         private TMLayoutDto CreateDefaultLayoutForVenue(VenueDto obj)

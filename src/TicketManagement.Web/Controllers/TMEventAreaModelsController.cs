@@ -27,7 +27,7 @@ namespace TicketManagement.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "event_manager")]
+        [Authorize(Roles = "eventmanager")]
         public ActionResult SetPrice(int id, [Bind] TMEventAreaDto obj)
         {
             if (obj != null)
@@ -40,14 +40,14 @@ namespace TicketManagement.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "event_manager")]
+        [Authorize(Roles = "eventmanager")]
         public PartialViewResult SetPrice(int id = 0)
         {
             return PartialView("_SetPrice", _tmeventareaService.GetTMEventArea(id));
         }
 
         [HttpGet]
-        [Authorize(Roles = "authorized_user")]
+        [Authorize(Roles = "authorizeduser")]
         public ActionResult AreasMap(int idEvent)
         {
             List<TMEventAreaDto> objs = _tmeventareaService.GetAllTMEventArea()
@@ -57,7 +57,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "authorized_user")]
+        [Authorize(Roles = "authorizeduser")]
         public PartialViewResult SeatsMap(int idArea)
         {
             List<TMEventSeatDto> objs = _tmeventareaService.GetTMEventSeatsByArea(idArea);
@@ -66,7 +66,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "authorized_user")]
+        [Authorize(Roles = "authorizeduser")]
         public ActionResult ChangeSeatState(int id = 0, SeatState state = 0, int areaId = 0)
         {
             state = (int)state < Enum.GetNames(typeof(SeatState)).Length - 1 ? state + 1 : 0;

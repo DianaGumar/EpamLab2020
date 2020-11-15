@@ -80,11 +80,26 @@
         </div>
 
     </div>
-    <div class="col-lg-6">
-        @Html.Action("IndexVenueOnlyNames", "VenueModels")
+
+    <div class="col-md-3 col-sm-3 col-xs-4">
+        <div class="container">
+            <img src="" alt="no img" id="event_img_view" class="img-thumbnail" height="180">
+        </div>
     </div>
+
 </div>
 
-@section Scripts {
+@section Scripts
+{
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            $("#event_img").on('input', function () {
+                $("#event_img_view").attr("src", $(this).val());
+            });
+        });
+
+    </script>
 }
+
