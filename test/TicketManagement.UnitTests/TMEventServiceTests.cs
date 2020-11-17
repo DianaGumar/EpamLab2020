@@ -54,11 +54,16 @@ namespace TicketManagement.UnitTests
             Mock<ITMEventRepository> mockTMEventRepository = new Mock<ITMEventRepository>();
             mockTMEventRepository.Setup(x => x.GetAll()).Returns(events);
 
-            Mock<ITMLayoutService> mockTMLayoutService = new Mock<ITMLayoutService>();
+            Mock<ITMEventAreaService> mockTMEventAreaService = new Mock<ITMEventAreaService>();
+            mockTMEventAreaService.Setup(x => x.GetAllTMEventArea())
+                .Returns(new List<TMEventAreaDto> { new TMEventAreaDto { TMEventId = 1, Id = 1 } });
 
-            // mockTMLayoutService.Setup(x => x.GetTMLayout(1)).Returns(events)
+            Mock<ITMEventSeatService> mockTMEventSeatService = new Mock<ITMEventSeatService>();
+            mockTMEventSeatService.Setup(x => x.GetAllTMEventSeat())
+                .Returns(new List<TMEventSeatDto> { new TMEventSeatDto { TMEventAreaId = 1, Id = 1 } });
+
             TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object,
-                mockTMLayoutService.Object);
+                mockTMEventAreaService.Object, mockTMEventSeatService.Object);
 
             TMEventDto tmevent = tmeventService.CreateTMEvent(new TMEventDto
             {
@@ -95,10 +100,11 @@ namespace TicketManagement.UnitTests
             Mock<ITMEventRepository> mockTMEventRepository = new Mock<ITMEventRepository>();
             mockTMEventRepository.Setup(x => x.GetAll()).Returns(events);
 
-            Mock<ITMLayoutService> mockTMLayoutService = new Mock<ITMLayoutService>();
+            Mock<ITMEventAreaService> mockTMEventAreaService = new Mock<ITMEventAreaService>();
+            Mock<ITMEventSeatService> mockTMEventSeatService = new Mock<ITMEventSeatService>();
 
             TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object,
-                mockTMLayoutService.Object);
+                 mockTMEventAreaService.Object, mockTMEventSeatService.Object);
 
             TMEventDto tmeventPre_dto = new TMEventDto
             {
@@ -137,10 +143,11 @@ namespace TicketManagement.UnitTests
             Mock<ITMEventRepository> mockTMEventRepository = new Mock<ITMEventRepository>();
             mockTMEventRepository.Setup(x => x.GetAll()).Returns(events);
 
-            Mock<ITMLayoutService> mockTMLayoutService = new Mock<ITMLayoutService>();
+            Mock<ITMEventAreaService> mockTMEventAreaService = new Mock<ITMEventAreaService>();
+            Mock<ITMEventSeatService> mockTMEventSeatService = new Mock<ITMEventSeatService>();
 
             TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object,
-                mockTMLayoutService.Object);
+                 mockTMEventAreaService.Object, mockTMEventSeatService.Object);
 
             TMEventDto tmeventPre_dto = new TMEventDto
             {

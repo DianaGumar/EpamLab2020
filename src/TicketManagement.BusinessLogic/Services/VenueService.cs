@@ -99,6 +99,7 @@ namespace TicketManagement.BusinessLogic
             {
                 Venue e = _venueRepository.Create(ConvertToEntity(obj));
                 obj = ConvertToDto(e);
+
                 CreateDefaultLayoutForVenue(obj);
 
                 return obj;
