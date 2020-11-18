@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using TicketManagement.DataAccess.Entities;
@@ -53,8 +54,12 @@ namespace TicketManagement.DataAccess.DAL
 
         public void Remove(int id)
         {
-            T obj = GetById(id);
-            Remove(obj);
+            T obj = DataBaseSet.Find(id);
+            DataBaseSet.Remove(obj);
+
+            Context.SaveChanges();
+
+            Context.Database.Log = (e) => { Debug.WriteLine(e); };
         }
 
         public void Update(T obj)

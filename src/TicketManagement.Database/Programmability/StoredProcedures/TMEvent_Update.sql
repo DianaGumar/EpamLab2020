@@ -1,5 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[SP_Update_TMEvent]
-	@TMEventId int,
+﻿CREATE PROCEDURE [dbo].[TMEvent_Update]
+	@Id int,
 	@Name nvarchar(120),
 	@Description nvarchar(max),
 	@LayoutId int,
@@ -11,7 +11,7 @@ AS
 	BEGIN TRANSACTION;
 	
 	declare @pastLayoutId int
-	select @pastLayoutId = TMEvent.TMLayoutId from TMEvent where Id =  @TMEventId
+	select @pastLayoutId = TMEvent.TMLayoutId from TMEvent where Id =  @Id
 
 	update TMEvent 
 	set 
@@ -21,21 +21,21 @@ AS
 	StartEvent = @StartEvent, 
 	EndEvent = @EndEvent,
 	Img = @Img
-    where Id = @TMEventId
+    where Id = @Id
 
 
 	if @pastLayoutId <> @LayoutId 
 	begin
 
 		delete from  TMEventSeat where TMEventAreaId in
-			(select Id from TMEventArea where TMEventArea.TMEventId = @TMEventId)
-		delete from TMEventArea where TMEventArea.TMEventId = @TMEventId
+			(select Id from TMEventArea where TMEventArea.TMEventId = @Id)
+		delete from TMEventArea where TMEventArea.TMEventId = @Id
 
 		declare @TMEventArea table (Id int)
 
 		INSERT INTO TMEventArea (TMEventId, Description, CoordX, CoordY, Price) 
 		OUTPUT INSERTED.Id into @TMEventArea
-		SELECT @TMEventId, Area.Description, Area.CoordX, Area.CoordY, 0
+		SELECT @Id, Area.Description, Area.CoordX, Area.CoordY, 0
 		FROM Area WHERE Area.TMLayoutId = @LayoutId;
 
 		WITH tmeventArea_id_area_id AS
@@ -43,7 +43,7 @@ AS
 			SELECT TMEventArea.Id as tmeventArea_id, Area.Id as area_id
 			FROM TMEventArea, Area
 			WHERE TMEventArea.Description = Area.Description and Area.TMLayoutId = @LayoutId 
-			and TMEventArea.TMEventId = @TMEventId
+			and TMEventArea.TMEventId = @Id
 		)
 
 		INSERT INTO dbo.TMEventSeat (TMEventAreaId, Row, Number, State) 

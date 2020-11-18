@@ -1,6 +1,8 @@
-﻿using System.Configuration;
+﻿using System;
+////using System.Configuration;
 using FluentAssertions;
 using NUnit.Framework;
+using TicketManagement.DataAccess;
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.DataAccess.Entities;
 
@@ -8,18 +10,21 @@ namespace TicketManagement.IntegrationTests
 {
     // with real data base
     [TestFixture]
-    public class DALRepositoryTests
+    public class DALRepositoryTests : IDisposable
     {
-        private readonly string _str = ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
+        ////private readonly string _str = ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
+
+        private readonly TMContext _context = new TMContext("DefaultConnection");
+        private bool _isDisposed;
 
         [Test]
         public void RepositoryCreateReadMethodByVenueTest()
         {
             // arange
-            IVenueRepository venueRepository = new VenueRepository(_str);
-            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
-            IAreaRepository areaRepository = new AreaRepository(_str);
-            ISeatRepository seatRepository = new SeatRepository(_str);
+            var venueRepository = new VenueRepositoryEF(_context);
+            var layoutRepository = new TMLayoutRepositoryEF(_context);
+            var areaRepository = new AreaRepositoryEF(_context);
+            var seatRepository = new SeatRepositoryEF(_context);
 
             // act
             Venue venue = venueRepository.Create(
@@ -47,10 +52,10 @@ namespace TicketManagement.IntegrationTests
         public void RepositoryDeleteMethodByVenueTest()
         {
             // arange
-            IVenueRepository venueRepository = new VenueRepository(_str);
-            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
-            IAreaRepository areaRepository = new AreaRepository(_str);
-            ISeatRepository seatRepository = new SeatRepository(_str);
+            var venueRepository = new VenueRepositoryEF(_context);
+            var layoutRepository = new TMLayoutRepositoryEF(_context);
+            var areaRepository = new AreaRepositoryEF(_context);
+            var seatRepository = new SeatRepositoryEF(_context);
 
             // act
             Venue venue = venueRepository.Create(
@@ -68,20 +73,20 @@ namespace TicketManagement.IntegrationTests
             venueRepository.Remove(venue.Id);
 
             // assert
-            new Venue().Should().BeEquivalentTo(venueRepository.GetById(venue.Id));
-            new TMLayout().Should().BeEquivalentTo(layoutRepository.GetById(layout.Id));
-            new Area().Should().BeEquivalentTo(areaRepository.GetById(area.Id));
-            new Seat().Should().BeEquivalentTo(seatRepository.GetById(seat.Id));
+            venueRepository.GetById(venue.Id).Should().BeNull();
+            layoutRepository.GetById(layout.Id).Should().BeNull();
+            areaRepository.GetById(area.Id).Should().BeNull();
+            seatRepository.GetById(seat.Id).Should().BeNull();
         }
 
         [Test]
         public void RepositoryUpdateMethodByVenueTest()
         {
             // arange
-            IVenueRepository venueRepository = new VenueRepository(_str);
-            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
-            IAreaRepository areaRepository = new AreaRepository(_str);
-            ISeatRepository seatRepository = new SeatRepository(_str);
+            var venueRepository = new VenueRepositoryEF(_context);
+            var layoutRepository = new TMLayoutRepositoryEF(_context);
+            var areaRepository = new AreaRepositoryEF(_context);
+            var seatRepository = new SeatRepositoryEF(_context);
 
             // act
             Venue venue = venueRepository.Create(
@@ -113,6 +118,30 @@ namespace TicketManagement.IntegrationTests
             areaRepository.Remove(area);
             layoutRepository.Remove(layout);
             venueRepository.Remove(venue.Id);
+        }
+
+        // Dispose() calls Dispose(true)
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                // free managed resources
+                _context.Dispose();
+            }
+
+            _isDisposed = true;
         }
     }
 }

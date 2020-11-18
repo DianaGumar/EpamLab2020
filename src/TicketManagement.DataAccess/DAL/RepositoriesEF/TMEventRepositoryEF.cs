@@ -1,6 +1,8 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Linq;
+﻿////using System;
+////using System.Data.Entity;
+////using System.Data.SqlClient;
+////////using System.Diagnostics;
+////using System.Linq;
 using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
@@ -12,42 +14,54 @@ namespace TicketManagement.DataAccess.DAL
         {
         }
 
-        public new TMEvent Create(TMEvent obj)
-        {
-            SqlParameter name = new SqlParameter("@Name", obj?.Name);
-            SqlParameter description = new SqlParameter("@Description", obj?.Description);
-            SqlParameter tmlayoutId = new SqlParameter("@TMLayoutId", obj?.TMLayoutId);
-            SqlParameter startEvent = new SqlParameter("@StartEvent", obj?.StartEvent);
-            SqlParameter endEvent = new SqlParameter("@EndEvent", obj?.EndEvent);
-            SqlParameter img = new SqlParameter("@Img", obj?.Img ?? (object)DBNull.Value);
+        ////public new TMEvent Create(TMEvent obj)
+        ////{
+        ////    SqlParameter name = new SqlParameter("@Name", obj?.Name);
+        ////    SqlParameter description = new SqlParameter("@Description", obj?.Description);
+        ////    SqlParameter tmlayoutId = new SqlParameter("@TMLayoutId", obj?.TMLayoutId);
+        ////    SqlParameter startEvent = new SqlParameter("@StartEvent", obj?.StartEvent);
+        ////    SqlParameter endEvent = new SqlParameter("@EndEvent", obj?.EndEvent);
+        ////    SqlParameter img = new SqlParameter("@Img", obj?.Img ?? (object)DBNull.Value);
 
-            int id = Context.Database.SqlQuery<int>(
-                "SP_Create_TMEvent @Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img",
-                name, description, tmlayoutId, startEvent, endEvent, img).SingleOrDefault();
+        ////    int id = Context.Database.SqlQuery<int>(
+        ////        "SP_Create_TMEvent @Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img",
+        ////        name, description, tmlayoutId, startEvent, endEvent, img).SingleOrDefault();
 
-            return GetById(id);
-        }
+        ////    Context.SaveChanges();
 
-        public new void Remove(int id)
-        {
-            SqlParameter tmeventId = new SqlParameter("@TMEventId", id);
+        ////    return GetById(id);
+        ////}
 
-            Context.Database.ExecuteSqlCommand("SP_Delete_TMEvent @TMEventId", tmeventId);
-        }
+        ////public new void Remove(int id)
+        ////{
+        ////    SqlParameter tmeventId = new SqlParameter("@Id", id);
 
-        public new void Update(TMEvent obj)
-        {
-            SqlParameter id = new SqlParameter("@TMEventId", obj?.Id);
-            SqlParameter name = new SqlParameter("@Name", obj?.Name);
-            SqlParameter description = new SqlParameter("@Description", obj?.Description);
-            SqlParameter tmlayoutId = new SqlParameter("@TMLayoutId", obj?.TMLayoutId);
-            SqlParameter startEvent = new SqlParameter("@StartEvent", obj?.StartEvent);
-            SqlParameter endEvent = new SqlParameter("@EndEvent", obj?.EndEvent);
-            SqlParameter img = new SqlParameter("@Img", obj?.Img ?? (object)DBNull.Value);
+        ////    TMEvent te = GetById(id);
 
-            Context.Database.ExecuteSqlCommand(
-                "SP_Update_TMEvent @TMEventId, @Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img",
-                id, name, description, tmlayoutId, startEvent, endEvent, img);
-        }
+        ////    Context.Database.ExecuteSqlCommand("TMEvent_Delete @Id", tmeventId);
+
+        ////    Context.Entry(te).State = EntityState.Deleted;
+
+        ////    Context.SaveChanges();
+
+        ////    Context.Database.Log = (e) => { Debug.WriteLine(e); };
+        ////}
+
+        ////public new void Update(TMEvent obj)
+        ////{
+        ////    SqlParameter id = new SqlParameter("@TMEventId", obj?.Id);
+        ////    SqlParameter name = new SqlParameter("@Name", obj?.Name);
+        ////    SqlParameter description = new SqlParameter("@Description", obj?.Description);
+        ////    SqlParameter tmlayoutId = new SqlParameter("@TMLayoutId", obj?.TMLayoutId);
+        ////    SqlParameter startEvent = new SqlParameter("@StartEvent", obj?.StartEvent);
+        ////    SqlParameter endEvent = new SqlParameter("@EndEvent", obj?.EndEvent);
+        ////    SqlParameter img = new SqlParameter("@Img", obj?.Img ?? (object)DBNull.Value);
+
+        ////    Context.Database.ExecuteSqlCommand(
+        ////        "SP_Update_TMEvent @TMEventId, @Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img",
+        ////        id, name, description, tmlayoutId, startEvent, endEvent, img);
+
+        ////    Context.SaveChanges();
+        ////}
     }
 }

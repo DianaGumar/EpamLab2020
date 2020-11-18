@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+////using System.Data.Entity.ModelConfiguration.Conventions;
 using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess
@@ -28,5 +29,35 @@ namespace TicketManagement.DataAccess
         public DbSet<TMLayout> TMLayouts { get; set; }
 
         public DbSet<Venue> Venues { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            // off ef cascade deleting
+            ////modelBuilder?.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            // maping stored prosedures to ef CUD operations with TMEvent
+            modelBuilder?.Entity<TMEvent>()
+              .MapToStoredProcedures(s =>
+                s.Update(u => u.HasName("TMEvent_Update")
+                               .Parameter(b => b.Id, "Id")
+                               .Parameter(b => b.Name, "Name")
+                               .Parameter(b => b.Description, "Description")
+                               .Parameter(b => b.TMLayoutId, "LayoutId")
+                               .Parameter(b => b.StartEvent, "StartEvent")
+                               .Parameter(b => b.EndEvent, "EndEvent")
+                               .Parameter(b => b.Img, "Img"))
+                 .Delete(d => d.HasName("TMEvent_Delete")
+                               .Parameter(b => b.Id, "Id"))
+                 .Insert(i => i.HasName("TMEvent_Create")
+                               .Parameter(b => b.Name, "Name")
+                               .Parameter(b => b.Description, "Description")
+                               .Parameter(b => b.TMLayoutId, "TMLayoutId")
+                               .Parameter(b => b.StartEvent, "StartEvent")
+                               .Parameter(b => b.EndEvent, "EndEvent")
+                               .Parameter(b => b.Img, "Img")
+                               .Result(b => b.Id, "Id")));
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

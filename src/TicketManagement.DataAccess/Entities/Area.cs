@@ -14,7 +14,6 @@ namespace TicketManagement.DataAccess.Entities
         [Key]
         public int Id { get; set; }
 
-        // [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
         public int TMLayoutId { get; set; }
 

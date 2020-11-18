@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[SP_Create_TMEvent]
+﻿CREATE PROCEDURE [dbo].[TMEvent_Create]
 	@Name nvarchar(120),
 	@Description nvarchar(max),
 	@TMLayoutId int,
@@ -37,8 +37,8 @@ AS
 	tmeventArea_id_area_id.area_id = Seat.AreaId
 
 	COMMIT;
-	select @Id
-	SELECT IDENT_CURRENT('TMEvent')
+	select @Id AS Id
+	SELECT IDENT_CURRENT('TMEvent') AS Id
 	
 
 
