@@ -197,7 +197,7 @@ namespace TicketManagement.Web.Controllers
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "TMEventModels");
                 }
 
                 AddErrors(result);
@@ -438,7 +438,7 @@ namespace TicketManagement.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "TMEventModels");
         }
 
         // GET: /Account/ExternalLoginFailure
@@ -490,7 +490,7 @@ namespace TicketManagement.Web.Controllers
                 return Redirect(returnURl);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "TMEventModels");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
