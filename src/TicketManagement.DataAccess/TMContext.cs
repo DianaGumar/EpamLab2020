@@ -10,6 +10,11 @@ namespace TicketManagement.DataAccess
         {
         }
 
+        public TMContext(string dbName)
+            : base(dbName)
+        {
+        }
+
         public DbSet<Area> Areas { get; set; }
 
         public DbSet<Seat> Seats { get; set; }
