@@ -10,32 +10,42 @@ using TicketManagement.DataAccess.Entities;
 namespace TicketManagement.IntegrationTests.EFTests
 {
     [TestFixture]
-    public class TMEventRepositoryEFTest
+    public class TMEventRepositoryEFTest : IDisposable
     {
-        [Test]
-        public void TMEventGetAllTest()
-        {
-            TMContext context = new TMContext();
+        private readonly TMContext _context = new TMContext("DefaultConnection_ef_tests");
+        private bool _isDisposed;
 
+        [SetUp]
+        public void Initiaslise()
+        {
+            _context.Database.CreateIfNotExists();
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            _context.Database.Delete();
+            _context.Dispose();
+        }
+
+        [Test]
+        public void TMEventGetAll()
+        {
             // arange
-            ITMEventRepository objRepository = new TMEventRepositoryEF(context);
+            ITMEventRepository objRepository = new TMEventRepositoryEF(_context);
 
             // act
             List<TMEvent> objs = objRepository.GetAll().ToList();
 
             // assert
             objs.Should().NotBeNull();
-
-            context.Dispose();
         }
 
         [Test]
-        public void TMEventCreateTest()
+        public void TMEventCreate()
         {
-            TMContext context = new TMContext();
-
             // arange
-            ITMEventRepository objRepository = new TMEventRepositoryEF(context);
+            ITMEventRepository objRepository = new TMEventRepositoryEF(_context);
 
             // act
             TMEvent tmevent = objRepository.Create(
@@ -53,16 +63,13 @@ namespace TicketManagement.IntegrationTests.EFTests
             tmevent.Should().BeEquivalentTo(objRepository.GetById(tmevent.Id));
 
             objRepository.Remove(tmevent.Id);
-            context.Dispose();
         }
 
         [Test]
-        public void TMEventUpdateTest()
+        public void TMEventUpdate()
         {
-            TMContext context = new TMContext();
-
             // arange
-            ITMEventRepository objRepository = new TMEventRepositoryEF(context);
+            ITMEventRepository objRepository = new TMEventRepositoryEF(_context);
             TMEvent e = objRepository.GetAll().Last();
 
             // act
@@ -72,17 +79,13 @@ namespace TicketManagement.IntegrationTests.EFTests
             // assert
             TMEvent ee = objRepository.GetAll().Last();
             ee.Should().BeEquivalentTo(e);
-
-            context.Dispose();
         }
 
         [Test]
-        public void TMEventDeleteTest()
+        public void TMEventDelete()
         {
-            TMContext context = new TMContext();
-
             // arange
-            ITMEventRepository objRepository = new TMEventRepositoryEF(context);
+            ITMEventRepository objRepository = new TMEventRepositoryEF(_context);
 
             int id = objRepository.GetAll().Last().Id;
 
@@ -92,8 +95,30 @@ namespace TicketManagement.IntegrationTests.EFTests
 
             // assert
             e.Should().BeNull();
+        }
 
-            context.Dispose();
+        // Dispose() calls Dispose(true)
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                // free managed resources
+                _context.Dispose();
+            }
+
+            _isDisposed = true;
         }
     }
 }

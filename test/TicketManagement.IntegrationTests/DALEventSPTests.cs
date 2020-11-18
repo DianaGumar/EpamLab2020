@@ -7,23 +7,27 @@ using System.Linq;
 using FluentAssertions;
 using Microsoft.SqlServer.Dac;
 using NUnit.Framework;
+using TicketManagement.DataAccess;
 using TicketManagement.DataAccess.DAL;
 using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.IntegrationTests
 {
-    public class DALEventSPTests
+    public class DALEventSPTests : IDisposable
     {
+        // create and delete test database methods for non EF repositoryes
         private const string SCHEMANAME = "TicketManagement_Database_test";
         private const string DACPACPATH =
-            "src/TicketManagement.Database/bin/Debug/TicketManagement.Database.dacpac";
+            "../src/TicketManagement.Database/bin/Debug/TicketManagement.Database.dacpac";
 
         private static TextWriter _output = new StreamWriter("output.txt", false);
 
         private readonly string _str =
-            ConfigurationManager.ConnectionStrings["LocalSqlServer_test"].ConnectionString;
+            ConfigurationManager.ConnectionStrings["DefaultConnection_test"].ConnectionString;
 
-        // Drop and create db will be created by EF for future
+        private readonly TMContext _context = new TMContext("DefaultConnection");
+        private bool _isDisposed;
+
         public static void DropSchema(string schemaName, string connStr)
         {
             SqlConnection conn = new SqlConnection(connStr);
@@ -71,22 +75,34 @@ namespace TicketManagement.IntegrationTests
             _output.WriteLine(e.Status + ": " + e.Message);
         }
 
+        // create and delete test database methods for EF repositoryes
+        ////[SetUp]
+        ////public void Initiaslise()
+        ////{
+        ////    ////CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+        ////    _context.Database.CreateIfNotExists();
+        ////}
+
+        ////[TearDown]
+        ////public void Cleanup()
+        ////{
+        ////    ////DropSchema(SCHEMANAME, _str);
+        ////    _context.Database.Delete();
+        ////    _context.Dispose();
+        ////}
+
         [Test]
         public void CreateEventTest()
         {
-            // publish schema by dacpac
-            CreateDataBase(SCHEMANAME, _str, DACPACPATH);
-
-            // create tested data
             // arange
-            IVenueRepository venueRepository = new VenueRepository(_str);
-            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
-            IAreaRepository areaRepository = new AreaRepository(_str);
-            ISeatRepository seatRepository = new SeatRepository(_str);
+            IVenueRepository venueRepository = new VenueRepositoryEF(_context);
+            ITMLayoutRepository layoutRepository = new TMLayoutRepositoryEF(_context);
+            IAreaRepository areaRepository = new AreaRepositoryEF(_context);
+            ISeatRepository seatRepository = new SeatRepositoryEF(_context);
 
-            ITMEventRepository eventRepository = new TMEventRepository(_str);
-            ITMEventAreaRepository eventAreaRepository = new TMEventAreaRepository(_str);
-            ITMEventSeatRepository eventSeatRepository = new TMEventSeatRepository(_str);
+            ITMEventRepository eventRepository = new TMEventRepositoryEF(_context);
+            ITMEventAreaRepository eventAreaRepository = new TMEventAreaRepositoryEF(_context);
+            ITMEventSeatRepository eventSeatRepository = new TMEventSeatRepositoryEF(_context);
 
             Venue venue = venueRepository.Create(
                 new Venue { Description = "some v desc2", Address = "some address2", Lenght = 5, Weidth = 5 });
@@ -121,14 +137,6 @@ namespace TicketManagement.IntegrationTests
                 Where(s => tmeventareas.Any(a => a.Id == s.TMEventAreaId)).ToList();
             TMEvent tmeventFromDB = eventRepository.GetById(tmevent.Id);
 
-            // delete tested data
-            seats.ForEach(s => seatRepository.Remove(s.Id));
-            areas.ForEach(a => areaRepository.Remove(a.Id));
-
-            eventRepository.Remove(tmevent.Id);
-            layoutRepository.Remove(layout.Id);
-            venueRepository.Remove(venue.Id);
-
             // assert
             tmevent.Should().BeEquivalentTo(tmeventFromDB);
 
@@ -142,8 +150,13 @@ namespace TicketManagement.IntegrationTests
             seats.ForEach(ta => ta.Id = 0);
             tmeventseats.Should().BeEquivalentTo(seats, options => options.ExcludingMissingMembers());
 
-            // drop schema
-            DropSchema(SCHEMANAME, _str);
+            // delete tested data
+            seats.ForEach(s => seatRepository.Remove(s.Id));
+            areas.ForEach(a => areaRepository.Remove(a.Id));
+
+            eventRepository.Remove(tmevent.Id);
+            layoutRepository.Remove(layout.Id);
+            venueRepository.Remove(venue.Id);
         }
 
         [Test]
@@ -374,6 +387,30 @@ namespace TicketManagement.IntegrationTests
 
             // drop schema
             DropSchema(SCHEMANAME, _str);
+        }
+
+        // Dispose() calls Dispose(true)
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                // free managed resources
+                _context.Dispose();
+            }
+
+            _isDisposed = true;
         }
     }
 }
