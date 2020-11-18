@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TicketManagement.Domain.DTO.TMEventAreaDto>
+
+@{
+    ViewBag.Title = "AreasMap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int height_layout_i = 0;
+    int width_layout_i = 0;
+    double margin = 1.15;
+
+    int size = 80;
+
+    foreach (var item in Model)
+    {
+        item.CountSeatsYStr = item.CountSeatsY * size + "px";
+        item.CountSeatsXStr = item.CountSeatsX * size + "px";
+
+        item.CoordYStr = item.CoordY * size * margin + 20 + "px";
+        item.CoordXStr = item.CoordX * size * margin + "px";
+
+        width_layout_i += item.CoordX + item.CountSeatsX;
+        height_layout_i += item.CoordY + item.CountSeatsY;
+    }
+
+    string height_layout = height_layout_i * size / 1.2 + "px";
+    string width_layout = width_layout_i * size / 1.2 + "px";
+
+}
+
+
+<p></p>
+<span>
+    @Html.ActionLink("< Back to event details", "Details", "TMEventModels",
+        new { id = Model.ElementAt(0).TMEventId }, new { @style = "font-size:medium" })
+</span>
+
+<h2>AreasMap</h2>
+
+<div class="container" style="align-content:center; height: 65vh;">
+
+    @foreach (var item in Model)
+    {
+        <div class="container">
+            <div class="container"
+                 style="
+                    padding: 5px;
+                    background-color: lightgray;
+                    position: absolute;
+                    height: @item.CountSeatsYStr;
+                    width: @item.CountSeatsXStr;
+                    margin-top: @item.CoordYStr;
+                    margin-left: @item.CoordXStr;">
+
+                <div class="text-info" style="position: relative; margin-top:-25px; width: 300px">
+                    @item.Description | @item.Price$
+                </div>
+
+                @Html.Action("SeatsMap", "TMEventAreaModels", new { idArea = item.Id })
+
+            </div>
+        </div>
+    }
+
+</div>

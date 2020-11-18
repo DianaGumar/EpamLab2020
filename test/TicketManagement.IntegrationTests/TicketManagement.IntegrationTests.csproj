@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="DALEventSPTests.cs" />
     <Compile Include="DALRepositoryTests.cs" />
+    <Compile Include="EFTests\TMEventRepositoryEFTest.cs" />
+    <Compile Include="EFTests\VenueRepositoryEFTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

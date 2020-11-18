@@ -4,7 +4,8 @@
 	@Description nvarchar(max),
 	@LayoutId int,
 	@StartEvent datetime,
-	@EndEvent datetime
+	@EndEvent datetime,
+	@Img nvarchar(max)
 AS
 	
 	BEGIN TRANSACTION;
@@ -18,7 +19,8 @@ AS
 	Description = @Description, 
 	TMLayoutId = @LayoutId, 
 	StartEvent = @StartEvent, 
-	EndEvent = @EndEvent
+	EndEvent = @EndEvent,
+	Img = @Img
     where Id = @TMEventId
 
 
@@ -32,7 +34,7 @@ AS
 		declare @TMEventArea table (Id int)
 
 		INSERT INTO TMEventArea (TMEventId, Description, CoordX, CoordY, Price) 
-		OUTPUT INSERTED.ID into @TMEventArea
+		OUTPUT INSERTED.Id into @TMEventArea
 		SELECT @TMEventId, Area.Description, Area.CoordX, Area.CoordY, 0
 		FROM Area WHERE Area.TMLayoutId = @LayoutId;
 

@@ -86,8 +86,7 @@
     <Build Include="Tables\Venue.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TicketManagement.publish.xml" />
-    <None Include="Snapshots\TicketManagement.Database_20201023_12-19-10.dacpac" />
+    <None Include="Snapshots\TicketManagement.Database_20201025_02-29-54.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post\Script.TestEventSPData.sql" />

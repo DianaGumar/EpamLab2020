@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TicketManagement.Domain.DTO.TMEventSeatDto>
+
+@{
+    double margin = 1.3;
+    int size = 55;
+    string sizeStr = size + "px";
+
+    string seatColor = "";
+}
+
+@foreach (var item in Model)
+{
+    item.NumberStr = item.Number * size * margin - size + "px";
+    item.RowStr = item.Row * size * margin - size + "px";
+}
+
+
+@foreach (var item in Model)
+{
+    // make with one schema call 
+
+    if((int)item.State == 0)
+    {
+        seatColor = "cornflowerblue";
+    }
+    else if((int)item.State == 1)
+    {
+        seatColor = "darkslateblue";
+    }
+
+    <div class="container">
+        <a href="@Url.Action("ChangeSeatState","TMEventAreaModels", 
+                new { id = item.Id, state = item.State, areaId = item.TMEventAreaId })">
+            <div class="container " style="position:absolute; padding:5px;
+            max-height: @sizeStr; max-width: @sizeStr; top:@item.RowStr; left:@item.NumberStr;
+             box-shadow: 0 0 10px rgba(0,0,0,0.2); background-color:  @seatColor;">
+
+                <span style="color: whitesmoke">@item.Row/@item.Number</span>
+                <br />
+                <span style="color: whitesmoke">@item.State</span>  
+
+            </div>
+        </a>
+    </div>
+    
+}

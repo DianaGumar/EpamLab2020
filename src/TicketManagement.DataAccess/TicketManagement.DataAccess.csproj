@@ -41,6 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\RepositoriesEF\AreaRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\SeatRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\TMEventAreaRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\TMEventRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\TMEventSeatRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\TMLayoutRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\VenueRepositoryEF.cs" />
     <Compile Include="DAL\Repositories\AreaRepository.cs" />
     <Compile Include="DAL\IRepositories\ITMLayoutRepository.cs" />
     <Compile Include="DAL\IRepositories\IAreaRepository.cs" />
@@ -56,16 +63,32 @@
     <Compile Include="DAL\Repositories\TMEventSeatRepository.cs" />
     <Compile Include="DAL\Repositories\SeatRepository.cs" />
     <Compile Include="DAL\Repositories\VenueRepository.cs" />
-    <Compile Include="Model\TMLayout.cs" />
-    <Compile Include="Model\TMEvent.cs" />
-    <Compile Include="Model\Area.cs" />
-    <Compile Include="Model\TMEventArea.cs" />
-    <Compile Include="Model\TMEventSeat.cs" />
-    <Compile Include="Model\Seat.cs" />
-    <Compile Include="Model\Venue.cs" />
+    <Compile Include="DAL\RepositoryEF.cs" />
+    <Compile Include="DbRepositoryModule.cs" />
+    <Compile Include="TMContext.cs" />
+    <Compile Include="Entities\TMLayout.cs" />
+    <Compile Include="Entities\TMEvent.cs" />
+    <Compile Include="Entities\Area.cs" />
+    <Compile Include="Entities\TMEventArea.cs" />
+    <Compile Include="Entities\TMEventSeat.cs" />
+    <Compile Include="Entities\Seat.cs" />
+    <Compile Include="Entities\Venue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAL\Repository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Autofac">
+      <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="EntityFramework">
+      <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {
@@ -24,6 +24,7 @@ namespace TicketManagement.DataAccess.DAL
             command.Parameters.Add("@TMLayoutId", System.Data.SqlDbType.Int).Value = obj?.TMLayoutId;
             command.Parameters.Add("@StartEvent", System.Data.SqlDbType.DateTime).Value = obj?.StartEvent;
             command.Parameters.Add("@EndEvent", System.Data.SqlDbType.DateTime).Value = obj?.EndEvent;
+            command.Parameters.Add("@Img", System.Data.SqlDbType.NVarChar).Value = obj?.Img;
 
             conn.Open();
             var idNewObj = command.ExecuteScalar();
@@ -73,6 +74,7 @@ namespace TicketManagement.DataAccess.DAL
             command.Parameters.Add("@LayoutId", System.Data.SqlDbType.Int).Value = obj?.TMLayoutId;
             command.Parameters.Add("@StartEvent", System.Data.SqlDbType.DateTime).Value = obj?.StartEvent;
             command.Parameters.Add("@EndEvent", System.Data.SqlDbType.DateTime).Value = obj?.EndEvent;
+            command.Parameters.Add("@Img", System.Data.SqlDbType.NVarChar).Value = obj?.Img;
 
             conn.Open();
             var countRowAffected = command.ExecuteNonQuery();
