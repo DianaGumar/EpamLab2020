@@ -7,6 +7,14 @@ using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
+    public enum TMEventStatus
+    {
+        Success = 0,
+        DateInPast = 1,
+        DateWrongOrder = 2,
+        SameByDateObj = 3,
+    }
+
     public interface ITMEventService
     {
         int RemoveTMEvent(int id);
@@ -17,9 +25,9 @@ namespace TicketManagement.BusinessLogic
 
         List<TMEventDto> GetAllRelevantTMEvent();
 
-        TMEventDto CreateTMEvent(TMEventDto obj);
+        TMEventStatus CreateTMEvent(TMEventDto obj);
 
-        int UpdateTMEvent(TMEventDto obj);
+        TMEventStatus UpdateTMEvent(TMEventDto obj);
 
         List<TMEventSeatDto> GetTMEventSeatByEvent(int eventId);
 
@@ -29,6 +37,7 @@ namespace TicketManagement.BusinessLogic
     internal class TMEventService : ITMEventService
     {
         private readonly ITMEventRepository _tmeventRepository;
+
         private readonly ITMEventAreaService _tmeventAreaService;
         private readonly ITMEventSeatService _tmeventSeatService;
 
@@ -82,6 +91,28 @@ namespace TicketManagement.BusinessLogic
             };
         }
 
+        private TMEventStatus IsValid(TMEvent obj)
+        {
+            if (obj.StartEvent < DateTime.Now.Date)
+            {
+                return TMEventStatus.DateInPast;
+            }
+
+            if (obj.EndEvent < obj.StartEvent)
+            {
+                return TMEventStatus.DateWrongOrder;
+            }
+
+            if (_tmeventRepository.GetAll().Where(item => item.TMLayoutId == obj.TMLayoutId
+                    && obj.StartEvent >= item.StartEvent
+                    && obj.StartEvent <= item.EndEvent).ToList().Count > 0)
+            {
+                return TMEventStatus.SameByDateObj;
+            }
+
+            return TMEventStatus.Success;
+        }
+
         public int RemoveTMEvent(int id)
         {
             if (GetTMEventSeatByEvent(id).Where(s => s.State == SeatState.Busy).ToList().Count == 0)
@@ -129,29 +160,20 @@ namespace TicketManagement.BusinessLogic
             return objsDto;
         }
 
-        public TMEventDto CreateTMEvent(TMEventDto obj)
+        public TMEventStatus CreateTMEvent(TMEventDto obj)
         {
-            if (obj.StartEvent > DateTime.Now.Date && obj.EndEvent > obj.StartEvent)
+            TMEvent obje = ConvertToEntity(obj);
+
+            TMEventStatus result = IsValid(obje);
+
+            if (result == TMEventStatus.Success)
             {
-                List<TMEvent> objs = _tmeventRepository.GetAll()
-                    .Where(item => item.TMLayoutId == obj.TMLayoutId
-                    && item.StartEvent == obj.StartEvent).ToList();
+                obje = _tmeventRepository.Create(obje);
 
-                if (objs.Count == 0)
-                {
-                    TMEvent e = _tmeventRepository.Create(ConvertToEntity(obj));
-
-                    return ConvertToDto(e, GetTMEventAreaByEvent(obj.Id),
-                        GetTMEventSeatByEvent(obj.Id));
-                }
-                else
-                {
-                    return ConvertToDto(objs.ElementAt(0), GetTMEventAreaByEvent(obj.Id),
-                        GetTMEventSeatByEvent(obj.Id));
-                }
+                obj.Id = obje.Id;
             }
 
-            return obj;
+            return result;
         }
 
         public TMEventDto GetTMEvent(int id)
@@ -161,11 +183,18 @@ namespace TicketManagement.BusinessLogic
                         GetTMEventSeatByEvent(id));
         }
 
-        public int UpdateTMEvent(TMEventDto obj)
+        public TMEventStatus UpdateTMEvent(TMEventDto obj)
         {
-            _tmeventRepository.Update(ConvertToEntity(obj));
+            TMEvent obje = ConvertToEntity(obj);
 
-            return 1;
+            TMEventStatus result = IsValid(obje);
+
+            if (result == TMEventStatus.Success)
+            {
+                _tmeventRepository.Update(obje);
+            }
+
+            return result;
         }
 
         public List<TMEventAreaDto> GetTMEventAreaByEvent(int eventId)

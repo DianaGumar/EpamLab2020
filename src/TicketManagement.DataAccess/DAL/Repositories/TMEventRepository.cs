@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using TicketManagement.DataAccess.Entities;
 
@@ -34,6 +35,11 @@ namespace TicketManagement.DataAccess.DAL
             t.ToString();
             SetValuesByReflection(obj, (int)idNewObj);
             return obj;
+        }
+
+        public bool IsValid(TMEvent obj, List<TMEvent> objs, out string strErrors)
+        {
+            throw new NotImplementedException();
         }
 
         // without id

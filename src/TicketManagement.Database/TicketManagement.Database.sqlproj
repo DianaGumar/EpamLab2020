@@ -76,6 +76,8 @@
     <Build Include="Programmability\StoredProcedures\TMEvent_Create.sql" />
     <Build Include="Programmability\StoredProcedures\TMEvent_Delete.sql" />
     <Build Include="Programmability\StoredProcedures\TMEvent_Update.sql" />
+    <Build Include="Tables\PurchaseHistory.sql" />
+    <Build Include="Tables\AspNetUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\TMEvent.sql" />
