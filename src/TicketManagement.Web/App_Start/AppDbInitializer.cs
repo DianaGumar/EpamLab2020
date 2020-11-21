@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+////using Microsoft.AspNet.Identity;
+////using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Web.Models;
 
 namespace TicketManagement.Web
@@ -9,21 +9,21 @@ namespace TicketManagement.Web
     {
         protected override void Seed(ApplicationDbContext context)
         {
-            var userStore = new UserStore<ApplicationUser>(context);
-            var roleStore = new RoleStore<IdentityRole>(context);
+            ////var userStore = new UserStore<ApplicationUser>(context);
+            ////var roleStore = new RoleStore<IdentityRole>(context);
 
-            var userManager = new ApplicationUserManager(userStore);
-            var roleManager = new RoleManager<IdentityRole>(roleStore);
+            ////var userManager = new ApplicationUserManager(userStore);
+            ////var roleManager = new RoleManager<IdentityRole>(roleStore);
 
-            // create roles
-            roleManager.Create(new IdentityRole { Name = "eventmanager" });
-            roleManager.Create(new IdentityRole { Name = "authorizeduser" });
-            roleManager.Create(new IdentityRole { Name = "venuemanager" });
+            ////// create roles
+            ////roleManager.Create(new IdentityRole { Name = "eventmanager" });
+            ////roleManager.Create(new IdentityRole { Name = "authorizeduser" });
+            ////roleManager.Create(new IdentityRole { Name = "venuemanager" });
 
-            userManager.Dispose();
-            roleManager.Dispose();
-            userStore.Dispose();
-            roleStore.Dispose();
+            ////userManager.Dispose();
+            ////roleManager.Dispose();
+            ////userStore.Dispose();
+            ////roleStore.Dispose();
 
             base.Seed(context);
         }

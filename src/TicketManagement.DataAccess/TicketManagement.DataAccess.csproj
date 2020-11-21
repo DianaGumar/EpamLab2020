@@ -65,6 +65,7 @@
     <Compile Include="DAL\Repositories\VenueRepository.cs" />
     <Compile Include="DAL\RepositoryEF.cs" />
     <Compile Include="DbRepositoryModule.cs" />
+    <Compile Include="Entities\PurchaseHistory.cs" />
     <Compile Include="TMContext.cs" />
     <Compile Include="Entities\TMLayout.cs" />
     <Compile Include="Entities\TMEvent.cs" />

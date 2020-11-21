@@ -1,4 +1,8 @@
-﻿--- Venue
+﻿--- Roles 
+insert into dbo.AspNetRoles
+values (1, 'eventmanager'), (2, 'authorizeduser'), (3, 'venuemanager')
+
+--- Venue
 insert into dbo.Venue
 values ('TestEvent venue', 'TestEvent venue address', '123 45 678 90 10', 5, 5)
 

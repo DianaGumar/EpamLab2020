@@ -76,8 +76,19 @@
     <Build Include="Programmability\StoredProcedures\TMEvent_Create.sql" />
     <Build Include="Programmability\StoredProcedures\TMEvent_Delete.sql" />
     <Build Include="Programmability\StoredProcedures\TMEvent_Update.sql" />
-    <Build Include="Tables\PurchaseHistory.sql" />
     <Build Include="Tables\AspNetUsers.sql" />
+    <Build Include="Tables\PurchaseHistory.sql" />
+    <Build Include="ForeignKeys\FK_PurchaseHistory_TMEventSeat.sql" />
+    <Build Include="ForeignKeys\FK_PurchaseHistory_AspNetUsers.sql" />
+    <Build Include="Tables\AspNetUserRoles.sql" />
+    <Build Include="ForeignKeys\FK_AspNetUserRoles_AspNetRoles.sql" />
+    <Build Include="Tables\AspNetRoles.sql" />
+    <Build Include="ForeignKeys\FK_AspNetUserRoles_AspNetUsers.sql" />
+    <Build Include="Tables\AspNetUserClaims.sql" />
+    <Build Include="ForeignKeys\FK_AspNetUserClaims_AspNetUsers.sql" />
+    <Build Include="Tables\AspNetUserLogins.sql" />
+    <Build Include="ForeignKeys\FK_AspNetUserLogins_AspNetUsers.sql" />
+    <Build Include="Tables\__MigrationHistory.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\TMEvent.sql" />
