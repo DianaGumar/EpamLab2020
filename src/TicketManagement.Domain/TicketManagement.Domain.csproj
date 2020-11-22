@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\AreaDto.cs" />
+    <Compile Include="DTO\PurchaseHistoryDto.cs" />
     <Compile Include="DTO\SeatDto.cs" />
     <Compile Include="DTO\TMEventAreaDto.cs" />
     <Compile Include="DTO\TMEventDto.cs" />

@@ -1,8 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.Web.Models
 {
+    public class PurchaseHistoryViewModel
+    {
+        [Display(Name = "Event name")]
+        public string EventName { get; set; }
+
+        [Display(Name = "Seat row")]
+        public string SeatRow { get; set; }
+
+        [Display(Name = "Seat number")]
+        public string SeatNumber { get; set; }
+
+        public string Cost { get; set; }
+
+        [Display(Name = "Booking Date")]
+        public string BookingDate { get; set; }
+
+        public bool EventLast { get; set; }
+    }
+
     public class TMEventViewModel
     {
         public TMEventDto TMEvent { get; set; }

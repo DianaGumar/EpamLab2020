@@ -16,20 +16,15 @@ namespace TicketManagement.BusinessLogic
         int TopUpBalance(string userId, decimal summ);
 
         int BuyTicket(string userId, int tmeventSeatId);
-
-        void GetPurchaseHistory(string userId);
     }
 
     public class UserService : IUserService
     {
         private readonly ITMUserRepository _tmuserRepository;
-        private readonly IPurchaseHistoryRepository _purchaseHistoryRepository;
 
-        public UserService(ITMUserRepository tmuserRepository,
-            IPurchaseHistoryRepository purchaseHistoryRepository)
+        public UserService(ITMUserRepository tmuserRepository)
         {
             _tmuserRepository = tmuserRepository;
-            _purchaseHistoryRepository = purchaseHistoryRepository;
         }
 
         public int BuyTicket(string userId, int tmeventSeatId)
@@ -53,11 +48,6 @@ namespace TicketManagement.BusinessLogic
             _tmuserRepository.Update(user);
 
             return 1;
-        }
-
-        public void GetPurchaseHistory(string userId)
-        {
-            throw new System.NotImplementedException();
         }
 
         public void CreateTMUser(TMUser user)

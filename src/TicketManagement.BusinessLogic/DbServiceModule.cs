@@ -17,6 +17,7 @@ namespace TicketManagement.Web
             builder.RegisterType<TMEventService>().As<ITMEventService>();
             builder.RegisterType<VenueService>().As<IVenueService>();
             builder.RegisterType<TMLayoutService>().As<ITMLayoutService>();
+            builder.RegisterType<PurchaceService>().As<IPurchaceService>();
         }
     }
 }

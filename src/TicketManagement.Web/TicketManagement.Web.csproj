@@ -78,6 +78,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PurchaseController.cs" />
     <Compile Include="Controllers\TMEventAreaModelsController.cs" />
     <Compile Include="Controllers\TMEventModelsController.cs" />
     <Compile Include="Controllers\VenueModelsController.cs" />
@@ -161,6 +162,7 @@
     <Content Include="Views\Manage\TopUpBalance.cshtml" />
     <Content Include="Views\Manage\ChangeLastName.cshtml" />
     <Content Include="Views\Manage\ChangeName.cshtml" />
+    <Content Include="Views\Purchase\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

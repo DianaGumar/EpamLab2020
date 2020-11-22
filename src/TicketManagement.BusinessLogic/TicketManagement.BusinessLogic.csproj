@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="DbServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\PurchaceService.cs" />
     <Compile Include="Services\TMEventSeatService.cs" />
     <Compile Include="Services\TMEventAreaService.cs" />
     <Compile Include="Services\AreaService.cs" />

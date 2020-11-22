@@ -63,7 +63,7 @@ namespace TicketManagement.DataAccess.DAL
 
         public void Update(T obj)
         {
-            Context.Entry(obj).State = EntityState.Modified;
+            ////Context.Entry(obj).State = EntityState.Modified;
 
             Context.SaveChanges();
         }
