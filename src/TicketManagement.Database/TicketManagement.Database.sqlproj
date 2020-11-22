@@ -79,7 +79,7 @@
     <Build Include="Tables\AspNetUsers.sql" />
     <Build Include="Tables\PurchaseHistory.sql" />
     <Build Include="ForeignKeys\FK_PurchaseHistory_TMEventSeat.sql" />
-    <Build Include="ForeignKeys\FK_PurchaseHistory_AspNetUsers.sql" />
+    <Build Include="ForeignKeys\FK_PurchaseHistory_TMUser.sql" />
     <Build Include="Tables\AspNetUserRoles.sql" />
     <Build Include="ForeignKeys\FK_AspNetUserRoles_AspNetRoles.sql" />
     <Build Include="Tables\AspNetRoles.sql" />
@@ -89,6 +89,8 @@
     <Build Include="Tables\AspNetUserLogins.sql" />
     <Build Include="ForeignKeys\FK_AspNetUserLogins_AspNetUsers.sql" />
     <Build Include="Tables\__MigrationHistory.sql" />
+    <Build Include="Tables\TMUser.sql" />
+    <Build Include="ForeignKeys\FK_TMUser_AspNetUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\TMEvent.sql" />

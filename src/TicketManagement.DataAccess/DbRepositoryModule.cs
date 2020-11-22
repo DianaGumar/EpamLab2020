@@ -13,6 +13,8 @@ namespace TicketManagement.Web
             builder.RegisterGeneric(typeof(RepositoryEF<>)).As(typeof(IRepository<>));
 
             builder.RegisterType<AreaRepositoryEF>().As<IAreaRepository>();
+            builder.RegisterType<TMUserRepositoryEF>().As<ITMUserRepository>();
+            builder.RegisterType<PurchaseHistoryRepositoryEF>().As<IPurchaseHistoryRepository>();
             builder.RegisterType<SeatRepositoryEF>().As<ISeatRepository>();
             builder.RegisterType<TMEventAreaRepositoryEF>().As<ITMEventAreaRepository>();
             builder.RegisterType<TMEventSeatRepositoryEF>().As<ITMEventSeatRepository>();

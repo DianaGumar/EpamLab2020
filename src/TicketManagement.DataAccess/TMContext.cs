@@ -16,6 +16,10 @@ namespace TicketManagement.DataAccess
         {
         }
 
+        public DbSet<PurchaseHistory> PurchaseHistories { get; set; }
+
+        public DbSet<TMUser> Users { get; set; }
+
         public DbSet<Area> Areas { get; set; }
 
         public DbSet<Seat> Seats { get; set; }

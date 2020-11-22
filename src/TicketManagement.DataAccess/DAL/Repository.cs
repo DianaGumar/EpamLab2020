@@ -76,7 +76,7 @@ namespace TicketManagement.DataAccess.DAL
             throw new NotImplementedException();
         }
 
-        public T GetById(int id)
+        public T GetById(object id)
         {
             T entity = new T();
 

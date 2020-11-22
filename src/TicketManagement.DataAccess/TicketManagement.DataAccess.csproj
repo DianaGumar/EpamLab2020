@@ -41,7 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\IRepositories\ITMUserRepository.cs" />
+    <Compile Include="DAL\IRepositories\IPurchaseHistoryRepository.cs" />
     <Compile Include="DAL\RepositoriesEF\AreaRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\TMUserRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\PurchaseHistoryRepositoryEF.cs" />
     <Compile Include="DAL\RepositoriesEF\SeatRepositoryEF.cs" />
     <Compile Include="DAL\RepositoriesEF\TMEventAreaRepositoryEF.cs" />
     <Compile Include="DAL\RepositoriesEF\TMEventRepositoryEF.cs" />
@@ -65,15 +69,8 @@
     <Compile Include="DAL\Repositories\VenueRepository.cs" />
     <Compile Include="DAL\RepositoryEF.cs" />
     <Compile Include="DbRepositoryModule.cs" />
-    <Compile Include="Entities\PurchaseHistory.cs" />
     <Compile Include="TMContext.cs" />
-    <Compile Include="Entities\TMLayout.cs" />
-    <Compile Include="Entities\TMEvent.cs" />
-    <Compile Include="Entities\Area.cs" />
-    <Compile Include="Entities\TMEventArea.cs" />
-    <Compile Include="Entities\TMEventSeat.cs" />
-    <Compile Include="Entities\Seat.cs" />
-    <Compile Include="Entities\Venue.cs" />
+    <Compile Include="Entities\TMEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAL\Repository.cs" />
   </ItemGroup>

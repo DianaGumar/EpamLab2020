@@ -12,8 +12,6 @@
 	[LockoutEnabled] [bit] NOT NULL,
 	[AccessFailedCount] [int] NOT NULL,
 	[UserName] [nvarchar](256) NOT NULL,
-	[UserLastName] [nvarchar](256),
-	[Balance] [int],
 CONSTRAINT [PK_dbo.AspNetUsers] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

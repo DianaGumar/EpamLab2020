@@ -10,6 +10,7 @@ namespace TicketManagement.Web
             base.Load(builder);
             builder.RegisterModule<DbRepositoryModule>();
             builder.RegisterType<AreaService>().As<IAreaService>();
+            builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<SeatService>().As<ISeatService>();
             builder.RegisterType<TMEventAreaService>().As<ITMEventAreaService>();
             builder.RegisterType<TMEventSeatService>().As<ITMEventSeatService>();

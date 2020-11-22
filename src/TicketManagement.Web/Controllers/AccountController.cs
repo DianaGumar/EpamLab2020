@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using TicketManagement.BusinessLogic;
+using TicketManagement.DataAccess.Entities;
 using TicketManagement.Web.Models;
 
 namespace TicketManagement.Web.Controllers
@@ -17,20 +19,25 @@ namespace TicketManagement.Web.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
+        private readonly IUserService _userService;
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
 
-        public AccountController()
+        public AccountController(IUserService userService)
         {
+            _userService = userService;
         }
 
-        public AccountController(ApplicationUserManager userManager,
+        public AccountController(IUserService userService, ApplicationUserManager userManager,
             ApplicationSignInManager signInManager, ApplicationRoleManager roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
             RoleManager = roleManager;
+
+            _userService = userService;
         }
 
         private IAuthenticationManager AuthenticationManager
@@ -189,10 +196,16 @@ namespace TicketManagement.Web.Controllers
         {
             if (model != null && ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email + "--" + model.UserRole, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Name == null || model.Name.Length == 0 ? model.Email : model.Name,
+                    Email = model.Email,
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    _userService.CreateTMUser(
+                        new TMUser { UserId = user.Id, Balance = 0, UserLastName = model.LastName });
                     await UserManager.AddToRoleAsync(user.Id, model.UserRole);
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
