@@ -63,6 +63,9 @@ namespace TicketManagement.Web.Models
         [Display(Name = "Event name")]
         public string EventName { get; set; }
 
+        [Display(Name = "Seat id")]
+        public string Id { get; set; }
+
         [Display(Name = "Seat row")]
         public string SeatRow { get; set; }
 

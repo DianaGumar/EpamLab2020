@@ -13,7 +13,11 @@ namespace TicketManagement.BusinessLogic
 
         decimal GetBalance(string userId);
 
+        bool IsBaslanceEnough(string userId, decimal price);
+
         int TopUpBalance(string userId, decimal summ);
+
+        int MakePurchase(string userId, decimal summ);
     }
 
     public class UserService : IUserService
@@ -57,6 +61,24 @@ namespace TicketManagement.BusinessLogic
         {
             TMUser user = _tmuserRepository.GetById(userId);
             user.UserLastName = lastName;
+            _tmuserRepository.Update(user);
+
+            return 1;
+        }
+
+        public bool IsBaslanceEnough(string userId, decimal price)
+        {
+            TMUser user = _tmuserRepository.GetById(userId);
+
+            return user.Balance >= price;
+        }
+
+        public int MakePurchase(string userId, decimal summ)
+        {
+            TMUser user = GetTMUserById(userId);
+
+            user.Balance -= summ;
+
             _tmuserRepository.Update(user);
 
             return 1;

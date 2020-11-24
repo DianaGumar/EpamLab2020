@@ -7,15 +7,21 @@ using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
+    public enum PurchaseStatus
+    {
+        NotEnothMoney = 1,
+        Wait = 2,
+        PurchaseSucsess = 3,
+        NotRelevantSeats = 4,
+    }
+
     public interface IPurchaceService
     {
         List<PurchaseHistoryDto> GetPurchaseHistory(string userId);
 
-        int BuyTicket(string userId, int tmeventSeatId);
+        PurchaseStatus BuyTicket(string userId, int tmeventSeatId);
 
-        int BuyTicket(string userId, params int[] tmeventSeatId);
-
-        List<TMEventSeatDto> GetAllTMEventSeatsByArea(int tmeventAreaId);
+        PurchaseStatus BuyTicket(string userId, params int[] tmeventSeatId);
     }
 
     public class PurchaceService : IPurchaceService
@@ -26,18 +32,21 @@ namespace TicketManagement.BusinessLogic
         private readonly ITMEventSeatService _tmeventSeatService;
         private readonly ITMEventService _tmeventService;
 
+        private readonly IUserService _userService;
+
         public PurchaceService(IPurchaseHistoryRepository purchaseHistoryRepository,
             ITMEventAreaService tmeventAreaService, ITMEventService tmeventService,
-            ITMEventSeatService tmeventSeatService)
+            ITMEventSeatService tmeventSeatService, IUserService userService)
         {
             _purchaseHistoryRepository = purchaseHistoryRepository;
             _tmeventAreaService = tmeventAreaService;
             _tmeventService = tmeventService;
             _tmeventSeatService = tmeventSeatService;
+            _userService = userService;
         }
 
         // make method by one transaction
-        public int BuyTicket(string userId, int tmeventSeatId)
+        public PurchaseStatus BuyTicket(string userId, int tmeventSeatId)
         {
             int i = _tmeventAreaService.SetTMEventSeatState(tmeventSeatId, SeatState.Busy);
 
@@ -48,24 +57,57 @@ namespace TicketManagement.BusinessLogic
                 BookingDate = DateTime.Now,
             });
 
-            return ph.Id > 0 && i > 0 ? 1 : 0;
+            return ph.Id > 0 && i > 0 ? PurchaseStatus.PurchaseSucsess : PurchaseStatus.Wait;
         }
 
-        public int BuyTicket(string userId, params int[] tmeventSeatId)
+        public PurchaseStatus BuyTicket(string userId, params int[] tmeventSeatId)
         {
-            int result = 0;
+            PurchaseStatus result = PurchaseStatus.PurchaseSucsess;
 
-            foreach (var item in tmeventSeatId)
+            // find price
+            decimal price = 0;
+            List<TMEventSeatDto> seats = _tmeventAreaService.GetTMEventSeatsByIds(tmeventSeatId)
+                .Where(s => s.State == SeatState.Free).ToList();
+
+            if (seats.Count == 0)
             {
-                result += BuyTicket(userId, item);
+                return PurchaseStatus.NotRelevantSeats;
             }
 
-            return result == tmeventSeatId.Length ? 1 : 0;
-        }
+            tmeventSeatId = seats.Select(s => s.Id).ToArray();
 
-        public List<TMEventSeatDto> GetAllTMEventSeatsByArea(int tmeventAreaId)
-        {
-            return _tmeventAreaService.GetTMEventSeatsByArea(tmeventAreaId);
+            List<int> areasId = seats.Select(s => s.TMEventAreaId).Distinct().ToList();
+
+            areasId.ForEach(a => price += _tmeventAreaService.GetTMEventAreaPrice(a));
+
+            // check sufficiency user balance
+            if (_userService.IsBaslanceEnough(userId, price))
+            {
+                // to do make one transaction
+                foreach (var item in tmeventSeatId)
+                {
+                    result = BuyTicket(userId, item);
+                    if (result == PurchaseStatus.Wait)
+                    {
+                        break;
+                    }
+                }
+
+                if (result == PurchaseStatus.Wait)
+                {
+                    foreach (var item in tmeventSeatId)
+                    {
+                        _tmeventAreaService.SetTMEventSeatState(item, SeatState.Free);
+                    }
+                }
+                else
+                {
+                    // pay money
+                    _userService.MakePurchase(userId, price);
+                }
+            }
+
+            return result;
         }
 
         public List<PurchaseHistoryDto> GetPurchaseHistory(string userId)

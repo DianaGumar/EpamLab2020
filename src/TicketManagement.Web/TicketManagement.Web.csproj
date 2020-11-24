@@ -80,7 +80,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PurchaseController.cs" />
-    <Compile Include="Controllers\TMEventAreaModelsController.cs" />
     <Compile Include="Controllers\TMEventModelsController.cs" />
     <Compile Include="Controllers\VenueModelsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -151,17 +150,17 @@
     <Content Include="Views\TMEventModels\Details.cshtml" />
     <Content Include="Views\TMEventModels\Delete.cshtml" />
     <Content Include="Views\TMEventModels\Create.cshtml" />
-    <Content Include="Views\TMEventAreaModels\_SetPrice.cshtml" />
+    <Content Include="Views\Purchase\_SetPrice.cshtml" />
     <Content Include="Views\VenueModels\Index.cshtml" />
     <Content Include="Views\VenueModels\_IndexVenueOnlyNames.cshtml" />
     <Content Include="Views\VenueModels\_IndexLayoutOnlyNames.cshtml" />
-    <Content Include="Views\TMEventAreaModels\Index.cshtml" />
+    <Content Include="Views\Purchase\SetSeveralPrice.cshtml" />
     <Content Include="Views\VenueModels\_LayoutMap.cshtml" />
     <Content Include="Views\Manage\TopUpBalance.cshtml" />
     <Content Include="Views\Manage\ChangeLastName.cshtml" />
     <Content Include="Views\Manage\ChangeName.cshtml" />
     <Content Include="Views\Purchase\Index.cshtml" />
-    <Content Include="Views\TMEventAreaModels\_AreasMap.cshtml" />
+    <Content Include="Views\Purchase\_AreasMap.cshtml" />
     <Content Include="Views\Purchase\BuyTicket.cshtml" />
   </ItemGroup>
   <ItemGroup>

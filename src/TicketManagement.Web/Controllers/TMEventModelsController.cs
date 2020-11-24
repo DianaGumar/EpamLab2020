@@ -104,7 +104,7 @@ namespace TicketManagement.Web.Controllers
                 switch (result)
                 {
                     case TMEventStatus.Success:
-                        return RedirectToAction("Index", "TMEventAreaModels", new { idEvent = obj.TMEvent.Id });
+                        return RedirectToAction("SetSeveralPrice", "Purchase", new { idEvent = obj.TMEvent.Id });
                     case TMEventStatus.DateInPast:
                         ModelState.AddModelError("", "date is in a past"); break;
                     case TMEventStatus.DateWrongOrder:
@@ -152,7 +152,7 @@ namespace TicketManagement.Web.Controllers
                 switch (result)
                 {
                     case TMEventStatus.Success:
-                        return RedirectToAction("Index", "TMEventAreaModels", new { idEvent = obj.Id });
+                        return RedirectToAction("SetSeveralPrice", "Purchase", new { idEvent = obj.Id });
                     case TMEventStatus.DateInPast:
                         ModelState.AddModelError("", "date is in a past"); break;
                     case TMEventStatus.DateWrongOrder:

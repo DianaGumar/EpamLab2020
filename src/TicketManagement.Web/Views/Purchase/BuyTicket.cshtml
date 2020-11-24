@@ -13,20 +13,25 @@
 </span>
 
 <div class="container col align-self-center">
-    @Html.Action("AreasMap", "TMEventAreaModels", Model.TMEventId)
+    @Html.Action("AreasMap", Model.TMEventId);
 </div>
+
 
 <div class="container col align-self-center">
 
-    @using (Html.BeginForm("BuyTicket", "Purchase"))
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => Model.TMEventId)
         <div class="row">
             @Html.LabelFor(model => model.TMEventId, htmlAttributes: new { @class = "control-label col-md-1" })
             <div class="col-md-3">
-                @Html.EditorFor(model => model.SeatsId, new { title="enter some like: 1,2,5", htmlAttributes = new { @class = "form-control myedit" } })
+                @Html.EditorFor(model => model.SeatsId, new { htmlAttributes = new { @class = "form-control myedit" } })
                 @Html.ValidationMessageFor(model => model.TMEventId, "", new { @class = "text-danger" })
+                <span class="text-muted">enter some like: 1,2,5</span>
             </div>
             <div class="form-group col-md-1">
                 <input type="submit" value="Buy" class="btn btn-default" name="ActionRegister" />
