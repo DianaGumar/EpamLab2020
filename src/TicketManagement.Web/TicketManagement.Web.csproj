@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AppDbInitializer.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -86,7 +87,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="App_Start\AppDbInitializer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\TMViewModels.cs" />
@@ -156,13 +156,13 @@
     <Content Include="Views\VenueModels\_IndexVenueOnlyNames.cshtml" />
     <Content Include="Views\VenueModels\_IndexLayoutOnlyNames.cshtml" />
     <Content Include="Views\TMEventAreaModels\Index.cshtml" />
-    <Content Include="Views\TMEventAreaModels\AreasMap.cshtml" />
-    <Content Include="Views\TMEventAreaModels\_SeatsMap.cshtml" />
     <Content Include="Views\VenueModels\_LayoutMap.cshtml" />
     <Content Include="Views\Manage\TopUpBalance.cshtml" />
     <Content Include="Views\Manage\ChangeLastName.cshtml" />
     <Content Include="Views\Manage\ChangeName.cshtml" />
     <Content Include="Views\Purchase\Index.cshtml" />
+    <Content Include="Views\TMEventAreaModels\_AreasMap.cshtml" />
+    <Content Include="Views\Purchase\BuyTicket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

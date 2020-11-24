@@ -4,11 +4,12 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {
     public class RepositoryEF<T> : IRepository<T>
-        where T : class, new()
+        where T : class, IEntity, new()
     {
         public RepositoryEF(DbContext context)
         {
@@ -22,7 +23,7 @@ namespace TicketManagement.DataAccess.DAL
 
         public T Create(T obj)
         {
-            obj = Context.Set<T>().Add(obj);
+            obj = DataBaseSet.Add(obj);
             Context.SaveChanges();
 
             return obj;
@@ -63,7 +64,13 @@ namespace TicketManagement.DataAccess.DAL
 
         public void Update(T obj)
         {
-            ////Context.Entry(obj).State = EntityState.Modified;
+            var entity = DataBaseSet.Find(obj?.GetId);
+            if (entity == null)
+            {
+                return;
+            }
+
+            Context.Entry(entity).CurrentValues.SetValues(obj);
 
             Context.SaveChanges();
         }

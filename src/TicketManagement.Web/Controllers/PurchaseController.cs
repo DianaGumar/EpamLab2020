@@ -46,5 +46,31 @@ namespace TicketManagement.Web.Controllers
 
             return View(models);
         }
+
+        [Authorize(Roles = "authorizeduser")]
+        [HttpGet]
+        public ActionResult BuyTicket(int idEvent)
+        {
+            return View(new TMEventSeatIdViewModel { TMEventId = idEvent });
+        }
+
+        [Authorize(Roles = "authorizeduser")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuyTicket(TMEventSeatIdViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                CultureInfo cultures = CultureInfo.CreateSpecificCulture("en-US");
+
+                int[] seatsId = model?.SeatsId.Split(',').Select(s => int.Parse(s, cultures)).ToArray();
+
+                _purchaceService.BuyTicket(User.Identity.GetUserId(), seatsId);
+
+                return Redirect("Index");
+            }
+
+            return View(model);
+        }
     }
 }

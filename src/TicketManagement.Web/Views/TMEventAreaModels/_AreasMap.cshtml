@@ -1,0 +1,113 @@
+﻿@model IEnumerable<TicketManagement.Web.Models.TMEventAreaViewModel>
+
+@using TicketManagement.Domain.DTO
+
+@{
+    int height_layout_i = 0;
+    int width_layout_i = 0;
+    double margin = 1.15;
+
+    int size = 50;
+
+    double marginseat = 1.3;
+    int sizeseat = 35;
+    string sizeStr = sizeseat + "px";
+
+    foreach (var item in Model)
+    {
+        item.CountSeatsYStr = item.CountSeatsY * size + "px";
+        item.CountSeatsXStr = item.CountSeatsX * size + "px";
+
+        item.CoordYStr = item.CoordY * size * margin + 20 + "px";
+        item.CoordXStr = item.CoordX * size * margin + "px";
+
+        width_layout_i += item.CoordX + item.CountSeatsX;
+        height_layout_i += item.CoordY + item.CountSeatsY;
+    }
+
+    string height_layout_fbutton = 20 + height_layout_i * size / 1.2 + "px";
+
+    string height_layout = height_layout_i * size + 50 + "px";
+    string width_layout = width_layout_i * size + "px";
+}
+
+<div class="container" style="height:@height_layout; width:@width_layout">
+
+
+    @foreach (var item in Model)
+    {
+        <div class="container">
+            <div class="container"
+                 style="
+                padding: 5px;
+                background-color: lightgray;
+                position: absolute;
+                height: @item.CountSeatsYStr;
+                width: @item.CountSeatsXStr;
+                margin-top: @item.CoordYStr;
+                margin-left: @item.CoordXStr;">
+
+                <div class="text-info" style="position: relative; margin-top:-25px; width: 300px">
+                    @item.Description <span class="label label-primary">@item.Price</span>
+                </div>
+
+                @foreach (var itemchild in item.Seats)
+                {
+
+                    if (itemchild.State == SeatState.Busy) { itemchild.Color = "steelblue"; }
+                    else if (itemchild.State == SeatState.Free) { itemchild.Color = "darkgrey"; }
+                    else { itemchild.Color = "dodgerblue"; }
+
+                    itemchild.NumberStr = itemchild.Number * sizeseat * marginseat - sizeseat + "px";
+                    itemchild.RowStr = itemchild.Row * sizeseat * marginseat - sizeseat + "px";
+
+                    @*<a href="@Url.Action("ChangeSeatState","TMEventAreaModels",
+                            new {areaId = item.Id, id = item.Id, state = itemchild.State, model = Model })">*@
+
+                        <div class="container" id="seat">
+                            <div class="container " style="position:absolute; padding:5px;
+                                    max-height: @sizeStr; max-width: @sizeStr; top:@itemchild.RowStr;
+                                    left:@itemchild.NumberStr;
+                                    box-shadow: 0 0 10px rgba(0,0,0,0.2); background-color: @itemchild.Color;">
+
+                                @*<div class="checkbox">
+                                        @Html.EditorFor(model => itemchild.IsChousen)
+                                    </div>*@
+
+                                @*<input class="form-check-input seat" type="checkbox" value="@itemchild.Id">*@
+
+                                @if(itemchild.State == SeatState.Busy)
+                                {
+                                    <span style="color: steelblue">@itemchild.Id</span>
+                                }
+                                else
+                                {
+                                    <span style="color: whitesmoke">@itemchild.Id</span>
+                                }
+
+                            </div>
+                        </div>
+
+                    @*</a>*@
+                }
+
+
+            </div>
+        </div>
+    }
+
+</div>
+
+
+@*@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".seat").on('val', function () {
+                $("#myedit").val($(this).val());
+            });
+        });
+
+    </script>
+}*@
+

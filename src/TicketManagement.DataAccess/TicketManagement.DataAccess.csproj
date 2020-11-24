@@ -43,15 +43,7 @@
   <ItemGroup>
     <Compile Include="DAL\IRepositories\ITMUserRepository.cs" />
     <Compile Include="DAL\IRepositories\IPurchaseHistoryRepository.cs" />
-    <Compile Include="DAL\RepositoriesEF\AreaRepositoryEF.cs" />
-    <Compile Include="DAL\RepositoriesEF\TMUserRepositoryEF.cs" />
-    <Compile Include="DAL\RepositoriesEF\PurchaseHistoryRepositoryEF.cs" />
-    <Compile Include="DAL\RepositoriesEF\SeatRepositoryEF.cs" />
-    <Compile Include="DAL\RepositoriesEF\TMEventAreaRepositoryEF.cs" />
-    <Compile Include="DAL\RepositoriesEF\TMEventRepositoryEF.cs" />
-    <Compile Include="DAL\RepositoriesEF\TMEventSeatRepositoryEF.cs" />
-    <Compile Include="DAL\RepositoriesEF\TMLayoutRepositoryEF.cs" />
-    <Compile Include="DAL\RepositoriesEF\VenueRepositoryEF.cs" />
+    <Compile Include="DAL\RepositoriesEF\RepositoriesEF.cs" />
     <Compile Include="DAL\Repositories\AreaRepository.cs" />
     <Compile Include="DAL\IRepositories\ITMLayoutRepository.cs" />
     <Compile Include="DAL\IRepositories\IAreaRepository.cs" />

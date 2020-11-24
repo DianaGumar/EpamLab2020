@@ -4,11 +4,138 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.DataAccess.Entities
 {
+    ////[Table("AspNetRoles")]
+    ////public class AspNetRoles
+    ////{
+    ////    [Required]
+    ////    [MaxLength(128)]
+    ////    public string Id { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(256)]
+    ////    public string Name { get; set; }
+    ////}
+
+    ////[Table("AspNetUserClaims")]
+    ////public class AspNetUserClaims
+    ////{
+    ////    [Required]
+    ////    public int Id { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(128)]
+    ////    public string UserId { get; set; }
+
+    ////    [MaxLength(int.MaxValue)]
+    ////    public string ClaimType { get; set; }
+
+    ////    [MaxLength(int.MaxValue)]
+    ////    public string ClaimValue { get; set; }
+    ////}
+
+    ////[Table("AspNetUserLogins")]
+    ////public class AspNetUserLogins
+    ////{
+    ////    [Required]
+    ////    [MaxLength(128)]
+    ////    public string LoginProvider { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(128)]
+    ////    public string ProviderKey { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(128)]
+    ////    public string UserId { get; set; }
+    ////}
+
+    ////[Table("AspNetUserRoles")]
+    ////public class AspNetUserRoles
+    ////{
+    ////    [Required]
+    ////    [MaxLength(128)]
+    ////    public string UserId { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(128)]
+    ////    public string RoleId { get; set; }
+    ////}
+
+    ////[Table("AspNetUsers")]
+    ////public class AspNetUsers
+    ////{
+    ////    [Required]
+    ////    [MaxLength(128)]
+    ////    public string Id { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(256)]
+    ////    public string Email { get; set; }
+
+    ////    [Required]
+    ////    public bool EmailConfirmed { get; set; }
+
+    ////    [MaxLength(int.MaxValue)]
+    ////    public string PasswordHash { get; set; }
+
+    ////    [MaxLength(int.MaxValue)]
+    ////    public string SecurityStamp { get; set; }
+
+    ////    [MaxLength(int.MaxValue)]
+    ////    public string PhoneNumber { get; set; }
+
+    ////    [Required]
+    ////    public bool PhoneNumberConfirmed { get; set; }
+
+    ////    [Required]
+    ////    public bool TwoFactorEnabled { get; set; }
+
+    ////    [DataType(DataType.Date)]
+    ////    public DateTime LockoutEndDateUtc { get; set; }
+
+    ////    [Required]
+    ////    public bool LockoutEnabled { get; set; }
+
+    ////    [Required]
+    ////    public int AccessFailedCount { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(256)]
+    ////    public string UserName { get; set; }
+    ////}
+
+    ////[Table("__MigrationHistory")]
+    ////public class MigrationHistory
+    ////{
+    ////    [Required]
+    ////    [MaxLength(150)]
+    ////    public string MigrationId { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(150)]
+    ////    public string ContextKey { get; set; }
+
+    ////    [Required]
+    ////    public byte Model { get; set; }
+
+    ////    [Required]
+    ////    [MaxLength(32)]
+    ////    public string ProductVersion { get; set; }
+    ////}
+
+    public interface IEntity
+    {
+        object GetId { get; }
+    }
+
     [Table("Venue")]
-    public class Venue
+    public class Venue : IEntity
     {
         [Key]
         public int Id { get; set; }
+
+        [NotMapped]
+        public object GetId => Id;
 
         [Required]
         [MaxLength(120)]
@@ -30,8 +157,11 @@ namespace TicketManagement.DataAccess.Entities
     }
 
     [Table("TMUser")]
-    public class TMUser
+    public class TMUser : IEntity
     {
+        [NotMapped]
+        public object GetId => UserId;
+
         [Key]
         [MaxLength(128)]
         public string UserId { get; set; }
@@ -44,8 +174,11 @@ namespace TicketManagement.DataAccess.Entities
     }
 
     [Table("TMLayout")]
-    public class TMLayout
+    public class TMLayout : IEntity
     {
+        [NotMapped]
+        public object GetId => Id;
+
         [Key]
         public int Id { get; set; }
 
@@ -61,8 +194,11 @@ namespace TicketManagement.DataAccess.Entities
     }
 
     [Table("TMEventSeat")]
-    public class TMEventSeat
+    public class TMEventSeat : IEntity
     {
+        [NotMapped]
+        public object GetId => Id;
+
         [Key]
         public int Id { get; set; }
 
@@ -83,8 +219,11 @@ namespace TicketManagement.DataAccess.Entities
     }
 
     [Table("TMEventArea")]
-    public class TMEventArea
+    public class TMEventArea : IEntity
     {
+        [NotMapped]
+        public object GetId => Id;
+
         [Key]
         public int Id { get; set; }
 
@@ -110,8 +249,11 @@ namespace TicketManagement.DataAccess.Entities
 
     // renamed by code controler
     [Table("TMEvent")]
-    public class TMEvent
+    public class TMEvent : IEntity
     {
+        [NotMapped]
+        public object GetId => Id;
+
         [Key]
         public int Id { get; set; }
 
@@ -142,8 +284,11 @@ namespace TicketManagement.DataAccess.Entities
     }
 
     [Table("PurchaseHistory")]
-    public class PurchaseHistory
+    public class PurchaseHistory : IEntity
     {
+        [NotMapped]
+        public object GetId => Id;
+
         [Key]
         public int Id { get; set; }
 
@@ -164,8 +309,11 @@ namespace TicketManagement.DataAccess.Entities
     }
 
     [Table("Seat")]
-    public class Seat
+    public class Seat : IEntity
     {
+        [NotMapped]
+        public object GetId => Id;
+
         [Key]
         public int Id { get; set; }
 
@@ -183,8 +331,11 @@ namespace TicketManagement.DataAccess.Entities
     }
 
     [Table("Area")]
-    public class Area
+    public class Area : IEntity
     {
+        [NotMapped]
+        public object GetId => Id;
+
         [Key]
         public int Id { get; set; }
 

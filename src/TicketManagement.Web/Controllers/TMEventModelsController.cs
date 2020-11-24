@@ -158,7 +158,9 @@ namespace TicketManagement.Web.Controllers
                     case TMEventStatus.DateWrongOrder:
                         ModelState.AddModelError("", "end date before start date"); break;
                     case TMEventStatus.SameByDateObj:
-                        ModelState.AddModelError("", "this venue is busy at this time"); break;
+                        ModelState.AddModelError("", "this venue is busy with another event at this time"); break;
+                    case TMEventStatus.BusySeatsExists:
+                        ModelState.AddModelError("", "you has bought ticket on this layout"); break;
                     default:
                         ModelState.AddModelError("", "something wrong"); break;
                 }

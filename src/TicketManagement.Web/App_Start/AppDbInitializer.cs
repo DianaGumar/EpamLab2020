@@ -1,6 +1,4 @@
 ﻿using System.Data.Entity;
-////using Microsoft.AspNet.Identity;
-////using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.Web.Models;
 
 namespace TicketManagement.Web

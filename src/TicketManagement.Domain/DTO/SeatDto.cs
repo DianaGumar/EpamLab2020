@@ -4,6 +4,7 @@
     {
         Free,
         Busy,
+        Chousen,
     }
 
     // value obj ?

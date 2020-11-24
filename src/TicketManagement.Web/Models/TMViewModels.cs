@@ -4,6 +4,60 @@ using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.Web.Models
 {
+    public class TMEventAreaViewModel
+    {
+        public int Id { get; set; }
+
+        public string Price { get; set; }
+
+        public string Description { get; set; }
+
+        public int CoordX { get; set; }
+
+        public int CoordY { get; set; }
+
+        public int CountSeatsY { get; set; }
+
+        public int CountSeatsX { get; set; }
+
+        public string CoordXStr { get; set; }
+
+        public string CoordYStr { get; set; }
+
+        public string CountSeatsYStr { get; set; }
+
+        public string CountSeatsXStr { get; set; }
+
+        public List<TMEventSeatViewModel> Seats { get; internal set; }
+    }
+
+    public class TMEventSeatIdViewModel
+    {
+        public int TMEventId { get; set; }
+
+        [Display(Name = "Seats id")]
+        public string SeatsId { get; set; }
+    }
+
+    public class TMEventSeatViewModel
+    {
+        public int Id { get; set; }
+
+        public int Row { get; set; }
+
+        public int Number { get; set; }
+
+        public string RowStr { get; set; }
+
+        public string NumberStr { get; set; }
+
+        public SeatState State { get; set; }
+
+        public bool IsChousen { get; set; }
+
+        public string Color { get; set; }
+    }
+
     public class PurchaseHistoryViewModel
     {
         [Display(Name = "Event name")]

@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-////using System.Data.Entity.ModelConfiguration.Conventions;
 using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess
@@ -16,9 +15,19 @@ namespace TicketManagement.DataAccess
         {
         }
 
-        public DbSet<PurchaseHistory> PurchaseHistories { get; set; }
+        ////public DbSet<MigrationHistory> MigrationHistory { get; set; }
 
-        public DbSet<TMUser> Users { get; set; }
+        ////public DbSet<AspNetRoles> AspNetRoles { get; set; }
+
+        ////public DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+
+        ////public DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+
+        ////public DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+
+        ////public DbSet<AspNetUsers> AspNetUsers { get; set; }
+
+        public DbSet<TMUser> TMUsers { get; set; }
 
         public DbSet<Area> Areas { get; set; }
 
@@ -34,8 +43,12 @@ namespace TicketManagement.DataAccess
 
         public DbSet<Venue> Venues { get; set; }
 
+        public DbSet<PurchaseHistory> PurchaseHistories { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // off ef cascade deleting
             ////modelBuilder?.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
@@ -60,8 +73,11 @@ namespace TicketManagement.DataAccess
                                .Parameter(b => b.EndEvent, "EndEvent")
                                .Parameter(b => b.Img, "Img")
                                .Result(b => b.Id, "Id")));
+        }
 
-            base.OnModelCreating(modelBuilder);
+        public static TMContext Create()
+        {
+            return new TMContext();
         }
     }
 }

@@ -14,8 +14,6 @@ namespace TicketManagement.BusinessLogic
         decimal GetBalance(string userId);
 
         int TopUpBalance(string userId, decimal summ);
-
-        int BuyTicket(string userId, int tmeventSeatId);
     }
 
     public class UserService : IUserService
@@ -25,11 +23,6 @@ namespace TicketManagement.BusinessLogic
         public UserService(ITMUserRepository tmuserRepository)
         {
             _tmuserRepository = tmuserRepository;
-        }
-
-        public int BuyTicket(string userId, int tmeventSeatId)
-        {
-            throw new System.NotImplementedException();
         }
 
         public decimal GetBalance(string userId)

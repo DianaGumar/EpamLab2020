@@ -22,8 +22,10 @@ namespace TicketManagement.Web
             builder.RegisterType<VenueRepositoryEF>().As<IVenueRepository>();
             builder.RegisterType<TMLayoutRepositoryEF>().As<ITMLayoutRepository>();
 
-            // using (var context = new TMContext())
-                ////context.Database.Initialize(false);
+            ////using (var context = new TMContext())
+            ////{
+            ////    context.Database.Initialize(true);
+            ////}
         }
     }
 }

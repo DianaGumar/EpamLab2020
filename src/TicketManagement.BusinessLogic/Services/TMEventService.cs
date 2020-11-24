@@ -13,6 +13,7 @@ namespace TicketManagement.BusinessLogic
         DateInPast = 1,
         DateWrongOrder = 2,
         SameByDateObj = 3,
+        BusySeatsExists = 4,
     }
 
     public interface ITMEventService
@@ -188,6 +189,14 @@ namespace TicketManagement.BusinessLogic
             TMEvent obje = ConvertToEntity(obj);
 
             TMEventStatus result = IsValid(obje);
+
+            // check on busy seats
+            TMEventDto current = GetTMEvent(obj.Id);
+            if (current.TMLayoutId != obj.TMLayoutId &&
+                GetTMEventSeatByEvent(obj.Id).Where(s => s.State == SeatState.Busy).ToList().Count > 0)
+            {
+                result = TMEventStatus.BusySeatsExists;
+            }
 
             if (result == TMEventStatus.Success)
             {

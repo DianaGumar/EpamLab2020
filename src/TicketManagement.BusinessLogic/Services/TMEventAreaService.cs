@@ -49,6 +49,7 @@ namespace TicketManagement.BusinessLogic
                 TMEventId = obj.TMEventId,
                 CountSeatsX = seats.Max(s => s.Number),
                 CountSeatsY = seats.Max(s => s.Row),
+                TMEventSeats = seats,
             };
         }
 

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using TicketManagement.BusinessLogic;
 using TicketManagement.Domain.DTO;
+using TicketManagement.Web.Models;
 
 namespace TicketManagement.Web.Controllers
 {
@@ -50,32 +52,59 @@ namespace TicketManagement.Web.Controllers
         [Authorize(Roles = "authorizeduser")]
         public ActionResult AreasMap(int idEvent)
         {
-            List<TMEventAreaDto> objs = _tmeventareaService.GetAllTMEventArea()
+            if (idEvent <= 0)
+            {
+                return HttpNotFound();
+            }
+
+            List<TMEventAreaDto> objsareas = _tmeventareaService.GetAllTMEventArea()
                 .Where(a => a.TMEventId == idEvent).ToList();
 
-            return View(objs);
+            var areas = new List<TMEventAreaViewModel>();
+
+            CultureInfo cultures = CultureInfo.CreateSpecificCulture("en-US");
+
+            foreach (var item in objsareas)
+            {
+                var localSeatsView = new List<TMEventSeatViewModel>();
+
+                foreach (var itemchild in item.TMEventSeats)
+                {
+                    localSeatsView.Add(new TMEventSeatViewModel
+                    {
+                        Id = itemchild.Id,
+                        State = itemchild.State,
+                        Number = itemchild.Number,
+                        Row = itemchild.Row,
+                    });
+                }
+
+                areas.Add(new TMEventAreaViewModel
+                {
+                     Id = item.Id,
+                     Price = '$' + item.Price.ToString("G", cultures),
+                     CoordX = item.CoordX,
+                     CoordY = item.CoordY,
+                     CountSeatsX = item.TMEventSeats.Max(s => s.Number),
+                     CountSeatsY = item.TMEventSeats.Max(s => s.Row),
+                     Description = item.Description,
+                     Seats = localSeatsView,
+                });
+            }
+
+            return PartialView("_AreasMap", areas);
         }
 
-        [HttpGet]
-        [Authorize(Roles = "authorizeduser")]
-        public PartialViewResult SeatsMap(int idArea)
-        {
-            List<TMEventSeatDto> objs = _tmeventareaService.GetTMEventSeatsByArea(idArea);
+        ////[HttpGet]
+        ////[Authorize(Roles = "authorizeduser")]
+        ////public ActionResult ChangeSeatState(List<TMEventAreaViewModel> model, int areaId, int id = 0)
+        ////{
+        ////    // something wrong
+        ////    var seat = model.First(a => a.Id == areaId).Seats.First(s => s.Id == id);
 
-            return PartialView("_SeatsMap", objs);
-        }
+        ////    seat.State = seat.State == SeatState.Free ? SeatState.Chousen : SeatState.Free;
 
-        [HttpGet]
-        [Authorize(Roles = "authorizeduser")]
-        public ActionResult ChangeSeatState(int id = 0, SeatState state = 0, int areaId = 0)
-        {
-            state = (int)state < Enum.GetNames(typeof(SeatState)).Length - 1 ? state + 1 : 0;
-
-            _tmeventareaService.SetTMEventSeatState(id, state);
-
-            int idEvent = _tmeventareaService.GetTMEventArea(areaId).TMEventId;
-
-            return RedirectToAction("AreasMap", new { idEvent });
-        }
+        ////    return View("AreasMap", model);
+        ////}
     }
 }
