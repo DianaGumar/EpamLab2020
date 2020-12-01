@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TicketManagement.Domain.DTO.TMEventAreaDto>
+
+@{
+    ViewBag.Title = "SetSeveralPrice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Set price for every area</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TMEventId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TMEventId)
+            </td>
+            <td>
+                @Html.Action("SetPrice", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "TMEventModels")
+</div>

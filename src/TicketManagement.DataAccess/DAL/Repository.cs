@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {
     public class Repository<T> : IRepository<T>
-        where T : class, new()
+        where T : class, IEntity, new()
     {
         // for reflectoin work
         private readonly string _objPropertiesNames;
@@ -70,12 +72,12 @@ namespace TicketManagement.DataAccess.DAL
             return obj;
         }
 
-        public IEnumerable<T> Create(IEnumerable<T> objs)
+        public IQueryable<T> Create(IEnumerable<T> objs)
         {
             throw new NotImplementedException();
         }
 
-        public T GetById(int id)
+        public T GetById(object id)
         {
             T entity = new T();
 
@@ -134,7 +136,7 @@ namespace TicketManagement.DataAccess.DAL
         }
 
         // without id
-        public int Remove(T obj)
+        public void Remove(T obj)
         {
             IEnumerable<object> values = GetPropertiesValues(obj);
 
@@ -162,14 +164,12 @@ namespace TicketManagement.DataAccess.DAL
             }
 
             conn.Open();
-            int countRowsUffected = command.ExecuteNonQuery();
+            command.ExecuteNonQuery();
             command.Dispose();
             conn.Close();
-
-            return countRowsUffected;
         }
 
-        public int Remove(int id)
+        public void Remove(int id)
         {
             SqlConnection conn = new SqlConnection(StrConn);
             SqlCommand command = new SqlCommand();
@@ -180,20 +180,13 @@ namespace TicketManagement.DataAccess.DAL
             command.CommandText = $"delete from {_objName} where {_objPropertiesInfo.ElementAt(0).Key} = @objPKValue;";
 
             conn.Open();
-            int countRowsUffected = command.ExecuteNonQuery();
+            command.ExecuteNonQuery();
             command.Dispose();
             conn.Close();
-
-            return countRowsUffected;
-        }
-
-        public IEnumerable<T> Remove(IEnumerable<T> objs)
-        {
-            throw new NotImplementedException();
         }
 
         // with id
-        public int Update(T obj)
+        public void Update(T obj)
         {
             IEnumerable<object> values = GetPropertiesValues(obj);
 
@@ -223,16 +216,9 @@ namespace TicketManagement.DataAccess.DAL
             command.CommandText = $"update {_objName} set {sb} where {_objPropertiesInfo.ElementAt(0).Key} = @objPKValue;";
 
             conn.Open();
-            int countRowsUffected = command.ExecuteNonQuery();
+            command.ExecuteNonQuery();
             command.Dispose();
             conn.Close();
-
-            return countRowsUffected;
-        }
-
-        public IEnumerable<T> Update(IEnumerable<T> objs)
-        {
-            throw new NotImplementedException();
         }
 
         // from list values create instanse T
@@ -289,7 +275,7 @@ namespace TicketManagement.DataAccess.DAL
         }
 
         // by instance
-        protected IEnumerable<object> GetPropertiesValues(T obj)
+        protected IQueryable<object> GetPropertiesValues(T obj)
         {
             ICollection<object> values = new List<object>();
             Type type = typeof(T);
@@ -301,12 +287,12 @@ namespace TicketManagement.DataAccess.DAL
                 values.Add(info.GetValue(obj));
             }
 
-            return values;
+            return values.AsQueryable();
         }
 
-        public IEnumerable<T> Find(Func<T, bool> p)
+        public IQueryable<T> Find(Expression<Func<T, bool>> p)
         {
-            return GetAll().Where(p);
+            throw new NotImplementedException();
         }
     }
 }

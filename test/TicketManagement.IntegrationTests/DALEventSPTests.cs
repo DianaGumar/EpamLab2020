@@ -1,33 +1,108 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
+////using System.Configuration;
+using System.Data.SqlClient;
+////using System.IO;
 using System.Linq;
 using FluentAssertions;
+////using Microsoft.SqlServer.Dac;
 using NUnit.Framework;
+using TicketManagement.DataAccess;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.IntegrationTests
 {
-    public class DALEventSPTests
+    public class DALEventSPTests : IDisposable
     {
-        private readonly string _str = ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString;
+        // create and delete test database methods for non EF repositoryes
+        ////private const string SCHEMANAME = "TicketManagement_Database_test";
+        ////private const string DACPACPATH =
+        ////    "../src/TicketManagement.Database/bin/Debug/TicketManagement.Database.dacpac";
 
-        // Same test data are located
-        // TicketManagement.Database/Post/Script.TestEventSPData.sql
+        //////private static TextWriter _output = new StreamWriter("output.txt", false);
+
+        ////private readonly string _str =
+        ////    ConfigurationManager.ConnectionStrings["DefaultConnection_test"].ConnectionString;
+
+        private readonly TMContext _context = new TMContext("DefaultConnection");
+        private bool _isDisposed;
+
+        public static void DropSchema(string schemaName, string connStr)
+        {
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand command = new SqlCommand();
+            command.Connection = conn;
+
+            command.CommandText = $"use master; DROP DATABASE " + schemaName;
+
+            conn.Open();
+            command.ExecuteNonQuery();
+            command.Dispose();
+            conn.Close();
+        }
+
+        ////private void CreateDataBase(string schemaName, string connStr, string dacPacFilePath)
+        ////{
+        ////    // Class responsible for the deployment. (Connection string supplied by console input for now)
+        ////    DacServices dbServices = new DacServices(connStr);
+
+        ////    // Wire up events for Deploy messages and for task progress
+        ////    // (For less verbose output, don't subscribe to Message Event (handy for debugging perhaps?)
+        ////    dbServices.Message += new EventHandler<DacMessageEventArgs>(DbServices_Message);
+        ////    dbServices.ProgressChanged += new EventHandler<DacProgressEventArgs>(DbServices_ProgressChanged);
+
+        ////    // This Snapshot should be created by our build process using MSDeploy
+        ////    DacPackage dbPackage = DacPackage.Load(dacPacFilePath);
+
+        ////    DacDeployOptions dbDeployOptions = new DacDeployOptions();
+
+        ////    // Cut out a lot of options here for configuring deployment, but are all part of DacDeployOptions
+        ////    dbDeployOptions.SqlCommandVariableValues.Add("debug", "false");
+
+        ////    dbServices.Deploy(dbPackage, schemaName, true, dbDeployOptions);
+
+        ////    _output.Close();
+        ////}
+
+        ////private void DbServices_Message(object sender, DacMessageEventArgs e)
+        ////{
+        ////    _output.WriteLine("DAC Message: {0}", e.Message);
+        ////}
+
+        ////private void DbServices_ProgressChanged(object sender, DacProgressEventArgs e)
+        ////{
+        ////    _output.WriteLine(e.Status + ": " + e.Message);
+        ////}
+
+        // create and delete test database methods for EF repositoryes
+        ////[SetUp]
+        ////public void Initiaslise()
+        ////{
+        ////    ////CreateDataBase(SCHEMANAME, _str, DACPACPATH);
+        ////    _context.Database.CreateIfNotExists();
+        ////}
+
+        ////[TearDown]
+        ////public void Cleanup()
+        ////{
+        ////    ////DropSchema(SCHEMANAME, _str);
+        ////    _context.Database.Delete();
+        ////    _context.Dispose();
+        ////}
+
         [Test]
         public void CreateEventTest()
         {
-            // create tested data
             // arange
-            IVenueRepository venueRepository = new VenueRepository(_str);
-            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
-            IAreaRepository areaRepository = new AreaRepository(_str);
-            ISeatRepository seatRepository = new SeatRepository(_str);
+            var venueRepository = new VenueRepositoryEF(_context);
+            var layoutRepository = new TMLayoutRepositoryEF(_context);
+            var areaRepository = new AreaRepositoryEF(_context);
+            var seatRepository = new SeatRepositoryEF(_context);
 
-            ITMEventRepository eventRepository = new TMEventRepository(_str);
-            ITMEventAreaRepository eventAreaRepository = new TMEventAreaRepository(_str);
-            ITMEventSeatRepository eventSeatRepository = new TMEventSeatRepository(_str);
+            var eventRepository = new TMEventRepositoryEF(_context);
+            var eventAreaRepository = new TMEventAreaRepositoryEF(_context);
+            var eventSeatRepository = new TMEventSeatRepositoryEF(_context);
 
             Venue venue = venueRepository.Create(
                 new Venue { Description = "some v desc2", Address = "some address2", Lenght = 5, Weidth = 5 });
@@ -53,8 +128,8 @@ namespace TicketManagement.IntegrationTests
                     Name = "big event22",
                     Description = "some event desc22",
                     TMLayoutId = layout.Id,
-                    StartEvent = new DateTime(2020, 9, 25),
-                    EndEvent = new DateTime(2020, 9, 26),
+                    StartEvent = DateTime.Now.Date.AddDays(3),
+                    EndEvent = DateTime.Now.Date.AddDays(4),
                 });
 
             List<TMEventArea> tmeventareas = eventAreaRepository.GetAll().Where(a => a.TMEventId == tmevent.Id).ToList();
@@ -62,11 +137,12 @@ namespace TicketManagement.IntegrationTests
                 Where(s => tmeventareas.Any(a => a.Id == s.TMEventAreaId)).ToList();
             TMEvent tmeventFromDB = eventRepository.GetById(tmevent.Id);
 
+            eventRepository.Remove(tmevent.Id);
+
             // delete tested data
             seats.ForEach(s => seatRepository.Remove(s.Id));
             areas.ForEach(a => areaRepository.Remove(a.Id));
 
-            eventRepository.Remove(tmevent.Id);
             layoutRepository.Remove(layout.Id);
             venueRepository.Remove(venue.Id);
 
@@ -87,16 +163,15 @@ namespace TicketManagement.IntegrationTests
         [Test]
         public void DeleteEventTest()
         {
-            // create tested data
             // arange
-            IVenueRepository venueRepository = new VenueRepository(_str);
-            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
-            IAreaRepository areaRepository = new AreaRepository(_str);
-            ISeatRepository seatRepository = new SeatRepository(_str);
+            var venueRepository = new VenueRepositoryEF(_context);
+            var layoutRepository = new TMLayoutRepositoryEF(_context);
+            var areaRepository = new AreaRepositoryEF(_context);
+            var seatRepository = new SeatRepositoryEF(_context);
 
-            ITMEventRepository eventRepository = new TMEventRepository(_str);
-            ITMEventAreaRepository eventAreaRepository = new TMEventAreaRepository(_str);
-            ITMEventSeatRepository eventSeatRepository = new TMEventSeatRepository(_str);
+            var eventRepository = new TMEventRepositoryEF(_context);
+            var eventAreaRepository = new TMEventAreaRepositoryEF(_context);
+            var eventSeatRepository = new TMEventSeatRepositoryEF(_context);
 
             Venue venue = venueRepository.Create(
                 new Venue { Description = "some v desc2", Address = "some address2", Lenght = 5, Weidth = 5 });
@@ -121,8 +196,8 @@ namespace TicketManagement.IntegrationTests
                     Name = "big event22",
                     Description = "some event desc22",
                     TMLayoutId = layout.Id,
-                    StartEvent = new DateTime(2020, 9, 25),
-                    EndEvent = new DateTime(2020, 9, 26),
+                    StartEvent = DateTime.Now.Date.AddDays(3),
+                    EndEvent = DateTime.Now.Date.AddDays(4),
                 });
 
             // delete tested data
@@ -148,14 +223,13 @@ namespace TicketManagement.IntegrationTests
         [Test]
         public void UpdateEventLocalFieldsTest()
         {
-            // create tested data
             // arange
-            IVenueRepository venueRepository = new VenueRepository(_str);
-            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
-            IAreaRepository areaRepository = new AreaRepository(_str);
-            ISeatRepository seatRepository = new SeatRepository(_str);
+            var venueRepository = new VenueRepositoryEF(_context);
+            var layoutRepository = new TMLayoutRepositoryEF(_context);
+            var areaRepository = new AreaRepositoryEF(_context);
+            var seatRepository = new SeatRepositoryEF(_context);
 
-            ITMEventRepository eventRepository = new TMEventRepository(_str);
+            var eventRepository = new TMEventRepositoryEF(_context);
 
             Venue venue = venueRepository.Create(
                 new Venue { Description = "some v desc2", Address = "some address2", Lenght = 5, Weidth = 5 });
@@ -180,14 +254,15 @@ namespace TicketManagement.IntegrationTests
                     Name = "big event22",
                     Description = "some event desc22",
                     TMLayoutId = layout.Id,
-                    StartEvent = new DateTime(2020, 9, 25),
-                    EndEvent = new DateTime(2020, 9, 26),
+                    StartEvent = DateTime.Now.Date.AddDays(3),
+                    EndEvent = DateTime.Now.Date.AddDays(4),
                 });
 
+            // was some second create
             // act
             tmevent.Description = "new desc";
-            tmevent.StartEvent = new DateTime(2020, 10, 25);
-            tmevent.EndEvent = new DateTime(2020, 10, 26);
+            tmevent.StartEvent = DateTime.Now.Date.AddDays(5);
+            tmevent.EndEvent = DateTime.Now.Date.AddDays(6);
 
             eventRepository.Update(tmevent);
 
@@ -208,16 +283,15 @@ namespace TicketManagement.IntegrationTests
         [Test]
         public void UpdateEventLayoutTest()
         {
-            // create tested data
-            // arange
-            IVenueRepository venueRepository = new VenueRepository(_str);
-            ITMLayoutRepository layoutRepository = new TMLayoutRepository(_str);
-            IAreaRepository areaRepository = new AreaRepository(_str);
-            ISeatRepository seatRepository = new SeatRepository(_str);
+            // arrage
+            var venueRepository = new VenueRepositoryEF(_context);
+            var layoutRepository = new TMLayoutRepositoryEF(_context);
+            var areaRepository = new AreaRepositoryEF(_context);
+            var seatRepository = new SeatRepositoryEF(_context);
 
-            ITMEventRepository eventRepository = new TMEventRepository(_str);
-            ITMEventAreaRepository eventAreaRepository = new TMEventAreaRepository(_str);
-            ITMEventSeatRepository eventSeatRepository = new TMEventSeatRepository(_str);
+            var eventRepository = new TMEventRepositoryEF(_context);
+            var eventAreaRepository = new TMEventAreaRepositoryEF(_context);
+            var eventSeatRepository = new TMEventSeatRepositoryEF(_context);
 
             Venue venue = venueRepository.Create(
                 new Venue { Description = "some v desc2", Address = "some address2", Lenght = 5, Weidth = 5 });
@@ -293,6 +367,30 @@ namespace TicketManagement.IntegrationTests
             tmeventseats.ForEach(ta => ta.Id = 0);
             seats2.ForEach(ta => ta.Id = 0);
             tmeventseats.Should().BeEquivalentTo(seats2, options => options.ExcludingMissingMembers());
+        }
+
+        // Dispose() calls Dispose(true)
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                // free managed resources
+                _context.Dispose();
+            }
+
+            _isDisposed = true;
         }
     }
 }

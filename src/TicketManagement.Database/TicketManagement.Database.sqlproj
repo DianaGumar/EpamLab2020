@@ -63,6 +63,7 @@
     <Folder Include="Post" />
     <Folder Include="Programmability" />
     <Folder Include="Programmability\StoredProcedures" />
+    <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ForeignKeys\FK_Venue_TMLayout.sql" />
@@ -72,9 +73,24 @@
     <Build Include="ForeignKeys\FK_TMLayout_TMEvent.sql" />
     <Build Include="ForeignKeys\FK_TMEvent_TMEventArea.sql" />
     <Build Include="ForeignKeys\FK_Area_TMEventSeat.sql" />
-    <Build Include="Programmability\StoredProcedures\SP_Create_TMEvent.sql" />
-    <Build Include="Programmability\StoredProcedures\SP_Delete_TMEvent.sql" />
-    <Build Include="Programmability\StoredProcedures\SP_Update_TMEvent.sql" />
+    <Build Include="Programmability\StoredProcedures\TMEvent_Create.sql" />
+    <Build Include="Programmability\StoredProcedures\TMEvent_Delete.sql" />
+    <Build Include="Programmability\StoredProcedures\TMEvent_Update.sql" />
+    <Build Include="Tables\AspNetUsers.sql" />
+    <Build Include="Tables\PurchaseHistory.sql" />
+    <Build Include="ForeignKeys\FK_PurchaseHistory_TMEventSeat.sql" />
+    <Build Include="ForeignKeys\FK_PurchaseHistory_TMUser.sql" />
+    <Build Include="Tables\AspNetRoles.sql" />
+    <Build Include="Tables\TMUser.sql" />
+    <Build Include="ForeignKeys\FK_TMUser_AspNetUsers.sql" />
+    <Build Include="Tables\__MigrationHistory.sql" />
+    <Build Include="Tables\AspNetUserClaims.sql" />
+    <Build Include="Tables\AspNetUserLogins.sql" />
+    <Build Include="Tables\AspNetUserRoles.sql" />
+    <Build Include="ForeignKeys\FK_AspNetUserClaims_AspNetUsers.sql" />
+    <Build Include="ForeignKeys\FK_AspNetUserLogins_AspNetUsers.sql" />
+    <Build Include="ForeignKeys\FK_AspNetUserRoles_AspNetRoles.sql" />
+    <Build Include="ForeignKeys\FK_AspNetUserRoles_AspNetUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\TMEvent.sql" />
@@ -85,7 +101,7 @@
     <Build Include="Tables\Venue.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TicketManagement.publish.xml" />
+    <None Include="Snapshots\TicketManagement.Database_20201025_02-29-54.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post\Script.TestEventSPData.sql" />

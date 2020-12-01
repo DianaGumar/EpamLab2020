@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace TicketManagement.DataAccess.DAL
 {
@@ -8,24 +10,16 @@ namespace TicketManagement.DataAccess.DAL
     {
         T Create(T obj);
 
-        IEnumerable<T> Create(IEnumerable<T> objs);
+        void Remove(T obj);
 
-        int Remove(T obj);
+        void Remove(int id);
 
-        int Remove(int id);
-
-        IEnumerable<T> Remove(IEnumerable<T> objs);
-
-        T GetById(int id);
+        T GetById(object id);
 
         IEnumerable<T> GetAll();
 
-        int Update(T obj);
+        void Update(T obj);
 
-        IEnumerable<T> Update(IEnumerable<T> objs);
-
-        IEnumerable<T> Find(Func<T, bool> p);
-
-        // for future- Find()
+        IQueryable<T> Find(Expression<Func<T, bool>> p);
     }
 }

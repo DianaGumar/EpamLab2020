@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +55,12 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions">
       <Version>5.10.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SqlServer.DacFx.x64">
+      <Version>150.4897.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom">
+      <Version>150.4897.1</Version>
     </PackageReference>
     <PackageReference Include="NUnit">
       <Version>3.12.0</Version>

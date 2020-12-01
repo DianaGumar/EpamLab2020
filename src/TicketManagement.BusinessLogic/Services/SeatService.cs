@@ -1,34 +1,101 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.DataAccess.DAL;
-using TicketManagement.DataAccess.Model;
+using TicketManagement.DataAccess.Entities;
+using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
+    public interface ISeatService
+    {
+        int RemoveSeat(int id);
+
+        List<SeatDto> GetAllSeat();
+
+        SeatDto GetSeat(int id);
+
+        SeatDto CreateSeat(SeatDto obj);
+
+        int UpdateSeat(SeatDto obj);
+    }
+
     internal class SeatService : ISeatService
     {
         private readonly ISeatRepository _seatRepository;
 
-        internal SeatService(ISeatRepository seatRepository)
+        public SeatService(ISeatRepository seatRepository)
         {
             _seatRepository = seatRepository;
         }
 
-        public int RemoveSeat(int id)
+        private static SeatDto ConvertToDto(Seat obj)
         {
-            return _seatRepository.Remove(id);
+            return new SeatDto
+            {
+                Id = obj.Id,
+                AreaId = obj.AreaId,
+                Number = obj.Number,
+                Row = obj.Row,
+            };
         }
 
-        public List<Seat> GetAllSeat()
+        private static Seat ConvertToEntity(SeatDto obj)
         {
-            return _seatRepository.GetAll().ToList();
+            return new Seat
+            {
+                Id = obj.Id,
+                AreaId = obj.AreaId,
+                Number = obj.Number,
+                Row = obj.Row,
+            };
         }
 
-        public Seat CreateSeat(Seat obj)
+        public SeatDto CreateSeat(SeatDto obj)
         {
             List<Seat> objs = _seatRepository.GetAll()
-               .Where(a => a.AreaId == obj.AreaId && a.Row == obj.Row && a.Number == obj.Number).ToList();
-            return objs.Count == 0 ? _seatRepository.Create(obj) : objs.ElementAt(0);
+               .Where(a => a.AreaId == obj.AreaId
+               && a.Row == obj.Row && a.Number == obj.Number).ToList();
+
+            return objs.Count == 0
+                ? ConvertToDto(_seatRepository.Create(ConvertToEntity(obj)))
+                : ConvertToDto(objs.ElementAt(0));
+        }
+
+        public int RemoveSeat(int id)
+        {
+            _seatRepository.Remove(id);
+
+            Seat obj = _seatRepository.GetById(id);
+
+            return obj == null ? 1 : 0;
+        }
+
+        public List<SeatDto> GetAllSeat()
+        {
+            List<Seat> seats = _seatRepository.GetAll().ToList();
+            var seatsDto = new List<SeatDto>();
+
+            foreach (var item in seats)
+            {
+                seatsDto.Add(ConvertToDto(item));
+            }
+
+            return seatsDto;
+        }
+
+        public SeatDto GetSeat(int id)
+        {
+            Seat seat = _seatRepository.GetById(id);
+            var seatDto = ConvertToDto(seat);
+
+            return seatDto;
+        }
+
+        public int UpdateSeat(SeatDto obj)
+        {
+            _seatRepository.Update(ConvertToEntity(obj));
+
+            return 1;
         }
     }
 }
