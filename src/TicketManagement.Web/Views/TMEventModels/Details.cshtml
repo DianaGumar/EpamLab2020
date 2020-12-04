@@ -17,7 +17,7 @@
                     <img src="@Model.Img" class="img-fluid" height="300">
                 </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 @if (User.IsInRole("eventmanager"))
                 {
                     <div class="pull-right">
@@ -58,11 +58,19 @@
                         MIDDLE PRISE BY SEAT @Html.DisplayFor(modelItem => Model.MiddlePriceBySeat) $
                     </span>
                     <p class="pull-right">
-                        @Html.ActionLink("SHOUSE SEATS", "AreasMap", "TMEventAreaModels",
+                        @Html.ActionLink("SHOUSE SEATS", "BuyTicket", "Purchase",
                        new { idEvent = Model.Id },
                        new { @class = "btn btn-primary" })
                     </p>
                 </div>
+            </div>
+        
+            <div class="col-lg-3">
+                <h4>Venue map</h4>
+                 <div class="container">
+                    @Html.Action("LayoutMap", "VenueModels",
+                    new { idlayout = Model.TMLayoutId })
+                 </div>
             </div>
         </div>
     </div>

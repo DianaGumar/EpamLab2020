@@ -20,9 +20,13 @@ namespace TicketManagement.BusinessLogic
 
         List<TMEventSeatDto> GetTMEventSeatsByArea(int tmeventAreaId);
 
+        List<TMEventSeatDto> GetTMEventSeatsByIds(params int[] seatsId);
+
         int SetTMEventSeatState(int tmeventSeatId, SeatState state);
 
         int SetTMEventAreaPrice(int areaId, decimal price);
+
+        decimal GetTMEventAreaPrice(int areaId);
     }
 
     internal class TMEventAreaService : ITMEventAreaService
@@ -49,6 +53,7 @@ namespace TicketManagement.BusinessLogic
                 TMEventId = obj.TMEventId,
                 CountSeatsX = seats.Max(s => s.Number),
                 CountSeatsY = seats.Max(s => s.Row),
+                TMEventSeats = seats,
             };
         }
 
@@ -126,6 +131,17 @@ namespace TicketManagement.BusinessLogic
             TMEventSeatDto tmeventSeatDto = _tmeventSeatService.GetTMEventSeat(tmeventSeatId);
             tmeventSeatDto.State = state;
             return _tmeventSeatService.UpdateTMEventSeat(tmeventSeatDto);
+        }
+
+        public decimal GetTMEventAreaPrice(int areaId)
+        {
+            return _tmeventAreaRepository.GetById(areaId).Price;
+        }
+
+        public List<TMEventSeatDto> GetTMEventSeatsByIds(params int[] seatsId)
+        {
+            return _tmeventSeatService.GetAllTMEventSeat()
+                .Where(s => seatsId.Any(a => a == s.Id)).ToList();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace TicketManagement.Domain.DTO
+﻿using System.Collections.Generic;
+
+namespace TicketManagement.Domain.DTO
 {
     public class TMEventAreaDto
     {
@@ -16,15 +18,8 @@
 
         public int CountSeatsX { get; set; }
 
-        public string CoordXStr { get; set; }
+        public IEnumerable<TMEventSeatDto> TMEventSeats { get; set; }
 
-        public string CoordYStr { get; set; }
-
-        public string CountSeatsYStr { get; set; }
-
-        public string CountSeatsXStr { get; set; }
-
-        // public IEnumerable<TMEventSeatDto> TMEventSeats
         public decimal Price { get; set; }
     }
 }

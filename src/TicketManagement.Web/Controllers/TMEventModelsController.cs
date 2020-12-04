@@ -97,15 +97,26 @@ namespace TicketManagement.Web.Controllers
         [Authorize(Roles = "eventmanager")]
         public ActionResult Create([Bind] TMEventViewModel obj)
         {
-            if (obj != null && ModelState.IsValid )
+            if (obj != null && ModelState.IsValid)
             {
-                obj.TMEvent = _tmeventService.CreateTMEvent(obj.TMEvent);
+                var result = _tmeventService.CreateTMEvent(obj.TMEvent);
 
-                return RedirectToAction("Index", "TMEventAreaModels", new { idEvent = obj.TMEvent.Id });
+                switch (result)
+                {
+                    case TMEventStatus.Success:
+                        return RedirectToAction("SetSeveralPrice", "Purchase", new { idEvent = obj.TMEvent.Id });
+                    case TMEventStatus.DateInPast:
+                        ModelState.AddModelError("", "date is in a past"); break;
+                    case TMEventStatus.DateWrongOrder:
+                        ModelState.AddModelError("", "end date before start date"); break;
+                    case TMEventStatus.SameByDateObj:
+                        ModelState.AddModelError("", "this venue is busy at this time"); break;
+                    default:
+                        ModelState.AddModelError("", "something wrong"); break;
+                }
             }
 
             obj = obj ?? new TMEventViewModel { TMEvent = new TMEventDto() };
-
             obj.TMLayouts = GetVenueLayoutNames();
 
             return View(obj);
@@ -136,9 +147,23 @@ namespace TicketManagement.Web.Controllers
             if (obj != null && ModelState.IsValid)
             {
                 obj.Id = id;
-                _tmeventService.UpdateTMEvent(obj);
+                var result = _tmeventService.UpdateTMEvent(obj);
 
-                return RedirectToAction("Index");
+                switch (result)
+                {
+                    case TMEventStatus.Success:
+                        return RedirectToAction("SetSeveralPrice", "Purchase", new { idEvent = obj.Id });
+                    case TMEventStatus.DateInPast:
+                        ModelState.AddModelError("", "date is in a past"); break;
+                    case TMEventStatus.DateWrongOrder:
+                        ModelState.AddModelError("", "end date before start date"); break;
+                    case TMEventStatus.SameByDateObj:
+                        ModelState.AddModelError("", "this venue is busy with another event at this time"); break;
+                    case TMEventStatus.BusySeatsExists:
+                        ModelState.AddModelError("", "you has bought ticket on this layout"); break;
+                    default:
+                        ModelState.AddModelError("", "something wrong"); break;
+                }
             }
 
             return View(obj);

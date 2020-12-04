@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using TicketManagement.BusinessLogic;
 using TicketManagement.Web.Models;
 
 namespace TicketManagement.Web.Controllers
@@ -15,17 +16,23 @@ namespace TicketManagement.Web.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
+        private readonly IUserService _userService;
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public ManageController()
+        public ManageController(IUserService userService)
         {
+            _userService = userService;
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ManageController(IUserService userService, ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+
+            _userService = userService;
         }
 
         public enum ManageMessageId
@@ -36,6 +43,9 @@ namespace TicketManagement.Web.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            TopUpBalanseSuccess,
+            ChangeNameSuccess,
+            ChangeLastNameSuccess,
             Error,
         }
 
@@ -85,6 +95,18 @@ namespace TicketManagement.Web.Controllers
             {
                 ViewBag.StatusMessage = "Your password has been set.";
             }
+            else if (message == ManageMessageId.ChangeLastNameSuccess)
+            {
+                ViewBag.StatusMessage = "Your lastname has been changed.";
+            }
+            else if (message == ManageMessageId.ChangeNameSuccess)
+            {
+                ViewBag.StatusMessage = "Your name has been changed.";
+            }
+            else if (message == ManageMessageId.TopUpBalanseSuccess)
+            {
+                ViewBag.StatusMessage = "Your balance has been topped up.";
+            }
             else if (message == ManageMessageId.SetTwoFactorSuccess)
             {
                 ViewBag.StatusMessage = "Your two-factor authentication provider has been set.";
@@ -114,7 +136,109 @@ namespace TicketManagement.Web.Controllers
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                Balanse = _userService.GetBalance(userId),
+                Name = User.Identity.Name,
+                LastName = _userService.GetTMUserById(userId).UserLastName,
+                UserRole = UserManager.GetRoles(userId).First(),
             };
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult ChangeLastName()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeLastName(ChangeLastNameViewModel model)
+        {
+            if (model == null || !ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = _userService.UpdateLastName(User.Identity.GetUserId(), model.LastName);
+
+            if (result == 1)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangeLastNameSuccess });
+            }
+
+            ModelState.AddModelError("", "Failed update last name");
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult ChangeName()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeName(ChangeNameViewModel model)
+        {
+            if (model == null || !ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            user.UserName = model.Name;
+            var result = await UserManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangeNameSuccess });
+            }
+
+            AddErrors(result);
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult TopUpBalance(decimal currentBalanse)
+        {
+            return View(new AddBalanceViewModel { CurrentBalance = currentBalanse });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> TopUpBalance(AddBalanceViewModel model)
+        {
+            if (model == null || !ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = _userService.TopUpBalance(User.Identity.GetUserId(), model.TopUpSum);
+
+            if (result == 1)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+
+                return RedirectToAction("Index", new { Message = ManageMessageId.TopUpBalanseSuccess });
+            }
+
+            ModelState.AddModelError("", "Failed to top up balance");
             return View(model);
         }
 
@@ -173,36 +297,6 @@ namespace TicketManagement.Web.Controllers
             }
 
             return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
-        }
-
-        // POST: /Manage/EnableTwoFactorAuthentication
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EnableTwoFactorAuthentication()
-        {
-            await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            }
-
-            return RedirectToAction("Index", "Manage");
-        }
-
-        // POST: /Manage/DisableTwoFactorAuthentication
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DisableTwoFactorAuthentication()
-        {
-            await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            if (user != null)
-            {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-            }
-
-            return RedirectToAction("Index", "Manage");
         }
 
         // GET: /Manage/VerifyPhoneNumber

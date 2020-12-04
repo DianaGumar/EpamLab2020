@@ -65,13 +65,15 @@ namespace TicketManagement.UnitTests
             TMEventService tmeventService = new TMEventService(mockTMEventRepository.Object,
                 mockTMEventAreaService.Object, mockTMEventSeatService.Object);
 
-            TMEventDto tmevent = tmeventService.CreateTMEvent(new TMEventDto
+            TMEventDto tmevent = new TMEventDto
             {
                 Name = "a",
                 Description = "d",
                 StartEvent = DateTime.Now.Date.AddDays(1),
                 EndEvent = DateTime.Now.Date.AddDays(2),
-            });
+            };
+
+            tmeventService.CreateTMEvent(tmevent);
 
             tmevent.Should().BeEquivalentTo(events_dto[0]);
         }
@@ -114,7 +116,9 @@ namespace TicketManagement.UnitTests
                 EndEvent = DateTime.Now.Date,
             };
 
-            TMEventDto tmeventPast = tmeventService.CreateTMEvent(tmeventPre_dto);
+            TMEventDto tmeventPast = tmeventPre_dto;
+
+            tmeventService.CreateTMEvent(tmeventPre_dto);
 
             tmeventPast.Should().BeEquivalentTo(tmeventPre_dto);
         }
@@ -157,7 +161,9 @@ namespace TicketManagement.UnitTests
                 EndEvent = DateTime.Now.Date.AddDays(2),
             };
 
-            TMEventDto tmeventPast = tmeventService.CreateTMEvent(tmeventPre_dto);
+            TMEventDto tmeventPast = tmeventPre_dto;
+
+            tmeventService.CreateTMEvent(tmeventPre_dto);
 
             tmeventPast.Should().BeEquivalentTo(tmeventPre_dto);
         }

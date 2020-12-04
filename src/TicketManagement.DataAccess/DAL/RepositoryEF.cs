@@ -23,7 +23,7 @@ namespace TicketManagement.DataAccess.DAL
 
         public T Create(T obj)
         {
-            obj = Context.Set<T>().Add(obj);
+            obj = DataBaseSet.Add(obj);
             Context.SaveChanges();
 
             return obj;
@@ -41,7 +41,7 @@ namespace TicketManagement.DataAccess.DAL
             return DataBaseSet.ToList();
         }
 
-        public T GetById(int id)
+        public T GetById(object id)
         {
             return DataBaseSet.Find(id);
         }
@@ -64,7 +64,7 @@ namespace TicketManagement.DataAccess.DAL
 
         public void Update(T obj)
         {
-            var entity = DataBaseSet.Find(obj?.Id);
+            var entity = DataBaseSet.Find(obj?.GetId);
             if (entity == null)
             {
                 return;

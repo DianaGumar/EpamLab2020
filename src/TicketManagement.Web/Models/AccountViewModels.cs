@@ -69,6 +69,13 @@ namespace TicketManagement.Web.Models
 
     public class RegisterViewModel
     {
+        [MaxLength(256)]
+        public string Name { get; set; }
+
+        [NotMapped]
+        [MaxLength(256)]
+        public string LastName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

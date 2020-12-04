@@ -21,9 +21,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "TMEventModels")</li>
-                    <li>@Html.ActionLink("Purchase history", "About", "Home")</li>
-                    <li>@Html.ActionLink("Cart", "About", "Home")</li>
+                    <li>@Html.ActionLink("Purchase history", "Index", "Purchase")</li>
+                    @*<li>@Html.ActionLink("Cart", "Cart", "Purchase")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -16,6 +17,14 @@ namespace TicketManagement.Web.Models
         public bool TwoFactor { get; set; }
 
         public bool BrowserRemembered { get; set; }
+
+        public decimal Balanse { get; set; }
+
+        public string Name { get; set; }
+
+        public string LastName { get; set; }
+
+        public string UserRole { get; set; }
     }
 
     public class ManageLoginsViewModel
@@ -69,6 +78,29 @@ namespace TicketManagement.Web.Models
         [Phone]
         [Display(Name = "Phone Number")]
         public string Number { get; set; }
+    }
+
+    public class AddBalanceViewModel
+    {
+        [Display(Name = "Your current balance")]
+        public decimal CurrentBalance { get; set; }
+
+        [Required]
+        [Display(Name = "Top up sum")]
+        public decimal TopUpSum { get; set; }
+    }
+
+    public class ChangeNameViewModel
+    {
+        [Required]
+        public string Name { get; set; }
+    }
+
+    public class ChangeLastNameViewModel
+    {
+        [Required]
+        [Display(Name = "Last name")]
+        public string LastName { get; set; }
     }
 
     public class VerifyPhoneNumberViewModel

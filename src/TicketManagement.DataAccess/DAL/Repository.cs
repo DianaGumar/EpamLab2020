@@ -6,11 +6,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {
     public class Repository<T> : IRepository<T>
-        where T : class, new()
+        where T : class, IEntity, new()
     {
         // for reflectoin work
         private readonly string _objPropertiesNames;
@@ -76,7 +77,7 @@ namespace TicketManagement.DataAccess.DAL
             throw new NotImplementedException();
         }
 
-        public T GetById(int id)
+        public T GetById(object id)
         {
             T entity = new T();
 
