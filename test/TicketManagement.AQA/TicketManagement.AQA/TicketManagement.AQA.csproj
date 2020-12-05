@@ -10,8 +10,8 @@
     <ProjectGuid>{3A1D145C-A7E5-4FE1-8949-63AF67CAC631}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AQA_demoproj</RootNamespace>
-    <AssemblyName>AQA_demoproj</AssemblyName>
+    <RootNamespace>AQATM</RootNamespace>
+    <AssemblyName>AQATM</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -146,7 +146,11 @@
     <Compile Include="WebPages\HomePage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="App.config" />
+    <None Include="Features\TMRegistrate.feature" />
     <None Include="Features\TrainingByChangeLocalisation.feature" />
     <None Include="Features\TrainingByLogin.feature" />
     <None Include="packages.config" />

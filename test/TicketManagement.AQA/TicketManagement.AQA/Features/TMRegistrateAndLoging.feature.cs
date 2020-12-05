@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace AQATM.Features
+namespace AQA_demoproj.Features
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,23 +20,23 @@ namespace AQATM.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.5.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("TrainingByChangeLocalisation")]
-    public partial class TrainingByChangeLocalisationFeature
+    [NUnit.Framework.DescriptionAttribute("TMRegistrateAndLoging")]
+    public partial class TMRegistrateAndLogingFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
         
-#line 1 "TrainingByChangeLocalisation.feature"
+#line 1 "TMRegistrateAndLoging.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "TrainingByChangeLocalisation", "\tAs a user\r\n\tI want to be able to change site language\r\n\tSo I can do it through h" +
-                    "ome page header", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "TMRegistrateAndLoging", "\tAs a user\r\n\tI want to be able to use more site functions\r\n\tSo I can do it from r" +
+                    "egistrate and then login pages", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,12 +75,12 @@ namespace AQATM.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Set localisation to Ukraine")]
-        public virtual void SetLocalisationToUkraine()
+        [NUnit.Framework.DescriptionAttribute("Registrate and then Login to TM as eventmanager is failed with wrong credentials")]
+        public virtual void RegistrateAndThenLoginToTMAsEventmanagerIsFailedWithWrongCredentials()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set localisation to Ukraine", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Registrate and then Login to TM as eventmanager is failed with wrong credentials", null, tagsOfScenario, argumentsOfScenario);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -115,12 +115,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Set localisation to Russian")]
-        public virtual void SetLocalisationToRussian()
+        [NUnit.Framework.DescriptionAttribute("Registrate and then Login to TM as authorizeduser is failed with wrong credential" +
+            "s")]
+        public virtual void RegistrateAndThenLoginToTMAsAuthorizeduserIsFailedWithWrongCredentials()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set localisation to Russian", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Registrate and then Login to TM as authorizeduser is failed with wrong credential" +
+                    "s", null, tagsOfScenario, argumentsOfScenario);
 #line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden

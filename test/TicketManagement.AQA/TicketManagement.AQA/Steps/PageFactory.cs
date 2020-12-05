@@ -1,25 +1,30 @@
-﻿using AQA_demoproj.Utils;
-using AQA_demoproj.WebPages;
+﻿using System;
+using AQATM.Utils;
+using AQATM.WebPages;
 using OpenQA.Selenium;
-using System;
 using TechTalk.SpecFlow;
 
-namespace AQA_demoproj.Steps
+namespace AQATM.Steps
 {
     [Binding]
+#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
     public class PageFactory
+#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
+        private static readonly Lazy<PageFactory> Lazy = new Lazy<PageFactory>(() => new PageFactory());
+
         private static IWebDriver _driver;
 
-        private PageFactory() { }
-
-        private static readonly Lazy<PageFactory> Lazy = new Lazy<PageFactory>(() => new PageFactory());
+        private PageFactory()
+        {
+        }
 
         public static PageFactory Instance => Lazy.Value;
 
-        public static T Get<T>() where T : AbstractPage
+        public static T Get<T>()
+            where T : AbstractPage
         {
-            object[] args = {_driver};
+            object[] args = { _driver };
             return (T) Activator.CreateInstance(typeof(T), args);
         }
 

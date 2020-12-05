@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
-using AQA_demoproj.WebPages;
+using AQATM.WebPages;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
-namespace AQA_demoproj.Steps
+namespace AQATM.Steps
 {
     [Binding]
     public class LoginSteps
     {
         private static HomePage HomePage => PageFactory.Get<HomePage>();
-        
+
         [Given(@"User is on training\.by")]
-        public void GivenUserIsOnTraining_By()
+        public void GivenUserIsOnTrainingBy()
         {
             HomePage.Open();
         }

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using AQA_demoproj.WebPages;
+using AQATM.WebPages;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
-namespace AQA_demoproj.Steps
+namespace AQATM.Steps
 {
     [Binding]
     public class LocalisationSteps
@@ -23,7 +23,7 @@ namespace AQA_demoproj.Steps
         {
             var title = HomePage.BannerTitle;
             var actualText = title.Replace("\r\n", " ");
-            var result = actualText.Contains(bannerText);
+            _ = actualText.Contains(bannerText);
             Assert.That(actualText.Contains(bannerText), Is.True);
         }
     }

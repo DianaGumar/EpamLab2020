@@ -3,16 +3,16 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 
-namespace AQA_demoproj.WebPages
+namespace AQATM.WebPages
 {
     public abstract class AbstractPage
     {
-        protected IWebDriver Driver;
-
         protected AbstractPage(IWebDriver driver)
         {
             Driver = driver;
         }
+
+        protected IWebDriver Driver { get; }
 
         protected IWebElement FindByCss(string css, int timeoutInSeconds)
         {
@@ -35,11 +35,11 @@ namespace AQA_demoproj.WebPages
             return Driver.FindElement(By.ClassName(className));
         }
 
-        protected IWebElement FindByXPath(string xPath, int timeoutInSeconds)
+        protected IWebElement FindByXPath(string xpath, int timeoutInSeconds)
         {
-            var locator = SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(xPath));
+            var locator = SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath(xpath));
             new WebDriverWait(Driver, TimeSpan.FromSeconds(timeoutInSeconds)).Until(locator);
-            return Driver.FindElement(By.XPath(xPath));
+            return Driver.FindElement(By.XPath(xpath));
         }
     }
 }

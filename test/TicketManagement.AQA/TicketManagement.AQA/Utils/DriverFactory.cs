@@ -1,8 +1,8 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
 
-namespace AQA_demoproj.Utils
+namespace AQATM.Utils
 {
     public static class DriverFactory
     {
