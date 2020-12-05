@@ -11,3 +11,11 @@ How to start Web proj
 8. Build solution
 9. Publish database proj
 10. Run web proj
+
+
+How to start AQA tests
+
+1. install Selenium.WebDriver.ChromeDriver latest version
+2. install extentions SpecFlow, NUnit 3, NUnit 2
+3. Start Web proj
+4. Start tests
