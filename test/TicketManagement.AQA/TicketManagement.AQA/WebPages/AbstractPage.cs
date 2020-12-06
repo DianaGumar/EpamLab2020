@@ -14,6 +14,12 @@ namespace AQATM.WebPages
 
         protected IWebDriver Driver { get; }
 
+        public void TakeScrinshot(string path)
+        {
+            Screenshot screenshot = (Driver as ITakesScreenshot).GetScreenshot();
+            screenshot.SaveAsFile(path, ScreenshotImageFormat.Png);
+        }
+
         protected IWebElement FindByCss(string css, int timeoutInSeconds)
         {
             var locator = SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector(css));

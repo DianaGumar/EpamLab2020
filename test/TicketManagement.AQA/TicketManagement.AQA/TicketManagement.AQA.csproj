@@ -141,9 +141,7 @@
     <Compile Include="Steps\TMRegistrateSteps.cs" />
     <Compile Include="Utils\DriverFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Steps\LocalisationSteps.cs" />
     <Compile Include="WebPages\AbstractPage.cs" />
-    <Compile Include="WebPages\HomePage.cs" />
     <Compile Include="WebPages\TMEventModelsIndexPage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +150,6 @@
     </None>
     <None Include="App.config" />
     <None Include="Features\TMRegistrate.feature" />
-    <None Include="Features\TrainingByChangeLocalisation.feature" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

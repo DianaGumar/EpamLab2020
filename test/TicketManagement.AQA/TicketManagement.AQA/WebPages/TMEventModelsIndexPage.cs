@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace AQATM.WebPages
 {
@@ -11,6 +12,8 @@ namespace AQATM.WebPages
             : base(driver)
         {
         }
+
+        public IWebElement LogOffButton => FindByCss("a[id='TMLinkLogOff']", DefaultWaitingInterval);
 
         public IWebElement RegisterButton => FindByCss("a[id='registerLink']", DefaultWaitingInterval);
 
@@ -24,16 +27,20 @@ namespace AQATM.WebPages
 
         public IWebElement RegisterFormError(string textPresent) => FindByCssWithText("div[id='TMRegisterValidationErrors']", textPresent, DefaultWaitingInterval);
 
+        public IWebElement UserProfileLink(string textPresent) => FindByCssWithText("a[id='TMUserRoomLink']", textPresent, DefaultWaitingInterval);
+
         public void Open()
         {
             Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(60);
             Driver.Url = "https://localhost:44366";
         }
 
-        ////public void SelectLanguageFromDropDown(string language)
-        ////{
-        ////    var xpath = $".//*[contains(@class,'location-selector__item')]//a[contains(text(),'{language}')]";
-        ////    Driver.FindElement(By.XPath(xpath)).Click();
-        ////}
+        public void SelectRoleFromDropDown(string role)
+        {
+            var dropDownList = Driver.FindElement(By.Id("UserRole"));
+            var selectElement = new SelectElement(dropDownList);
+
+            selectElement.SelectByValue(role);
+        }
     }
 }
