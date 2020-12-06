@@ -13,6 +13,7 @@ using TicketManagement.DataAccess.Entities;
 
 namespace TicketManagement.IntegrationTests
 {
+    [TestFixture]
     public class DALEventSPTests : IDisposable
     {
         // create and delete test database methods for non EF repositoryes
