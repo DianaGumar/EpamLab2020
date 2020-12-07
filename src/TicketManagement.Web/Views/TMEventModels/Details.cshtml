@@ -23,9 +23,9 @@
                     <div class="pull-right">
                         @Html.ActionLink("Set price", "SetSeveralPrice", "Purchase",
                                new { idEvent = Model.Id }, new { @class = "btn btn-sm btn-default" })
-                        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
-                        @Html.ActionLink("Details", "Details", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
-                        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-sm btn-danger" })
+                        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary edit" })
+                        @Html.ActionLink("Details", "Details", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary details" })
+                        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-sm btn-danger delete" })
                     </div>
                 }
                 <p>
@@ -55,12 +55,12 @@
                     </span>
                     <br />
                     <span class="text-success" style="font-size:medium; ">
-                        MIDDLE PRISE BY SEAT @Html.DisplayFor(modelItem => Model.MiddlePriceBySeat) $
+                        MIDDLE PRISE BY SEAT <span id="tmMiddlePrise">@Html.DisplayFor(modelItem => Model.MiddlePriceBySeat)</span> $
                     </span>
                     <p class="pull-right">
                         @Html.ActionLink("SHOUSE SEATS", "BuyTicket", "Purchase",
                        new { idEvent = Model.Id },
-                       new { @class = "btn btn-primary" })
+                       new { @class = "btn btn-primary", id="TMChouseSeatsButton" })
                     </p>
                 </div>
             </div>

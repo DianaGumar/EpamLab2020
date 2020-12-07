@@ -21,12 +21,14 @@ namespace AQATM.Features
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("TMEvent")]
+    [NUnit.Framework.CategoryAttribute("user_eventmanager_account_exist")]
     public partial class TMEventFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "user_eventmanager_account_exist"};
         
 #line 1 "TMEvent.feature"
 #line hidden
@@ -36,7 +38,8 @@ namespace AQATM.Features
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "TMEvent", "\tAs a eventmanager\r\n\tI want to be able to manage events\r\n\tSo I can do it after av" +
-                    "torization with eventmanager role", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "torization with eventmanager role", ProgrammingLanguage.CSharp, new string[] {
+                        "user_eventmanager_account_exist"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,38 +77,15 @@ namespace AQATM.Features
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 7
-#line hidden
-#line 8
-    testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 9
- testRunner.And("User has user account with email \"emexample@gmail.com\" and password \"x6@9hkrmWZNj" +
-                    "mzY34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 10
- testRunner.When("User clicks Login button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 11
- testRunner.And("Enters user \"emexample@gmail.com\" into autorizeinput", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 12
- testRunner.And("Enters \"x6@9hkrmWZNjmzY34\" to Password autorizefield", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 13
- testRunner.And("User clicks FinalLogin button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-        }
-        
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Delete event is passed")]
         [NUnit.Framework.CategoryAttribute("tmevent")]
+        [NUnit.Framework.CategoryAttribute("correct")]
         public virtual void DeleteEventIsPassed()
         {
             string[] tagsOfScenario = new string[] {
-                    "tmevent"};
+                    "tmevent",
+                    "correct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete event is passed", null, tagsOfScenario, argumentsOfScenario);
 #line 16
@@ -128,17 +108,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
-this.FeatureBackground();
+#line 17
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 18
- testRunner.When("User clicks Delete button on event with Name \"Open Cinema\" and Id \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("User clicks \"delete\" button on event with Name \"Open Cinema\" and Id \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
  testRunner.Then("User can\'t see event with Name \"Open Cinema\" and Id \"3\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 20
- testRunner.And("User Logout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -147,13 +124,15 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Delete event is faled because event has busy seats")]
         [NUnit.Framework.CategoryAttribute("tmevent")]
+        [NUnit.Framework.CategoryAttribute("fail")]
         public virtual void DeleteEventIsFaledBecauseEventHasBusySeats()
         {
             string[] tagsOfScenario = new string[] {
-                    "tmevent"};
+                    "tmevent",
+                    "fail"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete event is faled because event has busy seats", null, tagsOfScenario, argumentsOfScenario);
-#line 23
+#line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -173,24 +152,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
-this.FeatureBackground();
+#line 23
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 24
- testRunner.Given("User avtorized by eventmanager with email \"emexample@gmail.com\" and password \"x6@" +
-                        "9hkrmWZNjmzY34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 25
  testRunner.And("event with Name \"Big Music Event\" and Id \"2\" has busy seat", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 25
+ testRunner.When("User clicks \"delete\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 26
- testRunner.When("User clicks Delete button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 27
  testRunner.Then("User can see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 28
- testRunner.And("User Logout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -199,13 +171,15 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Details event is passed")]
         [NUnit.Framework.CategoryAttribute("tmevent")]
+        [NUnit.Framework.CategoryAttribute("correct")]
         public virtual void DetailsEventIsPassed()
         {
             string[] tagsOfScenario = new string[] {
-                    "tmevent"};
+                    "tmevent",
+                    "correct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Details event is passed", null, tagsOfScenario, argumentsOfScenario);
-#line 31
+#line 29
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -225,22 +199,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
-this.FeatureBackground();
+#line 30
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 31
+ testRunner.When("User clicks \"details\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 32
- testRunner.Given("User avtorized by eventmanager with email \"emexample@gmail.com\" and password \"x6@" +
-                        "9hkrmWZNjmzY34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 33
- testRunner.When("User clicks Details button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 34
- testRunner.Then("User can see millde prise event with Name \"Big Music Event\" and Id \"2\" at index p" +
-                        "age", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 35
- testRunner.And("User Logout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("User can see buyTicketButton", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -249,13 +215,15 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Set areas price with event is passed")]
         [NUnit.Framework.CategoryAttribute("tmevent")]
+        [NUnit.Framework.CategoryAttribute("correct")]
         public virtual void SetAreasPriceWithEventIsPassed()
         {
             string[] tagsOfScenario = new string[] {
-                    "tmevent"};
+                    "tmevent",
+                    "correct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set areas price with event is passed", null, tagsOfScenario, argumentsOfScenario);
-#line 38
+#line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -275,33 +243,26 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
-this.FeatureBackground();
+#line 36
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 37
+ testRunner.When("User clicks \"setprice\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 38
+ testRunner.And("User set Price \"4\" at Price field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 39
- testRunner.Given("User avtorized by eventmanager with email \"emexample@gmail.com\" and password \"x6@" +
-                        "9hkrmWZNjmzY34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 40
- testRunner.When("User clicks SetPrice button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 41
- testRunner.And("User set Price \"4.5\" at Price field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 42
  testRunner.And("User clicks SetPrise button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 43
+#line 40
  testRunner.And("User clicks BackToList button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 44
- testRunner.And("User clicks Details button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.And("User clicks \"details\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 45
- testRunner.Then("User can see middle price = \"4.5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 46
- testRunner.And("User Logout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+ testRunner.Then("User can see middle price = \"4.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -310,13 +271,15 @@ this.FeatureBackground();
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Set areas price as free with event is passed but event are not availible")]
         [NUnit.Framework.CategoryAttribute("tmevent")]
+        [NUnit.Framework.CategoryAttribute("fail")]
         public virtual void SetAreasPriceAsFreeWithEventIsPassedButEventAreNotAvailible()
         {
             string[] tagsOfScenario = new string[] {
-                    "tmevent"};
+                    "tmevent",
+                    "fail"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set areas price as free with event is passed but event are not availible", null, tagsOfScenario, argumentsOfScenario);
-#line 49
+#line 45
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -336,108 +299,32 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
-this.FeatureBackground();
+#line 46
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 50
- testRunner.Given("User avtorized by eventmanager with email \"emexample@gmail.com\" and password \"x6@" +
-                        "9hkrmWZNjmzY34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 47
+ testRunner.When("User clicks \"setprice\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 51
- testRunner.When("User clicks SetPrice button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 52
+#line 48
  testRunner.And("User set Price \"0\" at Price field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 49
  testRunner.And("User clicks SetPrise button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 50
+ testRunner.And("User clicks BackToList button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 51
+ testRunner.Then("User can\'t see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 52
+ testRunner.And("User clicks SeeAllEvents button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 53
+ testRunner.Then("User can see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 54
- testRunner.And("User clicks BackToList button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 55
- testRunner.Then("User can\'t see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 56
- testRunner.And("User clicks SeeAllEvents button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 57
- testRunner.Then("User can see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 58
  testRunner.And("User take back event price", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 59
- testRunner.And("User Logout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("No entered number to AreaPrise field with event is passed but event are not avail" +
-            "ible")]
-        [NUnit.Framework.CategoryAttribute("tmevent")]
-        public virtual void NoEnteredNumberToAreaPriseFieldWithEventIsPassedButEventAreNotAvailible()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "tmevent"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No entered number to AreaPrise field with event is passed but event are not avail" +
-                    "ible", null, tagsOfScenario, argumentsOfScenario);
-#line 62
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 7
-this.FeatureBackground();
-#line hidden
-#line 63
- testRunner.Given("User avtorized by eventmanager with email \"emexample@gmail.com\" and password \"x6@" +
-                        "9hkrmWZNjmzY34\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 64
- testRunner.When("User clicks SetPrice button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 65
- testRunner.And("User set Price \"\" at Price field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 66
- testRunner.And("User clicks SetPrise button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 67
- testRunner.And("User clicks BackToList button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 68
- testRunner.Then("User can\'t see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 69
- testRunner.And("User clicks SeeAllEvents button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 70
- testRunner.Then("User can see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 71
- testRunner.And("User take back event price", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 72
- testRunner.And("User Logout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

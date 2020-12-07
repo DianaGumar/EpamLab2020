@@ -21,6 +21,7 @@ namespace AQATM.Steps
             TMRegPage.ConfirmPasswordInput.SendKeys("x6@9hkrmWZNjmzY34");
             TMRegPage.FinalRegisterButton.Click();
             TMRegPage.Open();
+            ////TMRegPage.LogOffButton.Click();
         }
 
         [When(@"User clicks Login button")]
