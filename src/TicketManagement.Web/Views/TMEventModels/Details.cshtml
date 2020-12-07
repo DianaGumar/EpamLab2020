@@ -21,7 +21,7 @@
                 @if (User.IsInRole("eventmanager"))
                 {
                     <div class="pull-right">
-                        @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
+                        @Html.ActionLink("Set price", "SetSeveralPrice", "Purchase",
                                new { idEvent = Model.Id }, new { @class = "btn btn-sm btn-default" })
                         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })
                         @Html.ActionLink("Details", "Details", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary" })

@@ -16,7 +16,7 @@ namespace AQATM.Steps
 
         ////private static string _password = "";
 
-        private static TMEventModelsIndexPage TMEventIndexPage => PageFactory.Get<TMEventModelsIndexPage>();
+        private static TMRegistratePage TMEventIndexPage => PageFactory.Get<TMRegistratePage>();
 
         private static string RandomString(int length)
         {

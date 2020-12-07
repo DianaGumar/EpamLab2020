@@ -202,7 +202,7 @@ namespace TicketManagement.Web.Controllers
                 _tmeventAreaService.SetTMEventAreaPrice(obj.Id, obj.Price);
             }
 
-            return RedirectToAction("Index", new { idEvent = obj?.TMEventId });
+            return RedirectToAction("SetSeveralPrice", new { idEvent = obj?.TMEventId });
         }
 
         [HttpGet]

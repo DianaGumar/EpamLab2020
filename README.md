@@ -15,6 +15,7 @@ How to start Web proj
 
 How to start AQA tests
 
+0. If links are broken - use one of the instructions https://docs.microsoft.com/en-us/nuget/Consume-Packages/Package-restore-troubleshooting
 1. install Selenium.WebDriver.ChromeDriver latest version
 2. install extentions SpecFlow, NUnit 3, NUnit 2
 3. Start Web proj

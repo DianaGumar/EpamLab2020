@@ -12,7 +12,7 @@
         {
             <div class="col-md-6 col-sm-10 col-xs-12">
                 <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
-                    <div class="row row-table">
+                    <div class="row row-table" id="@item.Id">
                         <div class="col-md-3 col-sm-3 col-xs-4">
                             <div class="container" style="max-width:145px; overflow:hidden; margin-left:-15px">
                                 <img src="@item.Img" class="img-fluid" height="180">
@@ -22,7 +22,7 @@
                            @if (User.IsInRole("eventmanager"))
                             {
                                 <div class="pull-right">
-                                    @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
+                                    @Html.ActionLink("Set price", "SetSeveralPrice", "Purchase",
                                         new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default" })
                                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
                                     @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })

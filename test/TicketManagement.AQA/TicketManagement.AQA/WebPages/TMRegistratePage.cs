@@ -4,11 +4,11 @@ using OpenQA.Selenium.Support.UI;
 
 namespace AQATM.WebPages
 {
-    public class TMEventModelsIndexPage : AbstractPage
+    public class TMRegistratePage : AbstractPage
     {
         private const int DefaultWaitingInterval = 1;
 
-        public TMEventModelsIndexPage(IWebDriver driver)
+        public TMRegistratePage(IWebDriver driver)
             : base(driver)
         {
         }
