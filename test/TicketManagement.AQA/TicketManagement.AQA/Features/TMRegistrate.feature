@@ -1,8 +1,9 @@
 ﻿Feature: TMRegistrate
 	As a user
 	I want to be able to use more site functions
-	So I can do it from registrate and then login pages
+	So I need user account
 
+@registration @fail
 Scenario: Registrate to TM as eventmanager is failed with not email
 	Given User is on TM
 	When User clicks Register button
@@ -11,13 +12,15 @@ Scenario: Registrate to TM as eventmanager is failed with not email
 	And User clicks FinalRegister button
 	Then Register form has error "The Email field is required."
 
+@registration @fail
 Scenario: Registrate to TM as eventmanager is failed with not password
 	Given User is on TM
 	When User clicks Register button
 	And Enters "aaatest@gmail.com" to user Email input
 	And User clicks FinalRegister button
 	Then Register form has error "The Password field is required."
-	
+
+@registration @fail
 Scenario: Registrate to TM as eventmanager is failed with not valid email
 	Given User is on TM
 	When User clicks Register button
@@ -27,6 +30,7 @@ Scenario: Registrate to TM as eventmanager is failed with not valid email
 	And User clicks FinalRegister button
 	Then Register form has error "The Email field is not a valid e-mail address."
 
+@registration @fail
 Scenario: Registrate to TM as eventmanager is failed with do not same password and confirm password
 	Given User is on TM
 	When User clicks Register button
@@ -36,6 +40,7 @@ Scenario: Registrate to TM as eventmanager is failed with do not same password a
 	And User clicks FinalRegister button
 	Then Register form has error "The password and confirmation password do not match."
 
+@registration @fail
 Scenario: Registrate to TM as eventmanager is failed with too short password
 	Given User is on TM
 	When User clicks Register button
@@ -45,6 +50,7 @@ Scenario: Registrate to TM as eventmanager is failed with too short password
 	And User clicks FinalRegister button
 	Then Register form has error "The Password must be at least 6 characters long."
 
+@registration @fail
 Scenario: Registrate to TM as eventmanager is failed with not valid password
 	Given User is on TM
 	When User clicks Register button
@@ -63,6 +69,7 @@ Scenario: Registrate to TM as eventmanager is failed with not valid password
 #	And User clicks FinalRegister button
 #	Then Register form has error "Name lantan.mp4@gmail.com is already taken. Email 'lantan.mp4@gmail.com' is already taken."
 
+@registration @correct
 Scenario: Registrate to TM as eventmanager is passed
 	Given User is on TM
 	When User clicks Register button
@@ -73,6 +80,7 @@ Scenario: Registrate to TM as eventmanager is passed
 	Then User see profile link with hello text
 	And User Logout
 
+@registration @correct
 Scenario: Registrate to TM as authorizeduser is passed
 	Given User is on TM
 	When User clicks Register button
@@ -84,6 +92,7 @@ Scenario: Registrate to TM as authorizeduser is passed
 	Then User see profile link with hello text
 	And User Logout
 
+@registration @correct
 Scenario: Registrate to TM as venuemanager is passed
 	Given User is on TM
 	When User clicks Register button
