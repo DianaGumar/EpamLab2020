@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using System.Collections.Generic;
+using System.Linq;
+using OpenQA.Selenium;
 
 namespace AQATM.WebPages
 {
@@ -16,5 +18,15 @@ namespace AQATM.WebPages
         public IWebElement BackToListButton => FindByCss("a[id='tmsetseveralpricebacktolist']", DefaultWaitingInterval);
 
         public IWebElement PriceField => FindByCss("input[class*='set-price']", DefaultWaitingInterval);
+
+        public List<IWebElement> GetSetPriseFields()
+        {
+            return Driver.FindElements(By.CssSelector("input[id='Price']")).ToList();
+        }
+
+        public List<IWebElement> GetSetPriseBtns()
+        {
+            return Driver.FindElements(By.CssSelector("input[class$='set-price-btn']")).ToList();
+        }
     }
 }

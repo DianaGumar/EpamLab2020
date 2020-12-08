@@ -83,3 +83,18 @@ Scenario: User edit event is faled with busy date at this layout
 	And User set EndDate event "12/9/2021 1:25:00 AM"
 	And User clicks FinalEdit button
 	Then Event edit form has error "this venue is busy with another event at this time"
+
+@tmevent @correct 
+Scenario: User create event is passed
+	Given User is on TM
+	When User clicks CreateNew button
+	And User set "Name" field "Test create event" in create event form
+	And User set "Desc" field "Test create event desc" in create event form
+	And User select from dropDown "1" layoutId
+	And User set datetime "StartEvent" field date "12/7/2022" time "12:50AM" in create event form
+	And User set datetime "EndEvent" field date "12/9/2022" time "12:50AM" in create event form
+	And User clicks FinalCreate button
+	And User set Price "4" at all Price fields
+	And User clicks BackToList button
+	Then User can see event with Name "Test create event" at index page
+	And User clicks "delete" button on event with Name "Test create event"

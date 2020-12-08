@@ -19,6 +19,8 @@ namespace AQATM.Steps
 
         private static TMEditEventPage EditEventPage => PageFactory.Get<TMEditEventPage>();
 
+        private static TMCreateEventPage CreateEventPage => PageFactory.Get<TMCreateEventPage>();
+
         [BeforeFeature("user_eventmanager_account_exist")]
         public static void RegistrateAsTMEventManager()
         {
@@ -187,6 +189,72 @@ namespace AQATM.Steps
         {
             EditEventPage.EndDateInput.SendKeys(Keys.Control + "a");
             EditEventPage.EndDateInput.SendKeys(p0);
+        }
+
+        [When(@"User clicks CreateNew button")]
+        public void WhenUserClicksCreateNewButton()
+        {
+            EventIndexPage.CreateNewButton.Click();
+        }
+
+        [When(@"User set ""(.*)"" field ""(.*)"" in create event form")]
+        public void WhenUserSetFieldInCreateEventForm(string fieldid, string value)
+        {
+            CreateEventPage.GetFieldByPartialId(fieldid).SendKeys(value);
+        }
+
+        [When(@"User clicks FinalCreate button")]
+        public void WhenUserClicksFinalCreateButton()
+        {
+            CreateEventPage.FinalCreateButton.Click();
+        }
+
+        [Then(@"User can see event with Name ""(.*)"" at index page")]
+        public void ThenUserCanSeeEventWithNameAtIndexPage(string p0)
+        {
+            bool tmevent = EventIndexPage.IsEventExistByName(p0);
+            Assert.AreEqual(true, tmevent);
+        }
+
+        [When(@"User set datetime ""(.*)"" field date ""(.*)"" time ""(.*)"" in create event form")]
+        public void WhenUserSetDatetimeFieldDateTimeInCreateEventForm(string fieldid, string date, string time)
+        {
+            var picker = CreateEventPage.GetFieldByPartialId(fieldid);
+            picker.SendKeys(date);
+            picker.SendKeys(Keys.Tab);
+            picker.SendKeys(time);
+        }
+
+        [When(@"User select from dropDown ""(.*)"" layoutId")]
+        public void WhenUserSelectFromDropDownLayoutId(string p0)
+        {
+            CreateEventPage.SelectLayoutIdFromDropDown(p0);
+        }
+
+        [When(@"User set Price ""(.*)"" at all Price fields")]
+        public void WhenUserSetPriceAtAllPriceFields(string p0)
+        {
+            var spf = PricePage.GetSetPriseFields();
+            var spb = PricePage.GetSetPriseBtns();
+
+            for (int i = 0; i < spf.Count; i++)
+            {
+                spf[i].SendKeys(Keys.Control + "a");
+                spf[i].SendKeys(p0);
+                spb[i].Click();
+                CreateEventPage.TakeDelay(1, "input[id='Price']");
+                spf = PricePage.GetSetPriseFields();
+                spb = PricePage.GetSetPriseBtns();
+            }
+        }
+
+        [Then(@"User clicks ""(.*)"" button on event with Name ""(.*)""")]
+        public void ThenUserClicksButtonOnEventWithName(string btn, string eventName)
+        {
+            var tmevent = EventIndexPage.GetEventByName(eventName);
+
+            var btnb = tmevent.FindElement(By.CssSelector("a[class*='" + btn + "']"));
+            btnb.Click();
         }
     }
 }

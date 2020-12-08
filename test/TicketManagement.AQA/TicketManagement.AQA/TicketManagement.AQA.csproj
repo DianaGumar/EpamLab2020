@@ -145,6 +145,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebPages\AbstractPage.cs" />
     <Compile Include="WebPages\TMAutorizedPage.cs" />
+    <Compile Include="WebPages\TMCreateEventPage.cs" />
     <Compile Include="WebPages\TMEditEventPage.cs" />
     <Compile Include="WebPages\TMSetPricePage.cs" />
     <Compile Include="WebPages\TMEventIndexPage.cs" />
@@ -155,6 +156,7 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
+    <None Include="Features\Purchase.feature" />
     <None Include="Features\TMEvent.feature" />
     <None Include="Features\TMRegistrate.feature" />
     <None Include="Features\Autorization.feature" />

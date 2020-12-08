@@ -12,7 +12,7 @@
         {
             <div class="col-md-6 col-sm-10 col-xs-12">
                 <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
-                    <div class="row row-table" id="@item.Id">
+                    <div class="row row-table tm-event-view" id="@item.Id">
                         <div class="col-md-3 col-sm-3 col-xs-4">
                             <div class="container" style="max-width:145px; overflow:hidden; margin-left:-15px">
                                 <img src="@item.Img" class="img-fluid" height="180">
@@ -35,7 +35,7 @@
                                 </span>
                             </p>
                             <p>
-                                <span class="text-capitalize" style="font-size:xx-large; ">
+                                <span class="text-capitalize tm-event-name" style="font-size:xx-large; ">
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </span>
                                 <br />
@@ -72,7 +72,7 @@
 @if (User.IsInRole("eventmanager"))
 {
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New", "Create", null, new { id ="create-new-btn" })
     </p>
 
     <p>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using OpenQA.Selenium;
 
 namespace AQATM.WebPages
@@ -16,7 +17,7 @@ namespace AQATM.WebPages
 
         public IWebElement SeeAllRelevantEventButton => FindByCss("a[id='registerLink']", DefaultWaitingInterval);
 
-        public IWebElement CreateNewButton => FindByCss("input[id='TMFinalRegisterButton']", DefaultWaitingInterval);
+        public IWebElement CreateNewButton => FindByCss("a[id='create-new-btn']", DefaultWaitingInterval);
 
         public IWebElement ChouseSeatsButton => FindByCss("a[id='TMChouseSeatsButton']", DefaultWaitingInterval);
 
@@ -33,9 +34,24 @@ namespace AQATM.WebPages
             return FindByCss("div[id='" + eventBlockId + "']", DefaultWaitingInterval);
         }
 
+        public IWebElement GetEventByName(string eventName)
+        {
+            return Driver.FindElements(By.CssSelector("div[class*='tm-event-view']"))
+                .FirstOrDefault(w => w.FindElement(By.CssSelector("span[class*='tm-event-name']"))
+                .Text.Equals(eventName, StringComparison.OrdinalIgnoreCase));
+        }
+
         public bool IsEventExist(string eventBlockId)
         {
             return Driver.FindElements(By.CssSelector("div[id='" + eventBlockId + "']")).Count > 0;
+        }
+
+        public bool IsEventExistByName(string eventname)
+        {
+            var names = Driver.FindElements(By.CssSelector("span[class*='tm-event-name']"));
+            var newNames = names
+                .FirstOrDefault(w => w.Text.Equals(eventname, StringComparison.OrdinalIgnoreCase));
+            return newNames != null;
         }
 
         public IWebElement GetManageButtonById(string eventBlockId, string buttonClass)
