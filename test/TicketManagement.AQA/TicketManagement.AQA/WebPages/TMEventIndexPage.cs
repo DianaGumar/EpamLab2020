@@ -33,10 +33,14 @@ namespace AQATM.WebPages
             return FindByCss("div[id='" + eventBlockId + "']", DefaultWaitingInterval);
         }
 
+        public bool IsEventExist(string eventBlockId)
+        {
+            return Driver.FindElements(By.CssSelector("div[id='" + eventBlockId + "']")).Count > 0;
+        }
+
         public IWebElement GetManageButtonById(string eventBlockId, string buttonClass)
         {
             IWebElement tmevent = GetEvent(eventBlockId);
-
             return tmevent.FindElement(By.CssSelector("a[class$='" + buttonClass + "']"));
         }
     }

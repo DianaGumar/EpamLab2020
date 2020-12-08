@@ -81,11 +81,13 @@ namespace AQATM.Features
         [NUnit.Framework.DescriptionAttribute("Delete event is passed")]
         [NUnit.Framework.CategoryAttribute("tmevent")]
         [NUnit.Framework.CategoryAttribute("correct")]
+        [NUnit.Framework.CategoryAttribute("delete_event")]
         public virtual void DeleteEventIsPassed()
         {
             string[] tagsOfScenario = new string[] {
                     "tmevent",
-                    "correct"};
+                    "correct",
+                    "delete_event"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete event is passed", null, tagsOfScenario, argumentsOfScenario);
 #line 16
@@ -122,16 +124,16 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Delete event is faled because event has busy seats")]
+        [NUnit.Framework.DescriptionAttribute("Details event is passed")]
         [NUnit.Framework.CategoryAttribute("tmevent")]
-        [NUnit.Framework.CategoryAttribute("fail")]
-        public virtual void DeleteEventIsFaledBecauseEventHasBusySeats()
+        [NUnit.Framework.CategoryAttribute("correct")]
+        public virtual void DetailsEventIsPassed()
         {
             string[] tagsOfScenario = new string[] {
                     "tmevent",
-                    "fail"};
+                    "correct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete event is faled because event has busy seats", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Details event is passed", null, tagsOfScenario, argumentsOfScenario);
 #line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -156,56 +158,9 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 24
- testRunner.And("event with Name \"Big Music Event\" and Id \"2\" has busy seat", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 25
- testRunner.When("User clicks \"delete\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 26
- testRunner.Then("User can see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Details event is passed")]
-        [NUnit.Framework.CategoryAttribute("tmevent")]
-        [NUnit.Framework.CategoryAttribute("correct")]
-        public virtual void DetailsEventIsPassed()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "tmevent",
-                    "correct"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Details event is passed", null, tagsOfScenario, argumentsOfScenario);
-#line 29
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 30
- testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 31
  testRunner.When("User clicks \"details\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 32
+#line 25
  testRunner.Then("User can see buyTicketButton", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -223,7 +178,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "correct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set areas price with event is passed", null, tagsOfScenario, argumentsOfScenario);
-#line 35
+#line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -243,25 +198,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 36
+#line 29
  testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 37
+#line 30
  testRunner.When("User clicks \"setprice\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 38
+#line 31
  testRunner.And("User set Price \"4\" at Price field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
+#line 32
  testRunner.And("User clicks SetPrise button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 33
  testRunner.And("User clicks BackToList button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 34
  testRunner.And("User clicks \"details\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 42
+#line 35
  testRunner.Then("User can see middle price = \"4.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -269,17 +224,17 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Set areas price as free with event is passed but event are not availible")]
+        [NUnit.Framework.DescriptionAttribute("User edit event is passed")]
         [NUnit.Framework.CategoryAttribute("tmevent")]
-        [NUnit.Framework.CategoryAttribute("fail")]
-        public virtual void SetAreasPriceAsFreeWithEventIsPassedButEventAreNotAvailible()
+        [NUnit.Framework.CategoryAttribute("correct")]
+        public virtual void UserEditEventIsPassed()
         {
             string[] tagsOfScenario = new string[] {
                     "tmevent",
-                    "fail"};
+                    "correct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set areas price as free with event is passed but event are not availible", null, tagsOfScenario, argumentsOfScenario);
-#line 45
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User edit event is passed", null, tagsOfScenario, argumentsOfScenario);
+#line 38
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -299,32 +254,182 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 46
+#line 39
  testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 47
- testRunner.When("User clicks \"setprice\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 40
+ testRunner.When("User clicks \"edit\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
- testRunner.And("User set Price \"0\" at Price field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.And("User set Description event \"New test event desc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 49
- testRunner.And("User clicks SetPrise button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+ testRunner.And("User clicks FinalEdit button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 43
  testRunner.And("User clicks BackToList button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 51
- testRunner.Then("User can\'t see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 44
+ testRunner.Then("User can see event with Description \"New test event desc\" and Id \"2\" at index pag" +
+                        "e", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 52
- testRunner.And("User clicks SeeAllEvents button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("User edit event is faled with past date")]
+        [NUnit.Framework.CategoryAttribute("tmevent")]
+        [NUnit.Framework.CategoryAttribute("fail")]
+        public virtual void UserEditEventIsFaledWithPastDate()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "tmevent",
+                    "fail"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User edit event is faled with past date", null, tagsOfScenario, argumentsOfScenario);
+#line 62
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
-#line 53
- testRunner.Then("User can see event with Name \"Big Music Event\" and Id \"2\" at index page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 63
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 54
- testRunner.And("User take back event price", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 64
+ testRunner.When("User clicks \"edit\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 65
+ testRunner.And("User set StartDate event \"11/7/2020 1:25:00 AM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 66
+ testRunner.And("User clicks FinalEdit button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 67
+ testRunner.Then("Event edit form has error \"date is in a past\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("User edit event is faled with end date before start")]
+        [NUnit.Framework.CategoryAttribute("tmevent")]
+        [NUnit.Framework.CategoryAttribute("fail")]
+        public virtual void UserEditEventIsFaledWithEndDateBeforeStart()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "tmevent",
+                    "fail"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User edit event is faled with end date before start", null, tagsOfScenario, argumentsOfScenario);
+#line 70
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 71
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 72
+ testRunner.When("User clicks \"edit\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 73
+ testRunner.And("User set StartDate event \"11/7/2021 1:25:00 AM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 74
+ testRunner.And("User set EndDate event \"10/7/2021 1:25:00 AM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 75
+ testRunner.And("User clicks FinalEdit button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 76
+ testRunner.Then("Event edit form has error \"end date before start date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("User edit event is faled with busy date at this layout")]
+        [NUnit.Framework.CategoryAttribute("tmevent")]
+        [NUnit.Framework.CategoryAttribute("fail")]
+        [NUnit.Framework.CategoryAttribute("exist_same_event")]
+        public virtual void UserEditEventIsFaledWithBusyDateAtThisLayout()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "tmevent",
+                    "fail",
+                    "exist_same_event"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User edit event is faled with busy date at this layout", null, tagsOfScenario, argumentsOfScenario);
+#line 79
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 80
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 81
+ testRunner.When("User clicks \"edit\" button on event with Name \"Big Music Event\" and Id \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 82
+ testRunner.And("User set StartDate event \"12/7/2021 1:25:00 AM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 83
+ testRunner.And("User set EndDate event \"12/9/2021 1:25:00 AM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 84
+ testRunner.And("User clicks FinalEdit button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 85
+ testRunner.Then("Event edit form has error \"this venue is busy with another event at this time\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

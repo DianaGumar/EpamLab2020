@@ -12,18 +12,11 @@ Feature: TMEvent
 #	And Enters "x6@9hkrmWZNjmzY34" to Password autorizefield
 #	And User clicks FinalLogin button
 
-#@tmevent @correct
-#Scenario: Delete event is passed
-#	Given User is on TM
-#	When User clicks "delete" button on event with Name "Open Cinema" and Id "3"
-#	Then User can't see event with Name "Open Cinema" and Id "3" at index page
-#
-#@tmevent @fail
-#Scenario: Delete event is faled because event has busy seats
-#	Given User is on TM
-#	And event with Name "Big Music Event" and Id "2" has busy seat
-#	When User clicks "delete" button on event with Name "Big Music Event" and Id "2"
-#	Then User can see event with Name "Big Music Event" and Id "2" at index page
+@tmevent @correct @delete_event
+Scenario: Delete event is passed
+	Given User is on TM
+	When User clicks "delete" button on event with Name "Open Cinema" and Id "3"
+	Then User can't see event with Name "Open Cinema" and Id "3" at index page
 
 @tmevent @correct
 Scenario: Details event is passed
@@ -41,14 +34,52 @@ Scenario: Set areas price with event is passed
 	And User clicks "details" button on event with Name "Big Music Event" and Id "2"
 	Then User can see middle price = "4.00"
 
-#@tmevent @fail
-#Scenario: Set areas price as free with event is passed but event are not availible
+@tmevent @correct
+Scenario: User edit event is passed
+	Given User is on TM
+	When User clicks "edit" button on event with Name "Big Music Event" and Id "2"
+	And User set Description event "New test event desc"
+	And User clicks FinalEdit button
+	And User clicks BackToList button
+	Then User can see event with Description "New test event desc" and Id "2" at index page
+
+#@tmevent @fail @layout_busy_seats
+#Scenario: User edit event layout is failed with busy seats
 #	Given User is on TM
-#	When User clicks "setprice" button on event with Name "Big Music Event" and Id "2"
-#	And User set Price "0" at Price field
-#	And User clicks SetPrise button
-#	And User clicks BackToList button
-#	Then User can't see event with Name "Big Music Event" and Id "2" at index page
-#	And User clicks SeeAllEvents button
+#	When User clicks "edit" button on event with Name "Big Music Event" and Id "2"
+#	And User set Layout event "1"
+#	And User clicks FinalEdit button
+#	Then Event edit form has error "you has bought ticket on this layout"
+#
+#@tmevent @fail @layout_busy_seats
+#Scenario: Delete event is faled because event has busy seats
+#	Given User is on TM
+#	And event with Name "Big Music Event" and Id "2" has busy seat
+#	When User clicks "delete" button on event with Name "Big Music Event" and Id "2"
 #	Then User can see event with Name "Big Music Event" and Id "2" at index page
-#	And User take back event price
+
+@tmevent @fail
+Scenario: User edit event is faled with past date
+	Given User is on TM
+	When User clicks "edit" button on event with Name "Big Music Event" and Id "2"
+	And User set StartDate event "11/7/2020 1:25:00 AM"
+	And User clicks FinalEdit button
+	Then Event edit form has error "date is in a past"
+
+@tmevent @fail
+Scenario: User edit event is faled with end date before start
+	Given User is on TM
+	When User clicks "edit" button on event with Name "Big Music Event" and Id "2"
+	And User set StartDate event "11/7/2021 1:25:00 AM"
+	And User set EndDate event "10/7/2021 1:25:00 AM"
+	And User clicks FinalEdit button
+	Then Event edit form has error "end date before start date"
+
+@tmevent @fail @exist_same_event
+Scenario: User edit event is faled with busy date at this layout
+	Given User is on TM
+	When User clicks "edit" button on event with Name "Big Music Event" and Id "2"
+	And User set StartDate event "12/7/2021 1:25:00 AM"
+	And User set EndDate event "12/9/2021 1:25:00 AM"
+	And User clicks FinalEdit button
+	Then Event edit form has error "this venue is busy with another event at this time"

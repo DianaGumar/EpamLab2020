@@ -14,8 +14,6 @@ namespace AQATM.Steps
 
         private static string _email = "";
 
-        ////private static string _password = "";
-
         private static TMRegistratePage TMRegPage => PageFactory.Get<TMRegistratePage>();
 
         private static string RandomString(int length)
@@ -35,17 +33,6 @@ namespace AQATM.Steps
 
             return _email;
         }
-
-        ////private string SuggestValidPassword()
-        ////{
-        ////    if (string.IsNullOrEmpty(_password))
-        ////    {
-        ////        /////_password = System.Web.Security.Membership.GeneratePassword(25, 10)
-        ////        _password = "x6@9hkrmWZNjmzY";
-        ////    }
-
-        ////    return _password;
-        ////}
 
         [Given(@"User is on TM")]
         public void GivenUserIsOnTM()

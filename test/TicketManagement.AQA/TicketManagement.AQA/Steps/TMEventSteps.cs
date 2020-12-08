@@ -9,10 +9,6 @@ namespace AQATM.Steps
     [Binding]
     public class TMEventSteps
     {
-        ////private readonly string _email = "eventmanagerexample@gmail.com";
-
-        ////private readonly string _password = "x6@9hkrmWZNjmzY34";
-
         private static TMRegistratePage TMRegPage => PageFactory.Get<TMRegistratePage>();
 
         private static TMAutorizedPage AutorizedPage => PageFactory.Get<TMAutorizedPage>();
@@ -20,6 +16,8 @@ namespace AQATM.Steps
         private static TMEventIndexPage EventIndexPage => PageFactory.Get<TMEventIndexPage>();
 
         private static TMSetPricePage PricePage => PageFactory.Get<TMSetPricePage>();
+
+        private static TMEditEventPage EditEventPage => PageFactory.Get<TMEditEventPage>();
 
         [BeforeFeature("user_eventmanager_account_exist")]
         public static void RegistrateAsTMEventManager()
@@ -47,12 +45,26 @@ namespace AQATM.Steps
             TMRegPage.LogOffButton.Click();
         }
 
+        [BeforeScenario("layout_busy_seats")]
+        public static void SetSomeSeatBusy()
+        {
+            // make seats busy on layout 2
+            throw new NotImplementedException();
+        }
+
+        ////[BeforeScenario("delete_event")]
+        ////public static void SetSomeSeatBusy()
+        ////{
+        ////    // make seats busy on layout 2
+        ////    throw new NotImplementedException();
+        ////}
+
         [Then(@"User can't see event with Name ""(.*)"" and Id ""(.*)"" at index page")]
         public void ThenUserCanTSeeEventWithNameAndIdAtIndexPage(string p0, string p1)
         {
             _ = p0;
-            var tmevent = EventIndexPage.GetEvent(p1);
-            Assert.IsNull(tmevent);
+            bool tmevent = EventIndexPage.IsEventExist(p1);
+            Assert.AreEqual(false, tmevent);
         }
 
         [Then(@"User can see event with Name ""(.*)"" and Id ""(.*)"" at index page")]
@@ -74,8 +86,11 @@ namespace AQATM.Steps
             string eventName, string eventId)
         {
             _ = eventName;
-            var but = EventIndexPage.GetManageButtonById(eventId, buttonClass);
-            but.Click();
+            if (EventIndexPage.IsEventExist(eventId))
+            {
+                var but = EventIndexPage.GetManageButtonById(eventId, buttonClass);
+                but.Click();
+            }
         }
 
         [Then(@"User can see buyTicketButton")]
@@ -122,6 +137,56 @@ namespace AQATM.Steps
         {
             PricePage.PriceField.SendKeys("10");
             PricePage.FinalSetPriseButton.Click();
+        }
+
+        [When(@"User set Description event ""(.*)""")]
+        public void WhenUserSetDescriptionEvent(string p0)
+        {
+            EditEventPage.DescInput.SendKeys(Keys.Control + "a");
+            EditEventPage.DescInput.SendKeys(p0);
+        }
+
+        [When(@"User clicks FinalEdit button")]
+        public void WhenUserClicksFinalEditButton()
+        {
+            EditEventPage.FinalEditButton.Click();
+        }
+
+        [Then(@"User can see event with Description ""(.*)"" and Id ""(.*)"" at index page")]
+        public void ThenUserCanSeeEventWithDescriptionAndIdAtIndexPage(string desc, string p1)
+        {
+            var tmevent = EventIndexPage.GetEvent(p1);
+            string realDesc = tmevent.FindElement(By.CssSelector("span[id='tm-event-desc']")).Text;
+            Assert.AreEqual(desc, realDesc);
+        }
+
+        [When(@"User set Layout event ""(.*)""")]
+        public void WhenUserSetLayoutEvent(string p0)
+        {
+            EditEventPage.LayoutIdInput.SendKeys(Keys.Control + "a");
+            EditEventPage.LayoutIdInput.SendKeys(p0);
+        }
+
+        [Then(@"Event edit form has error ""(.*)""")]
+        public void ThenEventEditFormHasError(string expectedErrorMsg)
+        {
+            var errorMsg = "";
+            Assert.DoesNotThrow(() => errorMsg = EditEventPage.EditFormError(expectedErrorMsg).Text);
+            Assert.That(errorMsg, Is.EqualTo(expectedErrorMsg));
+        }
+
+        [When(@"User set StartDate event ""(.*)""")]
+        public void WhenUserSetStartDateEvent(string p0)
+        {
+            EditEventPage.StartDateInput.SendKeys(Keys.Control + "a");
+            EditEventPage.StartDateInput.SendKeys(p0);
+        }
+
+        [When(@"User set EndDate event ""(.*)""")]
+        public void WhenUserSetEndDateEvent(string p0)
+        {
+            EditEventPage.EndDateInput.SendKeys(Keys.Control + "a");
+            EditEventPage.EndDateInput.SendKeys(p0);
         }
     }
 }

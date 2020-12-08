@@ -29,6 +29,11 @@ namespace AQATM.WebPages
 
         public IWebElement UserProfileLink(string textPresent) => FindByCssWithText("a[id='TMUserRoomLink']", textPresent, DefaultWaitingInterval);
 
+        public bool IsLogOffButExist()
+        {
+            return Driver.FindElements(By.CssSelector("a[id='TMLinkLogOff']")).Count > 0;
+        }
+
         public void Open()
         {
             Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(60);
