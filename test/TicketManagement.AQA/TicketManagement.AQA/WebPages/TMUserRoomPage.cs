@@ -18,6 +18,8 @@ namespace AQATM.WebPages
 
         public IWebElement TopUpBalanceInput => FindByCss("input[id='TopUpSum']", DefaultWaitingInterval);
 
+        public IWebElement CurrentBalance => FindByCss("span[id='tm-current-balance']", DefaultWaitingInterval);
+
         public void Open()
         {
             Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(60);

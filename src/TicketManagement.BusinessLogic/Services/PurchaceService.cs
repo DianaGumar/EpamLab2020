@@ -13,6 +13,8 @@ namespace TicketManagement.BusinessLogic
         Wait = 2,
         PurchaseSucsess = 3,
         NotRelevantSeats = 4,
+        ReturnTicketSucsess = 5,
+        ReturnTicketFailWithPastEvent = 6,
     }
 
     public interface IPurchaceService
@@ -22,6 +24,8 @@ namespace TicketManagement.BusinessLogic
         PurchaseStatus BuyTicket(string userId, int tmeventSeatId);
 
         PurchaseStatus BuyTicket(string userId, params int[] tmeventSeatId);
+
+        PurchaseStatus ReturnTicket(string userId, int tmeventSeatId);
     }
 
     public class PurchaceService : IPurchaceService
@@ -106,6 +110,10 @@ namespace TicketManagement.BusinessLogic
                     _userService.MakePurchase(userId, price);
                 }
             }
+            else
+            {
+                return PurchaseStatus.NotEnothMoney;
+            }
 
             return result;
         }
@@ -132,6 +140,33 @@ namespace TicketManagement.BusinessLogic
             }
 
             return phdto;
+        }
+
+        public PurchaseStatus ReturnTicket(string userId, int tmeventSeatId)
+        {
+            TMEventSeatDto seat = _tmeventSeatService.GetTMEventSeat(tmeventSeatId);
+            TMEventAreaDto area = _tmeventAreaService.GetTMEventArea(seat.TMEventAreaId);
+            var tmeventObj = _tmeventService.GetTMEvent(area.TMEventId);
+
+            if (tmeventObj.StartEvent > DateTime.Now)
+            {
+                _tmeventAreaService.SetTMEventSeatState(tmeventSeatId, SeatState.Free);
+
+                var ph = _purchaseHistoryRepository.GetAll()
+                    .Where(p => p.UserId.Equals(userId, StringComparison.OrdinalIgnoreCase))
+                    .FirstOrDefault(p => p.TMEventSeatId == tmeventSeatId);
+
+                if (ph != null)
+                {
+                    _purchaseHistoryRepository.Remove(ph.Id);
+
+                    _userService.TopUpBalance(userId, area.Price);
+                }
+
+                return PurchaseStatus.ReturnTicketSucsess;
+            }
+
+            return PurchaseStatus.ReturnTicketFailWithPastEvent;
         }
     }
 }

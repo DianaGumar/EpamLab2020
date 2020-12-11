@@ -18,6 +18,9 @@ namespace AQATM.WebPages
 
         public IWebElement SeatsIdInput => FindByCss("input[id='SeatsId']", DefaultWaitingInterval);
 
+        public IWebElement BuyTicketFormError(string textPresent)
+            => FindByCssWithText("div[class *= 'validation-summary-errors']", textPresent, DefaultWaitingInterval);
+
         public List<IWebElement> GetBusySeats()
         {
             return Driver.FindElements(By.CssSelector("span[class='tm-seat-busy']")).ToList();
@@ -31,6 +34,11 @@ namespace AQATM.WebPages
         public List<IWebElement> GetDatePurchase()
         {
             return Driver.FindElements(By.CssSelector("td[class='tm-booking-date']")).ToList();
+        }
+
+        public List<IWebElement> GetReturnTicketButtons()
+        {
+            return Driver.FindElements(By.CssSelector("a[class='return-tiket-btn']")).ToList();
         }
 
         public void OpenPurchaseHistory()

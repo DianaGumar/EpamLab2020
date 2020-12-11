@@ -43,7 +43,7 @@ Scenario: User edit event is passed
 	And User clicks BackToList button
 	Then User can see event with Description "New test event desc" and Id "2" at index page
 
-#@tmevent @fail @layout_busy_seats
+#@tmevent @fail @layout_has_busy_seats
 #Scenario: User edit event layout is failed with busy seats
 #	Given User is on TM
 #	When User clicks "edit" button on event with Name "Big Music Event" and Id "2"
@@ -51,7 +51,7 @@ Scenario: User edit event is passed
 #	And User clicks FinalEdit button
 #	Then Event edit form has error "you has bought ticket on this layout"
 #
-#@tmevent @fail @layout_busy_seats
+#@tmevent @fail @layout_has_busy_seats
 #Scenario: Delete event is faled because event has busy seats
 #	Given User is on TM
 #	And event with Name "Big Music Event" and Id "2" has busy seat

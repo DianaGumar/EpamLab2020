@@ -80,11 +80,13 @@ namespace AQATM.Features
         [NUnit.Framework.DescriptionAttribute("Autorized user buy ticked is passed")]
         [NUnit.Framework.CategoryAttribute("purchase")]
         [NUnit.Framework.CategoryAttribute("correct")]
+        [NUnit.Framework.CategoryAttribute("layout_has_free_seats")]
         public virtual void AutorizedUserBuyTickedIsPassed()
         {
             string[] tagsOfScenario = new string[] {
                     "purchase",
-                    "correct"};
+                    "correct",
+                    "layout_has_free_seats"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Autorized user buy ticked is passed", null, tagsOfScenario, argumentsOfScenario);
 #line 8
@@ -125,6 +127,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
  testRunner.Then("User can see \"1\" new seats at own purchase history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 15
+ testRunner.And("User return ticket", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -133,14 +138,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Autorized user buy ticked is faled with not enought balance")]
         [NUnit.Framework.CategoryAttribute("purchase")]
         [NUnit.Framework.CategoryAttribute("fail")]
+        [NUnit.Framework.CategoryAttribute("layout_has_free_seats")]
         public virtual void AutorizedUserBuyTickedIsFaledWithNotEnoughtBalance()
         {
             string[] tagsOfScenario = new string[] {
                     "purchase",
-                    "fail"};
+                    "fail",
+                    "layout_has_free_seats"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Autorized user buy ticked is faled with not enought balance", null, tagsOfScenario, argumentsOfScenario);
-#line 17
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -160,23 +167,70 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 18
+#line 19
  testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 19
+#line 20
  testRunner.And("Autorized User has balance \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 21
  testRunner.When("User go to event description", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 22
  testRunner.And("User choose free seats", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 23
  testRunner.And("User buy tickets", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
- testRunner.Then("User can see \"0\" new seats at own purchase history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 24
+ testRunner.Then("User can see error text \"You has not enoth money. Top up balance\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Autorized user buy ticked is faled with not seats choosen")]
+        [NUnit.Framework.CategoryAttribute("purchase")]
+        [NUnit.Framework.CategoryAttribute("fail")]
+        public virtual void AutorizedUserBuyTickedIsFaledWithNotSeatsChoosen()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "purchase",
+                    "fail"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Autorized user buy ticked is faled with not seats choosen", null, tagsOfScenario, argumentsOfScenario);
+#line 27
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 28
+ testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 29
+ testRunner.When("User go to event description", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
+ testRunner.And("User buy tickets", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 31
+ testRunner.Then("User can see error text \"Chouse seats\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -186,14 +240,16 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.DescriptionAttribute("Autorized user buy ticked is faled with busy seats")]
         [NUnit.Framework.CategoryAttribute("purchase")]
         [NUnit.Framework.CategoryAttribute("fail")]
+        [NUnit.Framework.CategoryAttribute("layout_has_busy_seats")]
         public virtual void AutorizedUserBuyTickedIsFaledWithBusySeats()
         {
             string[] tagsOfScenario = new string[] {
                     "purchase",
-                    "fail"};
+                    "fail",
+                    "layout_has_busy_seats"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Autorized user buy ticked is faled with busy seats", null, tagsOfScenario, argumentsOfScenario);
-#line 26
+#line 34
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -213,23 +269,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 27
+#line 35
  testRunner.Given("User is on TM", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 28
- testRunner.And("Autorized User has balance \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 29
+#line 36
  testRunner.When("User go to event description", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 30
- testRunner.And("User choose one free and one busy seats", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.And("User choose busy seats", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 38
  testRunner.And("User buy tickets", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
- testRunner.Then("User can see \"1\" new seats at own purchase history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 39
+ testRunner.Then("User can see error text \"Seats olready chousen or not exist\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

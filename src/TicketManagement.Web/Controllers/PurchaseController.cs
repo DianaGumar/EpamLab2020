@@ -53,6 +53,26 @@ namespace TicketManagement.Web.Controllers
 
         [Authorize(Roles = "authorizeduser")]
         [HttpGet]
+        public ActionResult ReturnTicket(int seatsId = 0)
+        {
+            PurchaseStatus result =
+                    _purchaceService.ReturnTicket(User.Identity.GetUserId(), seatsId);
+
+            switch (result)
+            {
+                case PurchaseStatus.ReturnTicketSucsess:
+                    return Redirect("Index");
+                case PurchaseStatus.ReturnTicketFailWithPastEvent:
+                    ModelState.AddModelError("", "Event is olready in past. You cant't return tiket"); break;
+                default:
+                    ModelState.AddModelError("", "something wrong"); break;
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "authorizeduser")]
+        [HttpGet]
         public ActionResult BuyTicket(int idEvent)
         {
             return View(new TMEventSeatIdViewModel { TMEventId = idEvent });
