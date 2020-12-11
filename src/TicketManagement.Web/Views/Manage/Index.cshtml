@@ -23,7 +23,7 @@
         <dt>Balanse:</dt>
         <dd>
             @Model.Balanse
-            [ @Html.ActionLink("Top up balance", "TopUpBalance", new { currentBalanse = Model.Balanse }) ]
+            [ @Html.ActionLink("Top up balance", "TopUpBalance", new { currentBalanse = Model.Balanse }, new {id = "tm-topup_balance_btn" }) ]
         </dd>
         <dt>Password:</dt>
         <dd>

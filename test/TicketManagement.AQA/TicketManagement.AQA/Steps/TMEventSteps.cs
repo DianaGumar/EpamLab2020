@@ -32,7 +32,7 @@ namespace AQATM.Steps
             TMRegPage.FinalRegisterButton.Click();
             TMRegPage.Open();
 
-            if (AutorizedPage.LogInButton != null)
+            if (AutorizedPage.LoginButtonIsExist())
             {
                 AutorizedPage.LogInButton.Click();
                 AutorizedPage.EmailInput.SendKeys("eventmanagerexample@gmail.com");

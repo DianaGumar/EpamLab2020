@@ -70,11 +70,11 @@
                                 </div>*@
                             @if(itemchild.State == SeatState.Busy)
                             {
-                                <span style="color: steelblue">@itemchild.Id</span>
+                                <span style="color: steelblue" class="tm-seat-busy">@itemchild.Id</span>
                             }
                             else
                             {
-                                <span style="color: whitesmoke">@itemchild.Id</span>
+                                <span style="color: whitesmoke" class="tm-seat-free">@itemchild.Id</span>
                             }
 
                         </div>

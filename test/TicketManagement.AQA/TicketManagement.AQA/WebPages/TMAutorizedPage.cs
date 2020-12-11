@@ -26,6 +26,11 @@ namespace AQATM.WebPages
 
         public IWebElement LogInPasswordFormError(string textPresent) => FindByCssWithText("span[id='validationFieldPassword']", textPresent, DefaultWaitingInterval);
 
+        public bool LoginButtonIsExist()
+        {
+            return Driver.FindElements(By.CssSelector("a[id='loginLink']")).Count > 0;
+        }
+
         public void Open()
         {
             Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(60);

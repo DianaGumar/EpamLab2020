@@ -139,11 +139,14 @@
   <ItemGroup>
     <Compile Include="Steps\AutorizationSteps.cs" />
     <Compile Include="Steps\PageFactory.cs" />
+    <Compile Include="Steps\PurchaseSteps.cs" />
     <Compile Include="Steps\TMEventSteps.cs" />
     <Compile Include="Steps\TMRegistrateSteps.cs" />
     <Compile Include="Utils\DriverFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebPages\AbstractPage.cs" />
+    <Compile Include="WebPages\TMBuyTicketsPage.cs" />
+    <Compile Include="WebPages\TMUserRoomPage.cs" />
     <Compile Include="WebPages\TMAutorizedPage.cs" />
     <Compile Include="WebPages\TMCreateEventPage.cs" />
     <Compile Include="WebPages\TMEditEventPage.cs" />

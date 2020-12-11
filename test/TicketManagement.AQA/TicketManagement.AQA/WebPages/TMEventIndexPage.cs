@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 
@@ -32,6 +33,11 @@ namespace AQATM.WebPages
         public IWebElement GetEvent(string eventBlockId)
         {
             return FindByCss("div[id='" + eventBlockId + "']", DefaultWaitingInterval);
+        }
+
+        public List<IWebElement> GetAllEvents()
+        {
+            return Driver.FindElements(By.CssSelector("div[class*='tm-event-view']")).ToList();
         }
 
         public IWebElement GetEventByName(string eventName)
