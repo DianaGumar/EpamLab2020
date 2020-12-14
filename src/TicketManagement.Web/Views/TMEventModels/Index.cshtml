@@ -12,7 +12,7 @@
         {
             <div class="col-md-6 col-sm-10 col-xs-12">
                 <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
-                    <div class="row row-table">
+                    <div class="row row-table tm-event-view" id="@item.Id">
                         <div class="col-md-3 col-sm-3 col-xs-4">
                             <div class="container" style="max-width:145px; overflow:hidden; margin-left:-15px">
                                 <img src="@item.Img" class="img-fluid" height="180">
@@ -22,11 +22,11 @@
                            @if (User.IsInRole("eventmanager"))
                             {
                                 <div class="pull-right">
-                                    @Html.ActionLink("Set price", "Index", "TMEventAreaModels",
-                                        new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default" })
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
-                                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
+                                    @Html.ActionLink("Set price", "SetSeveralPrice", "Purchase",
+                                        new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default tmsetprice" })
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary edit" })
+                                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary details" })
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger delete" })
                                 </div>
                             }
                             <p>
@@ -35,11 +35,11 @@
                                 </span>
                             </p>
                             <p>
-                                <span class="text-capitalize" style="font-size:xx-large; ">
+                                <span class="text-capitalize tm-event-name" style="font-size:xx-large; ">
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </span>
                                 <br />
-                                <span class="text-muted" style="">
+                                <span class="text-muted" style="" id="tm-event-desc">
                                     @Html.DisplayFor(modelItem => item.Description)
                                 </span>
                             </p>
@@ -49,7 +49,7 @@
                                 <span class="text-info">@Html.DisplayFor(modelItem => item.EndEvent)</span>
                             </p>
                             <p class="pull-right">
-                                @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary", id="tm-buy-ticket-event-btn" })
                             </p>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
 @if (User.IsInRole("eventmanager"))
 {
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New", "Create", null, new { id ="create-new-btn" })
     </p>
 
     <p>

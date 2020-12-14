@@ -22,7 +22,7 @@
 
 <h2>Create event</h2>
 <span>
-    @Html.ActionLink("< Back to List", "Index", null, new { @style = "font-size:medium" })
+    @Html.ActionLink("< Back to List", "Index", null, new { @style = "font-size:medium", id="back-to-list-create-event" })
 </span>
 <hr />
 
@@ -34,7 +34,7 @@
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", id = "valid-form-create-event" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.TMEvent.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -92,7 +92,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-default" />
+                        <input type="submit" value="Create" class="btn btn-default" id="create-event-btn"/>
                     </div>
                 </div>
             </div>

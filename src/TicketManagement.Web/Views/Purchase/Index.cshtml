@@ -27,36 +27,69 @@
         <th>
             @Html.DisplayNameFor(model => model.BookingDate)
         </th>
-        <th></th>
+        <th>more info</th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EventName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SeatRow)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SeatNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cost)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookingDate)
-        </td>
-        <td>
-            @if (item.EventLast)
-            {
-                <h6 class="text-danger">Last</h6>
-            }
-            </td>
-    </tr>
+    if (item.EventLast) {
+<tr class="bg-danger">
+
+    <td>
+        @Html.DisplayFor(modelItem => item.EventName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SeatRow)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SeatNumber)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cost)
+    </td>
+    <td class="tm-booking-date">
+        @Html.DisplayFor(modelItem => item.BookingDate)
+    </td>
+    <td>
+        <h6 class="text-danger">past</h6>
+    </td>
+
+
+</tr>
+    }
+    else
+    {
+<tr>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.EventName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SeatRow)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SeatNumber)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cost)
+    </td>
+    <td class="tm-booking-date">
+        @Html.DisplayFor(modelItem => item.BookingDate)
+    </td>
+    <td>
+        @Html.ActionLink("Return ticket", "ReturnTicket", "Purchase", new { seatsId = item.Id }, 
+            new { @class = "return-tiket-btn" })
+    </td>
+
+</tr>
+    }
+
+
 }
 
 </table>

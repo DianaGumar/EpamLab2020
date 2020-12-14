@@ -106,7 +106,7 @@ namespace TicketManagement.BusinessLogic
 
             if (_tmeventRepository.GetAll().Where(item => item.TMLayoutId == obj.TMLayoutId
                     && obj.StartEvent >= item.StartEvent
-                    && obj.StartEvent <= item.EndEvent).ToList().Count > 0)
+                    && obj.StartEvent <= item.EndEvent).Where(e => e.Id != obj.Id).ToList().Count > 0)
             {
                 return TMEventStatus.SameByDateObj;
             }
