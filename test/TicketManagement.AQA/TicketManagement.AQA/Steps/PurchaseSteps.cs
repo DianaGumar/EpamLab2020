@@ -149,9 +149,9 @@ namespace AQATM.Steps
                 date_d.Add(DateTime.Parse(item, provider));
             }
 
-            int result = date_d.Count(d => DateTime.Now.AddSeconds(-10) < d);
+            int result = date_d.Count(d => DateTime.Now.AddSeconds(-2) < d);
 
-            Assert.AreEqual(result, seatsCount);
+            Assert.AreEqual(seatsCount, result);
         }
 
         [Then(@"User can see error text ""(.*)""")]
