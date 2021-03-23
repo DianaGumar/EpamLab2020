@@ -1,6 +1,6 @@
-﻿using TicketManagement.DataAccess.Entities;
+﻿using TicketManagement.BusinessLogic.Entities;
 
-namespace TicketManagement.DataAccess.DAL
+namespace TicketManagement.BusinessLogic.DAL
 {
     public interface IPurchaseHistoryRepository : IRepository<PurchaseHistory>
     {

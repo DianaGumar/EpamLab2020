@@ -1,23 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TicketManagement.BusinessLogic.DAL;
+using TicketManagement.BusinessLogic.Entities;
+using TicketManagement.BusinessLogic.Standart.IServices;
 using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.BusinessLogic
 {
-    public interface IAreaService
-    {
-        int RemoveArea(int areaId);
-
-        List<AreaDto> GetAllArea();
-
-        AreaDto GetArea(int id);
-
-        AreaDto CreateArea(AreaDto obj);
-
-        int UpdateArea(AreaDto obj);
-    }
-
-    // servise work -- is the validation and the convertation dbModel in Domain model
+    // servise work like the validator and the convertator Entity to DTO
     internal class AreaService : IAreaService
     {
         private readonly IAreaRepository _areaRepository;

@@ -1,7 +1,7 @@
 ﻿using Autofac;
-using TicketManagement.BusinessLogic;
+using TicketManagement.BusinessLogic.Standart.IServices;
 
-namespace TicketManagement.Web
+namespace TicketManagement.BusinessLogic
 {
     public class DbServiceModule : Module
     {
@@ -18,6 +18,7 @@ namespace TicketManagement.Web
             builder.RegisterType<VenueService>().As<IVenueService>();
             builder.RegisterType<TMLayoutService>().As<ITMLayoutService>();
             builder.RegisterType<PurchaceService>().As<IPurchaceService>();
+            builder.RegisterModule<DbServiceModule>();
         }
     }
 }

@@ -48,9 +48,9 @@
     <Compile Include="TMEventServiseTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TicketManagement.DataAccess\TicketManagement.DataAccess.csproj">
-      <Project>{F3FB2891-8D14-47EB-A4A6-5ACCE066408C}</Project>
-      <Name>TicketManagement.DataAccess</Name>
+    <ProjectReference Include="..\..\TicketManagement.DataAccess.Standart\TicketManagement.DataAccess.Standart.csproj">
+      <Project>{074cd3b0-0102-4a9a-b819-e67767a138bc}</Project>
+      <Name>TicketManagement.DataAccess.Standart</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

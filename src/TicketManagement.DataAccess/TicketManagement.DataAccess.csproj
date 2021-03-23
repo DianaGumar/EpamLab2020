@@ -41,20 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\IRepositories\ITMUserRepository.cs" />
-    <Compile Include="DAL\IRepositories\IPurchaseHistoryRepository.cs" />
     <Compile Include="DAL\RepositoriesEF\RepositoriesEF.cs" />
     <Compile Include="DAL\Repositories\AreaRepository.cs" />
-    <Compile Include="DAL\IRepositories\ITMLayoutRepository.cs" />
-    <Compile Include="DAL\IRepositories\IAreaRepository.cs" />
-    <Compile Include="DAL\IRepositories\ISeatRepository.cs" />
-    <Compile Include="DAL\IRepositories\ITMEventSeatRepository.cs" />
-    <Compile Include="DAL\IRepositories\ITMEventAreaRepository.cs" />
-    <Compile Include="DAL\IRepositories\IVenueRepository.cs" />
     <Compile Include="DAL\Repositories\TMLayoutRepository.cs" />
     <Compile Include="DAL\Repositories\TMEventRepository.cs" />
-    <Compile Include="DAL\IRepositories\ITMEventRepository.cs" />
-    <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\Repositories\TMEventAreaRepository.cs" />
     <Compile Include="DAL\Repositories\TMEventSeatRepository.cs" />
     <Compile Include="DAL\Repositories\SeatRepository.cs" />
@@ -62,7 +52,6 @@
     <Compile Include="DAL\RepositoryEF.cs" />
     <Compile Include="DbRepositoryModule.cs" />
     <Compile Include="TMContext.cs" />
-    <Compile Include="Entities\TMEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAL\Repository.cs" />
   </ItemGroup>
@@ -76,6 +65,12 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TicketManagement.BusinessLogic.Standart\TicketManagement.BusinessLogic.Standart.csproj">
+      <Project>{c58a09ce-8ce3-4ec9-8ad2-d375032210c9}</Project>
+      <Name>TicketManagement.BusinessLogic.Standart</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

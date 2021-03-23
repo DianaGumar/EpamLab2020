@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace TicketManagement.DataAccess.DAL
+namespace TicketManagement.BusinessLogic.DAL
 {
-    public interface IRepository<T> // : IDisposable
+    public interface IRepository<T>
         where T : class, new()
     {
         T Create(T obj);
 
         void Remove(T obj);
 
-        void Remove(int id);
+        int Remove(int id);
 
         T GetById(object id);
 
