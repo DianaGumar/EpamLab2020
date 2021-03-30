@@ -38,7 +38,7 @@ AS
 
 	COMMIT;
 	select @Id AS Id
-	SELECT IDENT_CURRENT('TMEvent') AS Id
+	--SELECT IDENT_CURRENT('TMEvent') AS Id
 	
 
 

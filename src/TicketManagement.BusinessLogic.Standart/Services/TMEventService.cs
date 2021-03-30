@@ -86,9 +86,12 @@ namespace TicketManagement.BusinessLogic
                 return TMEventStatus.DateWrongOrder;
             }
 
-            if (_tmeventRepository.GetAll().Where(item => item.TMLayoutId == obj.TMLayoutId
-                    && obj.StartEvent >= item.StartEvent
-                    && obj.StartEvent <= item.EndEvent).Where(e => e.Id != obj.Id).ToList().Count > 0)
+            // check for the same dateTime events
+            var events = _tmeventRepository.GetAll().Where(item => item.TMLayoutId == obj.TMLayoutId);
+            events = events.Where(item => obj.StartEvent >= item.StartEvent && obj.StartEvent <= item.EndEvent);
+            var eventsList = events.Where(e => e.Id != obj.Id).ToList();
+
+            if (eventsList.Count > 0)
             {
                 return TMEventStatus.SameByDateObj;
             }

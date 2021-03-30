@@ -55,7 +55,7 @@ AS
 
 	end
 
+	select @@ROWCOUNT as CountRowAffected
 	COMMIT;
 
-
-RETURN 0
+GO

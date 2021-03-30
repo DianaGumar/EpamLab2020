@@ -26,7 +26,6 @@ namespace TicketManagement.DataAccess.DAL
             DataBaseSet.Add(obj);
             Context.SaveChanges();
 
-            // действительно ли id автоматически обновится в объекте?
             return obj;
         }
 

@@ -13,6 +13,9 @@ namespace TicketManagement.Web
 
         public static void Configuration(IAppBuilder app)
         {
+            ////services.AddDbContext<StipContext>(options =>
+            ////options.UseSqlServer(Configuration.GetConnectionString("StipDatabase")));
+
             ConfigureAuth(app);
         }
     }

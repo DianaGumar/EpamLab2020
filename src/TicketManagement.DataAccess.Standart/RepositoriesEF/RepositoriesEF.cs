@@ -1,19 +1,22 @@
-﻿using System.Data.SqlClient;
+﻿////using System.Data.SqlClient;
+using System;
 using System.Linq;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TicketManagement.BusinessLogic.DAL;
 using TicketManagement.BusinessLogic.Entities;
 
 namespace TicketManagement.DataAccess.DAL
 {
+    // сомнительные классы for ef core stored prosedures calling
     public class TopTMEventId
     {
-        public int TMEventId { get; set; }
+        public int Id { get; set; }
     }
 
-    public class CountRowAffected
+    public class CountRow
     {
-        public int CountRow { get; set; }
+        public int CountRowAffected { get; set; }
     }
 
     public class TMEventRepositoryEF : RepositoryEF<TMEvent>, ITMEventRepository
@@ -21,12 +24,11 @@ namespace TicketManagement.DataAccess.DAL
         public TMEventRepositoryEF(TMContext conn)
             : base(conn)
         {
-            Context = conn;
         }
 
-        protected new TMContext Context { get; }
-
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public new TMEvent Create(TMEvent obj)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             SqlParameter name = new SqlParameter("@Name", System.Data.SqlDbType.NVarChar, 120);
             SqlParameter description = new SqlParameter("@Description", System.Data.SqlDbType.NVarChar, -1);
@@ -42,14 +44,30 @@ namespace TicketManagement.DataAccess.DAL
             endEvent.Value = obj?.EndEvent;
             img.Value = obj?.Img;
 
+            if (obj != null)
+            {
+                img.Value = DBNull.Value;
+            }
+            else
+            {
+                img.Value = obj?.Img;
+            }
+
             var result = Context.Set<TopTMEventId>()
-                .FromSqlRaw("EXEC SP_Create_TMEvent @Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img",
+                .FromSqlRaw("EXEC TMEvent_Create @Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img",
                 name, description, tmlayoutId, startEvent, endEvent, img).ToList();
 
             if (obj != null)
             {
-                obj.Id = result[0].TMEventId;
+                obj.Id = result[0].Id;
             }
+
+            Context.ChangeTracker.Clear();
+            ////foreach (var entity in Context.ChangeTracker.Entries())
+            ////{
+            ////    /////entity.Reload();
+            ////    entity.State = EntityState.Detached;
+            ////}
 
             return obj;
         }
@@ -59,14 +77,24 @@ namespace TicketManagement.DataAccess.DAL
             SqlParameter idParam = new SqlParameter("@TMEventId", System.Data.SqlDbType.Int);
             idParam.Value = id;
 
-            var result = Context.Set<CountRowAffected>()
-                .FromSqlRaw("EXEC SP_Delete_TMEvent @TMEventId", idParam).ToList();
+            var result = Context.Set<CountRow>()
+                .FromSqlRaw("EXEC TMEvent_Delete @TMEventId", idParam).ToList();
 
-            return result[0].CountRow;
+            Context.ChangeTracker.Clear();
+            ////foreach (var entity in Context.ChangeTracker.Entries())
+            ////{
+            ////    ////entity.Reload();
+            ////    entity.State = EntityState.Detached;
+            ////}
+
+            return result[0].CountRowAffected;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public new int Update(TMEvent obj)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
+            SqlParameter id = new SqlParameter("@Id", System.Data.SqlDbType.Int);
             SqlParameter name = new SqlParameter("@Name", System.Data.SqlDbType.NVarChar, 120);
             SqlParameter description = new SqlParameter("@Description", System.Data.SqlDbType.NVarChar, -1);
             SqlParameter tmlayoutId = new SqlParameter("@TMLayoutId", System.Data.SqlDbType.Int);
@@ -74,18 +102,34 @@ namespace TicketManagement.DataAccess.DAL
             SqlParameter endEvent = new SqlParameter("@EndEvent", System.Data.SqlDbType.DateTime);
             SqlParameter img = new SqlParameter("@Img", System.Data.SqlDbType.NVarChar);
 
+            id.Value = obj?.Id;
             name.Value = obj?.Name;
             description.Value = obj?.Description;
             tmlayoutId.Value = obj?.TMLayoutId;
             startEvent.Value = obj?.StartEvent;
             endEvent.Value = obj?.EndEvent;
-            img.Value = obj?.Img;
 
-            var result = Context.Set<CountRowAffected>()
-                .FromSqlRaw("EXEC SP_Update_TMEvent @Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img",
-                name, description, tmlayoutId, startEvent, endEvent, img).ToList();
+            if (obj?.Img == null)
+            {
+                img.Value = DBNull.Value;
+            }
+            else
+            {
+                img.Value = obj?.Img;
+            }
 
-            return result[0].CountRow;
+            var result = Context.Set<CountRow>()
+                .FromSqlRaw("EXEC TMEvent_Update @Id, @Name, @Description, @TMLayoutId, @StartEvent, @EndEvent, @Img",
+                id, name, description, tmlayoutId, startEvent, endEvent, img).ToList();
+
+            Context.ChangeTracker.Clear();
+            ////foreach (var entity in Context.ChangeTracker.Entries())
+            ////{
+            ////    ////entity.Reload();
+            ////    entity.State = EntityState.Detached;
+            ////}
+
+            return result[0].CountRowAffected;
         }
     }
 

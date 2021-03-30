@@ -8,7 +8,8 @@ AS
 
 	delete from TMEventArea where TMEventArea.TMEventId = @Id
 
-	delete from TMEvent where Id = @Id
-
+	delete from TMEvent where Id = @Id 
+	select @@ROWCOUNT as CountRowAffected
 	COMMIT;
-RETURN 0
+
+GO

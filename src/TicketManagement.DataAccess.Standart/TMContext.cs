@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Configuration;
+using Microsoft.EntityFrameworkCore;
 using TicketManagement.BusinessLogic.Entities;
 using TicketManagement.DataAccess.DAL;
 
@@ -6,10 +7,10 @@ namespace TicketManagement.DataAccess
 {
     public class TMContext : DbContext
     {
-        public TMContext(DbContextOptions<TMContext> options)
-            : base(options)
-        {
-        }
+        ////public TMContext(DbContextOptions<TMContext> options)
+        ////    : base(options)
+        ////{
+        ////}
 
         ////public DbSet<MigrationHistory> MigrationHistory { get; set; }
         ////public DbSet<AspNetRoles> AspNetRoles { get; set; }
@@ -41,7 +42,7 @@ namespace TicketManagement.DataAccess
             base.OnModelCreating(modelBuilder);
 
             modelBuilder?.Entity<TopTMEventId>().HasNoKey();
-            modelBuilder?.Entity<CountRowAffected>().HasNoKey();
+            modelBuilder?.Entity<CountRow>().HasNoKey();
 
             // off ef cascade deleting
             ////modelBuilder?.Conventions.Remove<OneToManyCascadeDeleteConvention>();
@@ -70,9 +71,14 @@ namespace TicketManagement.DataAccess
             ////                   .Result(b => b.Id, "Id")));
         }
 
-        public static TMContext Create(DbContextOptions<TMContext> options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            return new TMContext(options);
+            ////var contextOptions = new DbContextOptionsBuilder<TMContext>()
+            ////    .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test")
+            ////    .Options;
+
+            optionsBuilder.UseSqlServer(ConfigurationManager
+                .ConnectionStrings["DefaultConnection"].ConnectionString);
         }
     }
 }

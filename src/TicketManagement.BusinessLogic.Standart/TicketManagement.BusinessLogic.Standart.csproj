@@ -8,4 +8,10 @@
     <PackageReference Include="Autofac" Version="6.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>TicketManagement.UnitTests.Standart</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  
 </Project>
