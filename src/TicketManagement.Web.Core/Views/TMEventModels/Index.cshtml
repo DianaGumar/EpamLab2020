@@ -1,0 +1,158 @@
+﻿@model IEnumerable<TicketManagement.Domain.DTO.TMEventDto>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 col-sm-10 col-xs-12">
+                <div class="list-group-item" style="margin-top: 20px; padding:5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+                    <div class="row row-table tm-event-view" id="@item.Id">
+                        <div class="col-md-3 col-sm-3 col-xs-4">
+                            <div class="container" style="max-width:145px; overflow:hidden; margin-left:-15px">
+                                <img src="@item.Img" class="img-fluid" height="180">
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-md-9 col-xs-8">
+                           @if (User.IsInRole("eventmanager"))
+                            {
+                                <div class="pull-right">
+                                    @Html.ActionLink("Set price", "SetSeveralPrice", "Purchase",
+                                        new { idEvent = item.Id }, new { @class = "btn btn-sm btn-default tmsetprice" })
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary edit" })
+                                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary details" })
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger delete" })
+                                </div>
+                            }
+                            <p>
+                                <span class="text-capitalize text-danger" style="font-size:medium; ">
+                                    SEATS @Html.DisplayFor(modelItem => item.BusySeats) / @Html.DisplayFor(modelItem => item.AllSeats)
+                                </span>
+                            </p>
+                            <p>
+                                <span class="text-capitalize tm-event-name" style="font-size:xx-large; ">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </span>
+                                <br />
+                                <span class="text-muted" style="" id="tm-event-desc">
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </span>
+                            </p>
+                            <p class="pull-left">
+                                <span class="text-info">@Html.DisplayFor(modelItem => item.StartEvent)</span>
+                                <br />
+                                <span class="text-info">@Html.DisplayFor(modelItem => item.EndEvent)</span>
+                            </p>
+                            <p class="pull-right">
+                                @Html.ActionLink("BUY TICKET", "Details", new { id = item.Id }, new { @class = "btn btn-primary", id="tm-buy-ticket-event-btn" })
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<h2>ReadAll</h2>
+
+@if (User.IsInRole("eventmanager"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create", null, new { id ="create-new-btn" })
+    </p>
+
+    <p>
+        @Html.ActionLink("See all events", "ListAllExistingItems")
+        <br/>
+        @Html.ActionLink("See all relevant events", "Index")
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Img)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TMLayoutId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartEvent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndEvent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AllSeats)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BusySeats)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="max-width: 120px; overflow: hidden;">
+                @Html.DisplayFor(modelItem => item.Img)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TMLayoutId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BusySeats)
+            </td>
+            @if (User.IsInRole("eventmanager"))
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            }
+        </tr>
+    }
+
+</table>
