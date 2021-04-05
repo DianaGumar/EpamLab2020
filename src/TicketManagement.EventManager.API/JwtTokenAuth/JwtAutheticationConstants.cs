@@ -1,7 +1,7 @@
-﻿namespace ConsumerApi.JwtTokenAuth
+﻿namespace TicketManagement.EventManager.API.JwtTokenAuth
 {
     public static class JwtAutheticationConstants
     {
-        public const string SchemeName = "CustomJwtAuth";
+        public const string SchemeName = "TicketManagement.Database";
     }
 }

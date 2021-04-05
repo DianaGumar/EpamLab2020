@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace ConsumerApi.JwtTokenAuth
+namespace TicketManagement.EventManager.API.JwtTokenAuth
 {
     public class JwtAuthenticationHandler : AuthenticationHandler<JwtAuthenticationOptions>
     {
@@ -31,12 +32,15 @@ namespace ConsumerApi.JwtTokenAuth
             // достаём токен из хедера
             var token = Request.Headers["Authorization"].ToString().Substring("Bearer ".Length);
 
-            // создаём http клиента для связи с авторизационным сервисом
+            // создаём http клиента для связи с авторизационным сервисом для проверки валидности токена
             var httpClient = new HttpClient();
+#pragma warning disable S1075 // URIs should not be hardcoded
             httpClient.BaseAddress = new Uri("http://localhost:5000");
+#pragma warning restore S1075 // URIs should not be hardcoded
 
             // создаём get запрос
-            var response = await httpClient.GetAsync($"users/validate?token={token}");
+            var response = await httpClient.GetAsync(new Uri($"users/validate?token={token}"));
+            httpClient.Dispose();
 
             // проверка ответа - валиден ли токен
             if (response.StatusCode == HttpStatusCode.OK)
