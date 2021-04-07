@@ -13,7 +13,8 @@ namespace TicketManagement.EventManager.API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory()) ////autofac DI configure
+                /////.ConfigureServices(services => services.AddAutofac()) ////autofac DI configure
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

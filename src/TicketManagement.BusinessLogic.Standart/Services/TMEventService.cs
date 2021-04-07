@@ -15,6 +15,8 @@ namespace TicketManagement.BusinessLogic
         DateWrongOrder = 2,
         SameByDateObj = 3,
         BusySeatsExists = 4,
+        NotExist = 5,
+        UnrecognizedError = 6,
     }
 
     internal class TMEventService : ITMEventService
@@ -35,11 +37,6 @@ namespace TicketManagement.BusinessLogic
         private static TMEventDto ConvertToDto(TMEvent obj,
             List<TMEventAreaDto> areas, List<TMEventSeatDto> seats)
         {
-            if (obj == null)
-            {
-                return null;
-            }
-
             return new TMEventDto
             {
                 Id = obj.Id,
@@ -57,11 +54,6 @@ namespace TicketManagement.BusinessLogic
 
         private static TMEvent ConvertToEntity(TMEventDto obj)
         {
-            if (obj == null)
-            {
-                return null;
-            }
-
             return new TMEvent
             {
                 Id = obj.Id,
@@ -99,18 +91,20 @@ namespace TicketManagement.BusinessLogic
             return TMEventStatus.Success;
         }
 
-        public int RemoveTMEvent(int id)
+        public TMEventStatus RemoveTMEvent(int id)
         {
-            if (GetTMEventSeatByEvent(id).Where(s => s.State == SeatState.Busy).ToList().Count == 0)
+            if (GetTMEvent(id) == null)
             {
-                _tmeventRepository.Remove(id);
-
-                TMEvent obj = _tmeventRepository.GetById(id);
-
-                return obj == null ? 1 : 0;
+                return TMEventStatus.NotExist;
             }
 
-            return 0;
+            if (GetTMEventSeatByEvent(id).Where(s => s.State == SeatState.Busy).ToList().Count == 0)
+            {
+                int count = _tmeventRepository.Remove(id);
+                return count > 0 ? TMEventStatus.Success : TMEventStatus.UnrecognizedError;
+            }
+
+            return TMEventStatus.BusySeatsExists;
         }
 
         public List<TMEventDto> GetAllTMEvent()
@@ -148,6 +142,11 @@ namespace TicketManagement.BusinessLogic
 
         public TMEventStatus CreateTMEvent(TMEventDto obj)
         {
+            if (obj == null)
+            {
+                return TMEventStatus.NotExist;
+            }
+
             TMEvent obje = ConvertToEntity(obj);
 
             TMEventStatus result = IsValid(obje);
@@ -165,23 +164,29 @@ namespace TicketManagement.BusinessLogic
         public TMEventDto GetTMEvent(int id)
         {
             TMEvent tmevent = _tmeventRepository.GetById(id);
-            return ConvertToDto(tmevent, GetTMEventAreaByEvent(id),
+            return tmevent == null ? null : ConvertToDto(tmevent, GetTMEventAreaByEvent(id),
                         GetTMEventSeatByEvent(id));
         }
 
-        public TMEventStatus UpdateTMEvent(TMEventDto obj)
+        public TMEventStatus UpdateTMEvent(int id, TMEventDto obj)
         {
-            TMEvent obje = ConvertToEntity(obj);
-
-            TMEventStatus result = IsValid(obje);
+            if (obj == null)
+            {
+                return TMEventStatus.NotExist;
+            }
 
             // check on busy seats
-            TMEventDto current = GetTMEvent(obj.Id);
+            TMEventDto current = GetTMEvent(id);
             if (current.TMLayoutId != obj.TMLayoutId &&
                 GetTMEventSeatByEvent(obj.Id).Where(s => s.State == SeatState.Busy).ToList().Count > 0)
             {
-                result = TMEventStatus.BusySeatsExists;
+                return TMEventStatus.BusySeatsExists;
             }
+
+            obj.Id = id;
+            current = obj;
+            TMEvent obje = ConvertToEntity(current);
+            TMEventStatus result = IsValid(obje);
 
             if (result == TMEventStatus.Success)
             {

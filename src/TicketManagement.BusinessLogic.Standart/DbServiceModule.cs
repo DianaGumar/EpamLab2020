@@ -3,12 +3,12 @@ using TicketManagement.BusinessLogic.Standart.IServices;
 
 namespace TicketManagement.BusinessLogic
 {
-    public class DbServiceModule : Module
+   public class DbServiceModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-            ////builder.RegisterModule<DbRepositoryModule>();
+
             builder.RegisterType<AreaService>().As<IAreaService>();
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<SeatService>().As<ISeatService>();
@@ -18,7 +18,6 @@ namespace TicketManagement.BusinessLogic
             builder.RegisterType<VenueService>().As<IVenueService>();
             builder.RegisterType<TMLayoutService>().As<ITMLayoutService>();
             builder.RegisterType<PurchaceService>().As<IPurchaceService>();
-            builder.RegisterModule<DbServiceModule>();
         }
     }
 }

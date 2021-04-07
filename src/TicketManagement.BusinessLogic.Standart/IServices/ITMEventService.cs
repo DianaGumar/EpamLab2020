@@ -5,7 +5,7 @@ namespace TicketManagement.BusinessLogic.Standart.IServices
 {
     public interface ITMEventService
     {
-        int RemoveTMEvent(int id);
+        TMEventStatus RemoveTMEvent(int id);
 
         TMEventDto GetTMEvent(int id);
 
@@ -15,7 +15,7 @@ namespace TicketManagement.BusinessLogic.Standart.IServices
 
         TMEventStatus CreateTMEvent(TMEventDto obj);
 
-        TMEventStatus UpdateTMEvent(TMEventDto obj);
+        TMEventStatus UpdateTMEvent(int id, TMEventDto obj);
 
         List<TMEventSeatDto> GetTMEventSeatByEvent(int eventId);
 

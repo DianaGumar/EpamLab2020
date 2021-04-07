@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TicketManagement.BusinessLogic;
 using TicketManagement.EventManager.API.JwtTokenAuth;
+using TicketManagement.Web;
 
 namespace TicketManagement.EventManager.API
 {
@@ -17,7 +19,7 @@ namespace TicketManagement.EventManager.API
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,13 +39,12 @@ namespace TicketManagement.EventManager.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            this.Configuration = builder.Build();
-
+            ////var builder = new ConfigurationBuilder()
+            ////    .SetBasePath(env?.ContentRootPath)
+            ////    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            ////    .AddJsonFile($"appsettings.{env?.EnvironmentName}.json", optional: true)
+            ////    .AddEnvironmentVariables();
+            ////Configuration = builder.Build();
 
             if (env.IsDevelopment())
             {
@@ -66,10 +67,8 @@ namespace TicketManagement.EventManager.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // Register your own things directly with Autofac here. Don't
-            // call builder.Populate(), that happens in AutofacServiceProviderFactory
-            // for you.
-            builder.RegisterModule(new MyApplicationModule());
+            builder.RegisterModule(new DbRepositoryModule());
+            builder.RegisterModule(new DbServiceModule());
         }
     }
 }

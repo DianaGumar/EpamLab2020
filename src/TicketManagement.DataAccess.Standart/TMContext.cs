@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+﻿////using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using TicketManagement.BusinessLogic.Entities;
 using TicketManagement.DataAccess.DAL;
@@ -77,8 +77,12 @@ namespace TicketManagement.DataAccess
             ////    .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test")
             ////    .Options;
 
-            optionsBuilder.UseSqlServer(ConfigurationManager
-                .ConnectionStrings["DefaultConnection"].ConnectionString);
+            ////var connectionString = ConfigurationManager
+            ////    .ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            var connectionString = "Data Source=DESKTOP-137JOC2;Initial Catalog=TicketManagement.Database;Integrated Security=True";
+
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }

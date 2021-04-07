@@ -9,8 +9,10 @@ namespace TicketManagement.Web
     {
         protected override void Load(ContainerBuilder builder)
         {
-            base.Load(builder);
+            /////base.Load(builder); ?
+
             builder.RegisterType<TMContext>().AsSelf().InstancePerLifetimeScope();
+
             ////builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             builder.RegisterGeneric(typeof(RepositoryEF<>)).As(typeof(IRepository<>));
 
@@ -31,8 +33,6 @@ namespace TicketManagement.Web
             ////builder.RegisterType<TMEventRepository>().As<IRepository<TMEvent>>();
             ////builder.RegisterType<VenueRepository>().As<IRepository<Venue>>();
             ////builder.RegisterType<TMLayoutRepository>().As<IRepository<TMLayout>>();
-
-            builder.RegisterModule<DbRepositoryModule>();
         }
     }
 }
