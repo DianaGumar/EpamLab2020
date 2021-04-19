@@ -6,8 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TicketManagement.API.JwtTokenAuth;
 using TicketManagement.BusinessLogic;
-using TicketManagement.EventManager.API.JwtTokenAuth;
 using TicketManagement.Web;
 
 namespace TicketManagement.EventManager.API

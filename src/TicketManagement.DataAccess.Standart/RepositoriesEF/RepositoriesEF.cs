@@ -74,6 +74,11 @@ namespace TicketManagement.DataAccess.DAL
 
         public new int Remove(int id)
         {
+            if (Context.Set<TMEvent>().Find(id) == null)
+            {
+                return 0;
+            }
+
             SqlParameter idParam = new SqlParameter("@TMEventId", System.Data.SqlDbType.Int);
             idParam.Value = id;
 
@@ -94,6 +99,11 @@ namespace TicketManagement.DataAccess.DAL
         public new int Update(TMEvent obj)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
+            if (Context.Set<TMEvent>().Find(obj) == null)
+            {
+                return 0;
+            }
+
             SqlParameter id = new SqlParameter("@Id", System.Data.SqlDbType.Int);
             SqlParameter name = new SqlParameter("@Name", System.Data.SqlDbType.NVarChar, 120);
             SqlParameter description = new SqlParameter("@Description", System.Data.SqlDbType.NVarChar, -1);

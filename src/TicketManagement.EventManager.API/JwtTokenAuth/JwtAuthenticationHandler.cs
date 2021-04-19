@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace TicketManagement.EventManager.API.JwtTokenAuth
+namespace TicketManagement.API.JwtTokenAuth
 {
     public class JwtAuthenticationHandler : AuthenticationHandler<JwtAuthenticationOptions>
     {

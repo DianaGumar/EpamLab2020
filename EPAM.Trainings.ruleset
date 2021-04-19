@@ -68,6 +68,7 @@
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeQuality.CSharp.Analyzers" RuleNamespace="Microsoft.CodeQuality.CSharp.Analyzers">
     <Rule Id="CA1812" Action="None" />
+    <Rule Id="CA2234" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.NetCore.Analyzers" RuleNamespace="Microsoft.NetCore.Analyzers">
     <Rule Id="CA2100" Action="Info" />

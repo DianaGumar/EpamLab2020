@@ -13,11 +13,5 @@
       <_Parameter1>TicketManagement.UnitTests.Standart</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="TicketManagement.DataAccess">
-      <HintPath>..\TicketManagement.DataAccess\bin\Debug\TicketManagement.DataAccess.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   
 </Project>

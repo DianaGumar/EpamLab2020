@@ -84,7 +84,9 @@ namespace TicketManagement.EventManager.API.Controllers
         ////[Authorize(Roles = "eventmanager")]
         public string Delete(int id)
         {
-            return _tmeventService.RemoveTMEvent(id).ToString();
+            var response = _tmeventService.RemoveTMEvent(id).ToString();
+
+            return response;
         }
     }
 }

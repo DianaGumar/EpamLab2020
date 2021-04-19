@@ -4,8 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:56903",
-      "sslPort": 44385
+      "applicationUrl": "http://localhost:62028",
+      "sslPort": 44393
     }
   },
   "profiles": {
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "TicketManagement.User.API": {
+    "TicketManagement.WebServer": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 
-namespace TicketManagement.EventManager.API.JwtTokenAuth
+namespace TicketManagement.API.JwtTokenAuth
 {
     public class JwtAuthenticationOptions : AuthenticationSchemeOptions
     {
