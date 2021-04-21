@@ -9,13 +9,13 @@ namespace TicketManagement.EventManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EventsController : ControllerBase
+    public class EventController : ControllerBase
     {
         private readonly ITMEventService _tmeventService;
         private readonly ITMLayoutService _tmlayoutService;
         private readonly IVenueService _venueService;
 
-        public EventsController(ITMEventService tmeventService,
+        public EventController(ITMEventService tmeventService,
             ITMLayoutService tmlayoutService, IVenueService venueService)
         {
             _tmeventService = tmeventService;

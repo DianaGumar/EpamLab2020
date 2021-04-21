@@ -1,0 +1,57 @@
+﻿@model TicketManagement.Domain.DTO.TMEventDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<span>
+    @Html.ActionLink("< Back to List", "Index", null, new { @style = "font-size:medium" })
+</span>
+<p/>
+
+<div class="col">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <div class="container">
+                    <img src="@Model.Img" class="img" height="250">
+                </div>
+            </div>
+            <div class="col">
+                @*@if (User.IsInRole("eventmanager"))
+            {*@
+                <div class="pull-right">
+                    @Html.ActionLink("Set price", "SetSeveralPrice", "Purchase",
+                        new { idEvent = Model.Id }, new { @class = "btn btn-sm btn-light tmsetprice" })
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-light edit" })
+                    @Html.ActionLink("Details", "Details", new { id = Model.Id }, new { @class = "btn btn-sm btn-light details" })
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-sm btn-light delete" })
+                </div>
+                @*}*@
+                <p>
+                    <span class="text-capitalize tm-event-name" style="font-size:large; ">
+                        @Html.DisplayFor(modelItem => Model.Name)
+                    </span>
+                    <br />
+                    <span class="text-muted" id="tm-event-desc">
+                        @Html.DisplayFor(modelItem => Model.Description)
+                    </span>
+                </p>
+                <p class="pull-left">
+                    <span class="text-info">@Html.DisplayFor(modelItem => Model.StartEvent)</span>
+                    <br />
+                    <span class="text-info">@Html.DisplayFor(modelItem => Model.EndEvent)</span>
+                </p>
+                <span class="text-muted">
+                    Busy seats @Html.DisplayFor(modelItem => Model.BusySeats) | All seats  @Html.DisplayFor(modelItem => Model.AllSeats)
+                </span>
+                <p class="pull-right">
+                    @Html.ActionLink("Chouse seats to buy", "BuyTicket", "Purchase",
+                  new { idEvent = Model.Id },
+                  new { @class = "btn btn-sm btn-primary", id = "TMChouseSeatsButton" })
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

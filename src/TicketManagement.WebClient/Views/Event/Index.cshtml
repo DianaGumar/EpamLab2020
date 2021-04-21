@@ -1,0 +1,76 @@
+﻿@model IEnumerable<TicketManagement.Domain.DTO.TMEventDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+@*@if (User.IsInRole("eventmanager"))
+    {*@
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary", id = "create-new-btn"})
+</p>
+
+<p>
+    @Html.ActionLink("All events", "ListAllExistingItems") | 
+    @Html.ActionLink("All relevant events", "Index")
+</p>
+@*}*@
+
+<div class="container">
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-9">
+                <div class="list-group-item" style="margin:10px;">
+                    <div class="row row-table tm-event-view" id="@item.Id">
+                        <div class="col-3">
+                            <div class="container">
+                                <img src="@item.Img" class="img" height="200">
+                            </div>
+                        </div>
+                        <div class="col">
+                            @*@if (User.IsInRole("eventmanager"))
+                                {*@
+                            <div class="pull-right">
+                                @Html.ActionLink("Set price", "SetSeveralPrice", "Purchase",
+                                    new { idEvent = item.Id }, new { @class = "btn btn-sm btn-light tmsetprice" })
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-light edit" })
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-light details" })
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-light delete" })
+                            </div>
+                            @*}*@
+                            <p>
+                                <span class="text-capitalize tm-event-name" style="font-size:large; ">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                    <span class="text-muted">
+                                        Seats @Html.DisplayFor(modelItem => item.BusySeats) / @Html.DisplayFor(modelItem => item.AllSeats)
+                                    </span>
+                                </span>
+                                <br />
+                                <span class="text-muted" id="tm-event-desc">
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </span>
+                            </p>
+                            <p class="pull-left">
+                                <span class="text-info">@Html.DisplayFor(modelItem => item.StartEvent)</span>
+                                <br />
+                                <span class="text-info">@Html.DisplayFor(modelItem => item.EndEvent)</span>
+                            </p>
+                            <p class="pull-right">
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary ", id = "tm-buy-ticket-event-btn" })
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+
+
+
