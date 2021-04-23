@@ -22,7 +22,7 @@ namespace TicketManagement.WebServer.Controllers
             _httpClient = new HttpClient();
 
 #pragma warning disable S1075 // URIs should not be hardcoded
-            _httpClient.BaseAddress = new Uri("https://localhost:5001/");
+            _httpClient.BaseAddress = new Uri("https://localhost:5041/");
 #pragma warning restore S1075 // URIs should not be hardcoded
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(
@@ -60,6 +60,7 @@ namespace TicketManagement.WebServer.Controllers
         [HttpPut("{id}")]
         public async void Put(int id, [FromBody] TMEventDto obj)
         {
+            // ищем по id элемент и добавляем в него необходимые изменённые параметры
             // значение id отправляется в строке запроса. obj - в теле
             HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"api/Event/{id}", obj);
             response.EnsureSuccessStatusCode();

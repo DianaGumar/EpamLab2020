@@ -12,15 +12,10 @@ namespace TicketManagement.EventManager.API.Controllers
     public class EventController : ControllerBase
     {
         private readonly ITMEventService _tmeventService;
-        private readonly ITMLayoutService _tmlayoutService;
-        private readonly IVenueService _venueService;
 
-        public EventController(ITMEventService tmeventService,
-            ITMLayoutService tmlayoutService, IVenueService venueService)
+        public EventController(ITMEventService tmeventService)
         {
             _tmeventService = tmeventService;
-            _tmlayoutService = tmlayoutService;
-            _venueService = venueService;
         }
 
         // GET: api/<TMEventController>

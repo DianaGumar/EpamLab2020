@@ -19,7 +19,7 @@ namespace TicketManagement.WebClient.Controllers
             _httpClient = new HttpClient();
 
 #pragma warning disable S1075 // URIs should not be hardcoded
-            _httpClient.BaseAddress = new Uri("https://localhost:5003/");
+            _httpClient.BaseAddress = new Uri("https://localhost:5101/");
 #pragma warning restore S1075 // URIs should not be hardcoded
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(
@@ -40,22 +40,31 @@ namespace TicketManagement.WebClient.Controllers
             return View(tmevent);
         }
 
-        // GET: EventController/Create
-        public ActionResult Create()
+        // POST: EventController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            _ = await _httpClient.DeleteAsync($"api/Event/{id}");
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: EventController/Create
+        // GET: EventLayoutController/Create
+        public async Task<ActionResult> Create()
+        {
+            // получаем все возможные лайауты для преедачи в представление
+            var layouts = await _httpClient.GetFromJsonAsync<List<TMLayoutDto>>("api/Layout");
+            return View(layouts);
+        }
+
+        // POST: EventLayoutController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(IFormCollection collection)
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/Event", collection);
-                response.EnsureSuccessStatusCode();
-
+                _ = await _httpClient.PostAsJsonAsync("api/Event", collection);
                 return RedirectToAction(nameof(Index));
             }
 #pragma warning disable CA1031 // Do not catch general exception types
@@ -66,47 +75,33 @@ namespace TicketManagement.WebClient.Controllers
             }
         }
 
-        ////// GET: EventController/Edit/5
-        ////public ActionResult Edit(int id)
-        ////{
-        ////    return View();
-        ////}
+        // GET: EventLayoutController/Edit/5
+        public async Task<ActionResult> Edit(int id)
+        {
+            // получаем все возможные лайауты для преедачи в представление
+            var layouts = await _httpClient.GetFromJsonAsync<List<TMLayoutDto>>("api/Layout");
+            var tmevent = await _httpClient.GetFromJsonAsync<TMEventDto>($"api/Event/{id}");
 
-        ////// POST: EventController/Edit/5
-        ////[HttpPost]
-        ////[ValidateAntiForgeryToken]
-        ////public ActionResult Edit(int id, IFormCollection collection)
-        ////{
-        ////    try
-        ////    {
-        ////        return RedirectToAction(nameof(Index));
-        ////    }
-        ////    catch
-        ////    {
-        ////        return View();
-        ////    }
-        ////}
+            return View(new { tmevent, layouts });
+        }
 
-        ////// GET: EventController/Delete/5
-        ////public ActionResult Delete(int id)
-        ////{
-        ////    return View();
-        ////}
-
-        ////// POST: EventController/Delete/5
-        ////[HttpPost]
-        ////[ValidateAntiForgeryToken]
-        ////public ActionResult Delete(int id, IFormCollection collection)
-        ////{
-        ////    try
-        ////    {
-        ////        return RedirectToAction(nameof(Index));
-        ////    }
-        ////    catch
-        ////    {
-        ////        return View();
-        ////    }
-        ////}
+        // POST: EventLayoutController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                _ = await _httpClient.PutAsJsonAsync($"api/Event/{id}", collection);
+                return RedirectToAction(nameof(Index));
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch
+#pragma warning restore CA1031 // Do not catch general exception types
+            {
+                return View();
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {
