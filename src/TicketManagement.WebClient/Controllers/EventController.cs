@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -51,16 +52,21 @@ namespace TicketManagement.WebClient.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // доделать нормальное представление
         // GET: EventLayoutController/Create
         public async Task<ActionResult> Create()
         {
             // использует полную модель представления EventLayoutViewModel
             // получаем все возможные лайауты для преедачи в представление
-            var layouts = await _httpClient.GetFromJsonAsync<IEnumerable<TMLayoutDto>>("api/Layout");
+            var layouts = await _httpClient.GetFromJsonAsync<List<TMLayoutDto>>("api/Layout");
+
+            var layoutStr = layouts.Select(l => "id=" + l.Id + " name=" + l.Description).ToArray();
+            SelectList selectList = new SelectList(layoutStr);
+
             return View(new EventLayoutViewModel
             {
                 TMEvent = new TMEventDto(),
-                TMLayouts = (List<SelectListItem>)layouts,
+                TMLayouts = selectList,
             });
         }
 
