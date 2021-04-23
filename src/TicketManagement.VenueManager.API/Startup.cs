@@ -1,10 +1,12 @@
+﻿using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TicketManagement.BusinessLogic;
+using TicketManagement.Web;
 
 namespace TicketManagement.VenueManager.API
 {
@@ -47,6 +49,13 @@ namespace TicketManagement.VenueManager.API
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // регистрация классов
+            builder.RegisterModule(new DbRepositoryModule());
+            builder.RegisterModule(new DbServiceModule());
         }
     }
 }

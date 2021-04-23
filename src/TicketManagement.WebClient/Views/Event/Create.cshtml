@@ -1,28 +1,20 @@
-﻿@model TicketManagement.Web.Models.TMEventViewModel
+﻿@model TicketManagement.WebClient.Models.EventLayoutViewModel
 
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-
 }
 
 @{ 
-    int chousedlayoutid = 1;
-    string cc = "";
-
-    if (Request["#layout_list"] != null)
-    {
-        cc = Request["#layout_list"] + "_";
-
-        chousedlayoutid = int.Parse(Request["#layout_list"]);
-    }
+//int chousedlayoutid = 1;
+//string cc = "";
 }
 
 
 <h2>Create event</h2>
 <span>
-    @Html.ActionLink("< Back to List", "Index", null, new { @style = "font-size:medium", id="back-to-list-create-event" })
+    @Html.ActionLink("< Back to List", "Index", null, 
+        new { @style = "font-size:medium", id="back-to-list-create-event" })
 </span>
 <hr />
 

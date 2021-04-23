@@ -6,7 +6,9 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TicketManagement.Domain.DTO;
+using TicketManagement.WebClient.Models;
 
 namespace TicketManagement.WebClient.Controllers
 {
@@ -52,9 +54,14 @@ namespace TicketManagement.WebClient.Controllers
         // GET: EventLayoutController/Create
         public async Task<ActionResult> Create()
         {
+            // использует полную модель представления EventLayoutViewModel
             // получаем все возможные лайауты для преедачи в представление
-            var layouts = await _httpClient.GetFromJsonAsync<List<TMLayoutDto>>("api/Layout");
-            return View(layouts);
+            var layouts = await _httpClient.GetFromJsonAsync<IEnumerable<TMLayoutDto>>("api/Layout");
+            return View(new EventLayoutViewModel
+            {
+                TMEvent = new TMEventDto(),
+                TMLayouts = (List<SelectListItem>)layouts,
+            });
         }
 
         // POST: EventLayoutController/Create
