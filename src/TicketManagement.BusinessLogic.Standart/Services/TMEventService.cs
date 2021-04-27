@@ -17,6 +17,7 @@ namespace TicketManagement.BusinessLogic
         BusySeatsExists = 4,
         NotExist = 5,
         UnrecognizedError = 6,
+        ModelInvalid = 7,
     }
 
     internal class TMEventService : ITMEventService

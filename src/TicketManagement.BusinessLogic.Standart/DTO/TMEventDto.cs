@@ -1,4 +1,5 @@
 ﻿using System;
+using TicketManagement.BusinessLogic;
 
 namespace TicketManagement.Domain.DTO
 {
@@ -24,5 +25,7 @@ namespace TicketManagement.Domain.DTO
 
         // public IEnumerable<TMEventAreaDto> TMEventAreas
         public decimal MiddlePriceBySeat { get; set; }
+
+        public TMEventStatus Status { get; set; }
     }
 }

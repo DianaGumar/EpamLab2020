@@ -19,7 +19,7 @@
 <hr />
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-6">
 
         @using (Html.BeginForm())
         {
@@ -27,26 +27,26 @@
 
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger", id = "valid-form-create-event" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TMEvent.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.TMEvent.Name, htmlAttributes: new { @class = "control-label col-2" })
+                    <div class="col-10">
                         @Html.EditorFor(model => model.TMEvent.Name, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.TMEvent.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TMEvent.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.TMEvent.Description, htmlAttributes: new { @class = "control-label col-2" })
+                    <div class="col-10">
                         @Html.EditorFor(model => model.TMEvent.Description, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.TMEvent.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row">
                     @Html.LabelFor(model => model.TMEvent.Img,
-                   htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                   htmlAttributes: new { @class = "control-label col-2" })
+                    <div class="col-10">
 
                         @Html.EditorFor(model => model.TMEvent.Img,
                        new { htmlAttributes = new { @class = "form-control", id = "event_img" } })
@@ -55,36 +55,36 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.TMEvent.TMLayoutId, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.TMEvent.TMLayoutId, new { @class = "col-2 control-label" })
+                    <div class="col-10">
                         @Html.DropDownListFor(model => model.TMEvent.TMLayoutId, Model.TMLayouts,
                             new { id = "layout_list" })
                     </div>
                     @Html.ValidationMessageFor(model => model.TMEvent.TMLayoutId, "", new { @class = "text-danger" })
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TMEvent.StartEvent, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.TMEvent.StartEvent, htmlAttributes: new { @class = "control-label col-2" })
+                    <div class="col-10">
                         @Html.EditorFor(model => model.TMEvent.StartEvent, "{0:dd/MM/yyyy}",
                        new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
                         @Html.ValidationMessageFor(model => model.TMEvent.StartEvent, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TMEvent.EndEvent, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.TMEvent.EndEvent, htmlAttributes: new { @class = "control-label col-2" })
+                    <div class="col-10">
                         @Html.EditorFor(model => model.TMEvent.EndEvent, "{0:dd/MM/yyyy}",
                        new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
                         @Html.ValidationMessageFor(model => model.TMEvent.EndEvent, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-default" id="create-event-btn"/>
+                <div class="form-group row">
+                    <div class="col-md-offset-2 col-10">
+                        <input type="submit" value="Create" class="btn btn-sm btn-primary" id="create-event-btn"/>
                     </div>
                 </div>
             </div>

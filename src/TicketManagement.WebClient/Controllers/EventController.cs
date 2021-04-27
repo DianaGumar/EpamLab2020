@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using TicketManagement.BusinessLogic;
 using TicketManagement.Domain.DTO;
 using TicketManagement.WebClient.Models;
 
@@ -57,35 +59,43 @@ namespace TicketManagement.WebClient.Controllers
         public async Task<ActionResult> Create()
         {
             // использует полную модель представления EventLayoutViewModel
-            // получаем все возможные лайауты для преедачи в представление
-            var layouts = await _httpClient.GetFromJsonAsync<List<TMLayoutDto>>("api/Layout");
-
-            var layoutStr = layouts.Select(l => "id=" + l.Id + " name=" + l.Description).ToArray();
-            SelectList selectList = new SelectList(layoutStr);
-
             return View(new EventLayoutViewModel
             {
                 TMEvent = new TMEventDto(),
-                TMLayouts = selectList,
+                TMLayouts = await GetVenueLayoutNames(),
             });
         }
 
         // POST: EventLayoutController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(IFormCollection collection)
+        public async Task<ActionResult> Create(EventLayoutViewModel obj)
         {
-            try
+            var response = await _httpClient.PostAsJsonAsync("api/Event", obj?.TMEvent);
+            var contents = await response.Content.ReadAsStringAsync();
+
+            // получение ответа от сервиса по созданию евента
+            TMEventDto result = JsonConvert.DeserializeObject<TMEventDto>(contents);
+
+            switch (result.Status)
             {
-                _ = await _httpClient.PostAsJsonAsync("api/Event", collection);
-                return RedirectToAction(nameof(Index));
+                case TMEventStatus.Success:
+                    return RedirectToAction(nameof(Index));
+                    ////return RedirectToAction("SetSeveralPrice", "Purchase", new { idEvent = obj.TMEvent.Id });
+                case TMEventStatus.DateInPast:
+                    ModelState.AddModelError("", "date is in a past"); break;
+                case TMEventStatus.DateWrongOrder:
+                    ModelState.AddModelError("", "end date before start date"); break;
+                case TMEventStatus.SameByDateObj:
+                    ModelState.AddModelError("", "this venue is busy at this time anouther event"); break;
+                default:
+                    ModelState.AddModelError("", "something wrong"); break;
             }
-#pragma warning disable CA1031 // Do not catch general exception types
-            catch
-#pragma warning restore CA1031 // Do not catch general exception types
-            {
-                return View();
-            }
+
+            obj ??= new EventLayoutViewModel { TMEvent = new TMEventDto() };
+            obj.TMLayouts = await GetVenueLayoutNames();
+
+            return View(obj);
         }
 
         // GET: EventLayoutController/Edit/5
@@ -114,6 +124,23 @@ namespace TicketManagement.WebClient.Controllers
             {
                 return View();
             }
+        }
+
+        private async Task<List<SelectListItem>> GetVenueLayoutNames()
+        {
+            CultureInfo cultures = CultureInfo.CreateSpecificCulture("en-US");
+
+            // получаем все возможные лайауты для преедачи в представление
+            var layouts = await _httpClient.GetFromJsonAsync<List<TMLayoutDto>>("api/Layout");
+
+            var items = new List<SelectListItem>();
+            layouts.ForEach(l => items.Add(new SelectListItem
+            {
+                Text = l.Id + "--" + l.Description,
+                Value = l.Id.ToString("G", cultures),
+            }));
+
+            return items;
         }
 
         protected override void Dispose(bool disposing)

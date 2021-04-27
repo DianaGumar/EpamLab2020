@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TicketManagement.Domain.DTO;
 
 namespace TicketManagement.WebServer.Controllers
@@ -47,10 +48,15 @@ namespace TicketManagement.WebServer.Controllers
 
         // POST api/<EventController>
         [HttpPost]
-        public async void Post([FromBody] TMEventDto obj)
+        public async Task<TMEventDto> Post([FromBody] TMEventDto obj)
         {
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/Event", obj);
-            response.EnsureSuccessStatusCode();
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync<TMEventDto>("api/Event", obj);
+            var contents = await response.Content.ReadAsStringAsync();
+
+            // получение ответа от сервиса по созданию евента
+            TMEventDto result = JsonConvert.DeserializeObject<TMEventDto>(contents);
+
+            return result;
 
             // return URI of the created resource.
             ////return response.Headers.Location;

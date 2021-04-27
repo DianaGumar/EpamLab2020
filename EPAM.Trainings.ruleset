@@ -131,6 +131,7 @@
     <Rule Id="S2372" Action="None" />
     <Rule Id="S2376" Action="None" />
     <Rule Id="S2387" Action="Warning" />
+    <Rule Id="S2583" Action="Info" />
     <Rule Id="S2760" Action="Warning" />
     <Rule Id="S2931" Action="Warning" />
     <Rule Id="S2952" Action="Warning" />

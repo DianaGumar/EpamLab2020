@@ -2,6 +2,7 @@
 using System.Linq;
 ////using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TicketManagement.BusinessLogic;
 using TicketManagement.BusinessLogic.Standart.IServices;
 using TicketManagement.Domain.DTO;
 
@@ -51,13 +52,18 @@ namespace TicketManagement.EventManager.API.Controllers
         [HttpPost]
         ////[ValidateAntiForgeryToken]
         //////[Authorize(Roles = "eventmanager")]
-        public object Create([FromBody] TMEventDto obj)
+        public TMEventDto Create([FromBody] TMEventDto obj)
         {
-            // отображать картинку на интерфейсе, если событие не имеет постера
-            string result = ModelState.IsValid ?
-                _tmeventService.CreateTMEvent(obj).ToString() : "ModelInvalid";
+            TMEventStatus result = ModelState.IsValid ?
+                _tmeventService.CreateTMEvent(obj) : TMEventStatus.ModelInvalid;
 
-            return new { result, obj };
+            // если евент не имеет постера - ставить дефолтную картинку
+            if (obj != null)
+            {
+                obj.Status = result;
+            }
+
+            return obj;
         }
 
         // PUT api/<TMEventController>/5
