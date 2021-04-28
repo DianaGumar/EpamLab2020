@@ -31,8 +31,16 @@ namespace TicketManagement.WebServer.Controllers
         }
 
         // GET: api/<EventController>
+        [HttpGet("all")]
+        public async Task<List<TMEventDto>> GetAll()
+        {
+            var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event/existing-events");
+            return tmevents;
+        }
+
+        // GET: api/<EventController>
         [HttpGet]
-        public async Task<List<TMEventDto>> Get() //// +
+        public async Task<List<TMEventDto>> Get()
         {
             var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event");
             return tmevents;
@@ -57,32 +65,30 @@ namespace TicketManagement.WebServer.Controllers
             TMEventDto result = JsonConvert.DeserializeObject<TMEventDto>(contents);
 
             return result;
-
-            // return URI of the created resource.
-            ////return response.Headers.Location;
         }
 
         // PUT api/<EventController>/5
         [HttpPut("{id}")]
-        public async void Put(int id, [FromBody] TMEventDto obj)
+        public async Task<TMEventDto> Put(int id, [FromBody] TMEventDto obj)
         {
-            // ищем по id элемент и добавляем в него необходимые изменённые параметры
             // значение id отправляется в строке запроса. obj - в теле
-            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"api/Event/{id}", obj);
-            response.EnsureSuccessStatusCode();
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync<TMEventDto>($"api/Event/{id}", obj);
+            var contents = await response.Content.ReadAsStringAsync();
 
             // десериализуем и обновляем объект
-            ////obj = await response.Content.ReadAsAsync<TMEventDto>();
-            ////return obj;
+            TMEventDto result = JsonConvert.DeserializeObject<TMEventDto>(contents);
+
+            return result;
         }
 
         // DELETE api/<EventController>/5
         [HttpDelete("{id}")]
-        public async void Delete(int id)
+        public async Task<string> Delete(int id)
         {
             HttpResponseMessage response = await _httpClient.DeleteAsync($"api/Event/{id}");
-            response.EnsureSuccessStatusCode();
-            ////return response.StatusCode;
+            var contents = await response.Content.ReadAsStringAsync();
+
+            return contents;
         }
 
         protected virtual void Dispose(bool disposing)

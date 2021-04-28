@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -38,6 +37,13 @@ namespace TicketManagement.WebClient.Controllers
             return View(tmevents);
         }
 
+        // GET: EventController
+        public async Task<ActionResult> GetAll()
+        {
+            var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event/all");
+            return View(tmevents);
+        }
+
         // GET: EventController/Details/5
         public async Task<ActionResult> Details(int id)
         {
@@ -45,12 +51,15 @@ namespace TicketManagement.WebClient.Controllers
             return View(tmevent);
         }
 
-        // POST: EventController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+        ////[Authorize(Roles = "eventmanager")]
         public async Task<ActionResult> Delete(int id)
         {
-            _ = await _httpClient.DeleteAsync($"api/Event/{id}");
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"api/Event/{id}");
+            string contents = await response.Content.ReadAsStringAsync();
+
+            _ = contents;
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -101,29 +110,61 @@ namespace TicketManagement.WebClient.Controllers
         // GET: EventLayoutController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            // получаем все возможные лайауты для преедачи в представление
-            var layouts = await _httpClient.GetFromJsonAsync<List<TMLayoutDto>>("api/Layout");
             var tmevent = await _httpClient.GetFromJsonAsync<TMEventDto>($"api/Event/{id}");
+            if (tmevent == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-            return View(new { tmevent, layouts });
+            return View(new EventLayoutViewModel
+            {
+                TMEvent = tmevent,
+                TMLayouts = await GetVenueLayoutNames(),
+            });
         }
 
         // POST: EventLayoutController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, EventLayoutViewModel obj)
         {
-            try
+            var response = await _httpClient.PutAsJsonAsync($"api/Event/{id}", obj?.TMEvent);
+            var contents = await response.Content.ReadAsStringAsync();
+
+            // получение ответа от сервиса по созданию евента
+            TMEventDto result = JsonConvert.DeserializeObject<TMEventDto>(contents);
+
+            switch (result.Status)
             {
-                _ = await _httpClient.PutAsJsonAsync($"api/Event/{id}", collection);
-                return RedirectToAction(nameof(Index));
+                case TMEventStatus.Success:
+                    return RedirectToAction(nameof(Index));
+                ////return RedirectToAction("SetSeveralPrice", "Purchase", new { idEvent = obj.TMEvent.Id });
+                case TMEventStatus.DateInPast:
+                    ModelState.AddModelError("", "date is in a past"); break;
+                case TMEventStatus.DateWrongOrder:
+                    ModelState.AddModelError("", "end date before start date"); break;
+                case TMEventStatus.SameByDateObj:
+                    ModelState.AddModelError("", "this venue is busy at this time anouther event"); break;
+                default:
+                    ModelState.AddModelError("", "something wrong =("); break;
             }
-#pragma warning disable CA1031 // Do not catch general exception types
-            catch
-#pragma warning restore CA1031 // Do not catch general exception types
+
+            if (obj == null)
             {
-                return View();
+                var tmevent = await _httpClient.GetFromJsonAsync<TMEventDto>($"api/Event/{id}");
+                if (tmevent == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                obj = new EventLayoutViewModel
+                {
+                    TMEvent = tmevent,
+                    TMLayouts = await GetVenueLayoutNames(), // странная фигня при смене layout-а
+                };
             }
+
+            return View(obj);
         }
 
         private async Task<List<SelectListItem>> GetVenueLayoutNames()

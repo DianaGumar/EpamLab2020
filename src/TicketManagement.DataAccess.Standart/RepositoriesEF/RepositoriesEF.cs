@@ -42,9 +42,8 @@ namespace TicketManagement.DataAccess.DAL
             tmlayoutId.Value = obj?.TMLayoutId;
             startEvent.Value = obj?.StartEvent;
             endEvent.Value = obj?.EndEvent;
-            img.Value = obj?.Img;
 
-            if (obj != null)
+            if (obj?.Img == null)
             {
                 img.Value = DBNull.Value;
             }

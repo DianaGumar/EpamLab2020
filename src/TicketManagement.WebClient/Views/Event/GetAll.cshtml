@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<TicketManagement.Domain.DTO.TMEventDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "GetAll";
 }
 
-<h2>Index</h2>
+<h1>GetAll</h1>
 
 @*@if (User.IsInRole("eventmanager"))
     {*@
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary", id = "create-new-btn"})
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary", id = "create-new-btn" })
 </p>
 
 <p>
-    @Html.ActionLink("All events", "GetAll") | 
+    @Html.ActionLink("All events", "GetAll") |
     @Html.ActionLink("All relevant events", "Index")
 </p>
 @*}*@
@@ -71,6 +71,8 @@
 
     </div>
 </div>
+
+
 
 
 

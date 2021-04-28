@@ -1,19 +1,14 @@
 ﻿@model TicketManagement.WebClient.Models.EventLayoutViewModel
 
 @{
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Edit";
 }
 
-@{ 
-//int chousedlayoutid = 1;
-//string cc = "";
-}
+<h2>Edit event</h2>
 
-<h2>Create event</h2>
 <span>
-    @Html.ActionLink("< Back to List", "Index", null, 
-        new { @style = "font-size:medium", id="back-to-list-create-event" })
+    @Html.ActionLink("< Back to List", "Index", null,
+        new { @style = "font-size:medium", id = "back-to-list-create-event" })
 </span>
 <hr />
 
@@ -83,7 +78,7 @@
 
                 <div class="form-group row">
                     <div class="col-md-offset-2 col-10">
-                        <input type="submit" value="Create" class="btn btn-sm btn-primary" id="create-event-btn"/>
+                        <input type="submit" value="Save" class="btn btn-sm btn-primary" id="create-event-btn" />
                     </div>
                 </div>
             </div>
@@ -94,15 +89,15 @@
     <div class="col-6">
         <h5>Image</h5>
         <div style="margin-left: 30px;">
-            <img src="" alt="no img" id="event_img_view" height="100">
+            <img src="@Model.TMEvent.Img" alt="no img" id="event_img_view" height="100">
         </div>
         @*<div class="container">
-            @Html.Action("LayoutMap", "VenueModels",
-            new { idlayout = chousedlayoutid })
-        </div>*@
+                @Html.Action("LayoutMap", "VenueModels",
+                new { idlayout = chousedlayoutid })
+            </div>*@
     </div>
-
 </div>
+
 
 @section Scripts
 {
@@ -113,11 +108,9 @@
             });
         });
 
+        $("#layout_list").on("input", function () {
+            var param1 = $(this).val();
+        })
+
     </script>
 }
-
-
-
-
-
-

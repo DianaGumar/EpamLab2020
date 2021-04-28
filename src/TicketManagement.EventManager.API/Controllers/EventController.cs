@@ -22,27 +22,27 @@ namespace TicketManagement.EventManager.API.Controllers
         // GET: api/<TMEventController>
         //////[Authorize(Roles = "eventmanager")]
         [HttpGet("existing-events")]
-        public ActionResult<IEnumerable<TMEventDto>> GetAllExistingEvents()
+        public ActionResult<IEnumerable<TMEventDto>> GetAllExistingEvents() ////+
         {
             List<TMEventDto> models = _tmeventService.GetAllTMEvent()
-                .OrderBy(u => u.StartEvent).Reverse().ToList();
+                .OrderBy(u => u.StartEvent).ToList();
 
             return models;
         }
 
         // GET: api/<TMEventController>
         [HttpGet]
-        public ActionResult<IEnumerable<TMEventDto>> Get()
+        public ActionResult<IEnumerable<TMEventDto>> Get() ////+
         {
             List<TMEventDto> models = _tmeventService.GetAllRelevantTMEvent()
-                .OrderBy(u => u.StartEvent).Reverse().ToList();
+                .OrderBy(u => u.StartEvent).ToList();
 
             return models;
         }
 
         // GET api/<TMEventController>/5
         [HttpGet("{id}")]
-        public ActionResult<TMEventDto> Get(int id)
+        public ActionResult<TMEventDto> Get(int id) ////+
         {
             var obj = _tmeventService.GetTMEvent(id);
             return obj == null ? NotFound() : new ObjectResult(obj);
@@ -52,7 +52,7 @@ namespace TicketManagement.EventManager.API.Controllers
         [HttpPost]
         ////[ValidateAntiForgeryToken]
         //////[Authorize(Roles = "eventmanager")]
-        public TMEventDto Create([FromBody] TMEventDto obj)
+        public TMEventDto Create([FromBody] TMEventDto obj) ////+
         {
             TMEventStatus result = ModelState.IsValid ?
                 _tmeventService.CreateTMEvent(obj) : TMEventStatus.ModelInvalid;
@@ -70,20 +70,23 @@ namespace TicketManagement.EventManager.API.Controllers
         [HttpPut("{id}")]
         ////[ValidateAntiForgeryToken]
         ////[Authorize(Roles = "eventmanager")]
-        public string Edit(int id, [FromBody] TMEventDto obj)
+        public TMEventDto Edit(int id, [FromBody] TMEventDto obj) ////+
         {
-            if (ModelState.IsValid)
+            TMEventStatus result = ModelState.IsValid ?
+                _tmeventService.UpdateTMEvent(id, obj) : TMEventStatus.ModelInvalid;
+
+            if (obj != null)
             {
-                return _tmeventService.UpdateTMEvent(id, obj).ToString();
+                obj.Status = result;
             }
 
-            return "ModelInvalid";
+            return obj;
         }
 
         // DELETE api/<TMEventController>/5
         [HttpDelete("{id}")]
         ////[Authorize(Roles = "eventmanager")]
-        public string Delete(int id)
+        public string Delete(int id) ////+ 
         {
             var response = _tmeventService.RemoveTMEvent(id).ToString();
 
