@@ -1,0 +1,13 @@
+﻿@model TicketManagement.WebClient.Models.UserModel;
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Register", "User", FormMethod.Post, new { role = "form" }))
+{
+    @Html.TextBoxFor(m => m.Login)
+    @Html.PasswordFor(m => m.Password)
+    <input type="submit" value="Register" />
+}

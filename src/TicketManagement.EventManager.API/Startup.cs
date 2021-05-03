@@ -55,7 +55,6 @@ namespace TicketManagement.EventManager.API
 
             ////app.UseHttpsRedirection();
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 

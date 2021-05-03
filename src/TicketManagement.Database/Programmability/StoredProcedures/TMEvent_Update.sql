@@ -52,7 +52,6 @@ AS
 		WHERE AreaId IN (select Id from Area WHERE Area.TMLayoutId = @LayoutId) and
 		tmeventArea_id_area_id.area_id = Seat.AreaId
 
-
 	end
 
 	select @@ROWCOUNT as CountRowAffected
