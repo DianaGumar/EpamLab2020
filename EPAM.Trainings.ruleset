@@ -66,6 +66,11 @@
     <Rule Id="CA2242" Action="Warning" />
     <Rule Id="CS1591" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
+    <Rule Id="CA1054" Action="Info" />
+    <Rule Id="CA1056" Action="Info" />
+    <Rule Id="CA2227" Action="Info" />
+  </Rules>
   <Rules AnalyzerId="Microsoft.CodeQuality.CSharp.Analyzers" RuleNamespace="Microsoft.CodeQuality.CSharp.Analyzers">
     <Rule Id="CA1812" Action="None" />
     <Rule Id="CA2234" Action="None" />
