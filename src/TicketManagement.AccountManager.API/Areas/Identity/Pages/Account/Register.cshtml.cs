@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -12,9 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using TicketManagement.AccountManager.API.Models;
 
 namespace TicketManagement.AccountManager.API.Areas.Identity.Pages.Account
 {
@@ -40,7 +38,7 @@ namespace TicketManagement.AccountManager.API.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public RegisterViewModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -96,30 +94,30 @@ namespace TicketManagement.AccountManager.API.Areas.Identity.Pages.Account
             return Page();
         }
 
-#pragma warning disable CA1034 // Nested types should not be visible
-        public class InputModel
-#pragma warning restore CA1034 // Nested types should not be visible
-        {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
+////#pragma warning disable CA1034 // Nested types should not be visible
+////        public class InputModel
+////#pragma warning restore CA1034 // Nested types should not be visible
+////        {
+////            [Required]
+////            [EmailAddress]
+////            [Display(Name = "Email")]
+////            public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
+////            [Required]
+////            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+////            [DataType(DataType.Password)]
+////            [Display(Name = "Password")]
+////            public string Password { get; set; }
 
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+////            [DataType(DataType.Password)]
+////            [Display(Name = "Confirm password")]
+////            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+////            public string ConfirmPassword { get; set; }
 
-            [Required]
-            [NotMapped]
-            [Display(Name = "Choose role")]
-            public List<SelectListItem> ExistingRoles { get; internal set; }
-        }
+////            [Required]
+////            [NotMapped]
+////            [Display(Name = "Choose role")]
+////            public List<SelectListItem> ExistingRoles { get; internal set; }
+////        }
     }
 }
