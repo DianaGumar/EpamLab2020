@@ -42,6 +42,7 @@ namespace TicketManagement.AccountManager.API.Controllers
         public async Task<IActionResult> Register([FromForm] RegisterViewModel model)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
+            // установить в значение true подтверждение по электронной почте
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = model?.Email, Email = model?.Email };

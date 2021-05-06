@@ -48,7 +48,7 @@ namespace TicketManagement.WebClient
                 endpoints.MapControllerRoute(
                     name: "default",
                     /////pattern: "{controller=Event}/{action=Index}/{id?}");
-                    pattern: "{controller=User}/{action=Register}");
+                    pattern: "{controller=Event}/{action=Index}");
         });
         }
     }
