@@ -1,13 +1,9 @@
-﻿////using System.Text;
-////using System.Text.Encodings.Web;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-////using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-////using Microsoft.AspNetCore.WebUtilities;
 using TicketManagement.AccountManager.API.Models;
 
 namespace TicketManagement.AccountManager.API.Controllers
@@ -42,7 +38,6 @@ namespace TicketManagement.AccountManager.API.Controllers
         public async Task<IActionResult> Register([FromForm] RegisterViewModel model)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
-            // установить в значение true подтверждение по электронной почте
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = model?.Email, Email = model?.Email };

@@ -40,6 +40,11 @@ namespace TicketManagement.AccountManager.API.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model?.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "User dont exist.");
+                    return View(model);
+                }
 
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true

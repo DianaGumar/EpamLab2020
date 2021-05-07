@@ -26,8 +26,14 @@ namespace TicketManagement.AccountManager.API
                     Configuration.GetConnectionString("MainConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser, IdentityRole>(
+                options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.SignIn.RequireConfirmedEmail = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+                ////.AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
