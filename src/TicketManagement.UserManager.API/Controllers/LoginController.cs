@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TicketManagement.AccountManager.API.Models;
+using TicketManagement.UserManager.API.Models;
 using UserApi.Services;
 
-namespace TicketManagement.AccountManager.API.Controllers
+namespace TicketManagement.UserManager.API.Controllers
 {
     public class LoginController : Controller
     {
@@ -30,9 +30,9 @@ namespace TicketManagement.AccountManager.API.Controllers
         ////    return View(new LoginViewModel());
         ////}
 
-        [HttpPost]
+        [HttpPost("login")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromForm] LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             var user = await _userManager.FindByEmailAsync(model?.Email);
             if (user == null)

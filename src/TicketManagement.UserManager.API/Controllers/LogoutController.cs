@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TicketManagement.AccountManager.API.Controllers
+namespace TicketManagement.UserManager.API.Controllers
 {
     public class LogoutController : Controller
     {
@@ -20,7 +20,7 @@ namespace TicketManagement.AccountManager.API.Controllers
         ////    return RedirectToAction("Index", "Home");
         ////}
 
-        [HttpPost]
+        [HttpPost("logout")]
         public async void Logout()
         {
             await _signInManager.SignOutAsync();

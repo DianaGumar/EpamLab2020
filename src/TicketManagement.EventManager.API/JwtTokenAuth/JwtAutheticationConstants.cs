@@ -2,6 +2,6 @@
 {
     public static class JwtAutheticationConstants
     {
-        public const string SchemeName = "TicketManagement.Database";
+        public const string SchemeName = "TicketManagement.Identity.Database";
     }
 }

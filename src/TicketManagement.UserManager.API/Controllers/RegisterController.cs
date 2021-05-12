@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TicketManagement.AccountManager.API.Models;
+using TicketManagement.UserManager.API.Models;
 using UserApi.Services;
 
-namespace TicketManagement.AccountManager.API.Controllers
+namespace TicketManagement.UserManager.API.Controllers
 {
     public class RegisterController : Controller
     {
@@ -35,15 +35,15 @@ namespace TicketManagement.AccountManager.API.Controllers
         ////}
 
         // возвращает токен
-        [HttpPost]
-        public async Task<IActionResult> Register([FromForm] RegisterViewModel model)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             var user = new IdentityUser { UserName = model?.Email, Email = model?.Email };
             var result = await _userManager.CreateAsync(user, model?.Password);
 
             if (result.Succeeded)
             {
-                if (model?.Role != null)
+                if (!string.IsNullOrEmpty(model?.Role))
                 {
                     await _userManager.AddToRoleAsync(user, model?.Role);
                 }
