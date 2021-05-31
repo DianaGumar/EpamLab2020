@@ -41,7 +41,13 @@ namespace TicketManagement.UserManager.API
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // достаёт из файла конфигурации
             var tokenSettings = Configuration.GetSection(nameof(JwtTokenSettings));
+
+            var validIssuer2 = tokenSettings[nameof(JwtTokenSettings.JwtIssuer)];
+
+            _ = validIssuer2;
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -64,7 +70,6 @@ namespace TicketManagement.UserManager.API
                     };
                 });
 
-            // ?? ????????????? ?????? ??? ?????????
             services.Configure<JwtTokenSettings>(tokenSettings);
             services.AddScoped<JwtTokenService>();
 

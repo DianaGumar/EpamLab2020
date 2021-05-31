@@ -31,7 +31,7 @@ namespace TicketManagement.UserManager.API.Controllers
         ////}
 
         [HttpPost("login")]
-        [ValidateAntiForgeryToken]
+        ////[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             var user = await _userManager.FindByEmailAsync(model?.Email);

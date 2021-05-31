@@ -5,6 +5,12 @@ namespace TicketManagement.Domain.DTO
 {
     public class TMEventDto
     {
+        public TMEventDto()
+        {
+            StartEvent = DateTime.Now;
+            EndEvent = DateTime.Now;
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }

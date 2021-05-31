@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.UserManager.API.Models;
@@ -6,7 +8,9 @@ using UserApi.Services;
 
 namespace TicketManagement.UserManager.API.Controllers
 {
-    public class RegisterController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RegisterController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -24,15 +28,15 @@ namespace TicketManagement.UserManager.API.Controllers
             _jwtTokenService = jwtTokenService;
         }
 
-        ////[HttpGet]
-        ////public IActionResult Register()
-        ////{
-        ////    var roles = _roleManager.Roles.ToList();
-        ////    var items = new List<SelectListItem>();
-        ////    roles.ForEach(r => items.Add(new SelectListItem { Text = r.Name, Value = r.Name }));
+        [HttpGet("get_all_roles")]
+        public ActionResult<IList<string>> GetAllRoles()
+        {
+            var roles = _roleManager.Roles.ToList();
+            var items = new List<string>();
+            roles.ForEach(r => items.Add(r.Name));
 
-        ////    return View(new RegisterViewModel { ExistingRoles = items });
-        ////}
+            return items;
+        }
 
         // возвращает токен
         [HttpPost("register")]
@@ -48,6 +52,7 @@ namespace TicketManagement.UserManager.API.Controllers
                     await _userManager.AddToRoleAsync(user, model?.Role);
                 }
 
+                // immediately signIns after registration
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
                 return Ok(_jwtTokenService.GetToken(user));

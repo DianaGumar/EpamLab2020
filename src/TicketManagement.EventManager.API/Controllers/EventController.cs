@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.BusinessLogic;
 using TicketManagement.BusinessLogic.Standart.IServices;
@@ -21,7 +20,6 @@ namespace TicketManagement.EventManager.API.Controllers
 
         // GET: api/<TMEventController>
         //////[Authorize(Roles = "eventmanager")]
-        [Authorize]
         [HttpGet("existing-events")]
         public ActionResult<IEnumerable<TMEventDto>> GetAllExistingEvents() ////+
         {
