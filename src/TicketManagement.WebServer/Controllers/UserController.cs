@@ -35,8 +35,6 @@ namespace TicketManagement.WebServer.Controllers
         [HttpGet("get_all_roles")]
         public async Task<IList<string>> GetAllRoles()
         {
-            // инициализировать роли
-
             // запрос на получение лолей  GetAllRoles
             var roles = await _httpClient.GetFromJsonAsync<List<string>>("api/Register/get_all_roles");
 
