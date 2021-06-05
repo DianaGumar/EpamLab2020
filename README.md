@@ -20,3 +20,6 @@ How to start AQA tests
 2. install extentions SpecFlow, NUnit 3, NUnit 2
 3. Start Web proj
 4. Start tests
+
+
+https://github.com/EPAM-NET-Internal-Lab/DianaGumar
