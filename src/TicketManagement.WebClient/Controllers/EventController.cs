@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -31,6 +32,7 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         // GET: EventController
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event");
@@ -38,6 +40,7 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         // GET: EventController
+        [Authorize]
         public async Task<ActionResult> GetAll()
         {
             var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event/all");

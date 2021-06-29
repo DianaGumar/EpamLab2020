@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+/////using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.WebServer.Models;
 
@@ -33,38 +33,23 @@ namespace TicketManagement.WebServer.Controllers
         }
 
         [HttpGet("get_all_roles")]
-        public async Task<IList<string>> GetAllRoles()
+        public async Task<IList<string>> GetAllRoles() // +
         {
             // запрос на получение лолей  GetAllRoles
             var roles = await _httpClient.GetFromJsonAsync<List<string>>("api/Register/get_all_roles");
-
             return roles;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register([FromBody] UserModel user) // клиент отправляет в метод данные юзера
+        [HttpPost("register")] // +
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel user) // клиент отправляет в метод данные юзера
         {
-            // общение посредством сетевых запросов http протокола
-            var formContent = new FormUrlEncodedContent(new[]
+            HttpResponseMessage response = await _httpClient
+                .PostAsJsonAsync<RegisterViewModel>("api/Register/register", user);
+            if (response.IsSuccessStatusCode)
             {
-                new KeyValuePair<string, string>("login", user?.Login),
-                new KeyValuePair<string, string>("password", user?.Password),
-            });
-            var result = await _httpClient.PostAsync("api/Register/register", formContent);
-            formContent.Dispose();
-
-            if (result.IsSuccessStatusCode)
-            {
-                var token = await result.Content.ReadAsStringAsync();
-
-                // сохранение в куки полученного токена
-                HttpContext.Response.Cookies.Append("secret_jwt_key", token, new CookieOptions
-                {
-                    HttpOnly = true, // чтобы с js никто не получил доступ
-                    SameSite = SameSiteMode.Strict,
-                });
-
-                return Ok();
+                // записывать токен в бд?
+                var token = await response.Content.ReadAsStringAsync();
+                return Ok(token);
             }
 
             return Forbid();

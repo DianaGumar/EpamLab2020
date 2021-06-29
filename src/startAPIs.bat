@@ -4,8 +4,8 @@ cd ..
 cd TicketManagement.EventManager.API
 start "TicketManagement.EventManager.API" dotnet watch run
 cd ..
-cd TicketManagement.AccountManager.API
-start "TicketManagement.AccountManager.API" dotnet watch run
+cd TicketManagement.UserManager.API
+start "TicketManagement.UserManager.API" dotnet watch run
 cd ..
 cd TicketManagement.WebServer
 start "TicketManagement.WebServer" dotnet watch run

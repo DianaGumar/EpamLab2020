@@ -36,19 +36,6 @@ namespace TicketManagement.UserManager.API.Services
             {
                 await roleManager?.CreateAsync(new IdentityRole("venuemanager"));
             }
-
-            // added admin-user
-            ////string adminEmail = "admin@gmail.com";
-            ////string password = "_Aa123456";
-            ////if (await userManager?.FindByNameAsync(adminEmail) == null)
-            ////{
-            ////    var admin = new IdentityUser { Email = adminEmail, UserName = adminEmail };
-            ////    IdentityResult result = await userManager?.CreateAsync(admin, password);
-            ////    if (result.Succeeded)
-            ////    {
-            ////        await userManager.AddToRoleAsync(admin, "admin");
-            ////    }
-            ////}
         }
     }
 }

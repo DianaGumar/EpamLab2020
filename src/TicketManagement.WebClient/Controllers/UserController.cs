@@ -28,10 +28,8 @@ namespace TicketManagement.WebClient.Controllers
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Register()
+        private async Task<List<SelectListItem>> GetRoles()
         {
-            // инициализировать базу ролями
             // запрос к серверу
             var roles = await _httpClient.GetFromJsonAsync<List<string>>("api/User/get_all_roles");
 
@@ -39,44 +37,51 @@ namespace TicketManagement.WebClient.Controllers
             var items = new List<SelectListItem>();
             roles.ForEach(r => items.Add(new SelectListItem { Text = r, Value = r }));
 
-            return View(new RegisterViewModel { ExistingRoles = items });
+            return items;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Register()
+        {
+            return View(new RegisterViewModel { ExistingRoles = await GetRoles() });
         }
 
         [HttpPost]
         public async Task<IActionResult> Register([FromForm] RegisterViewModel user)
         {
-            // общение посредством сетевых запросов http протокола
-            var formContent = new FormUrlEncodedContent(new[]
+            HttpResponseMessage response = await _httpClient
+                .PostAsJsonAsync<RegisterViewModel>("api/User/register", user);
+
+            if (response.IsSuccessStatusCode)
             {
-                new KeyValuePair<string, string>("login", user?.Email),
-                new KeyValuePair<string, string>("password", user?.Password),
-            });
-            var result = await _httpClient.PostAsync("api/User/register", formContent);
-            formContent.Dispose();
+                var token = await response.Content.ReadAsStringAsync();
 
-            if (result.IsSuccessStatusCode)
-            {
-                // вернуть представление
+                // сохранение в куки полученного токена
+                HttpContext.Response.Cookies.Append("secret_jwt_key", token, new CookieOptions
+                {
+                    HttpOnly = true, // чтобы с js никто не получил доступ
+                    SameSite = SameSiteMode.Strict,
+                });
 
-                ////var token = await result.Content.ReadAsStringAsync();
-
-                ////// сохранение в куки полученного токена
-                ////HttpContext.Response.Cookies.Append("secret_jwt_key", token, new CookieOptions
-                ////{
-                ////    HttpOnly = true, // чтобы с js никто не получил доступ
-                ////    SameSite = SameSiteMode.Strict,
-                ////});
-
-                ////return Ok();
+                return RedirectToAction("Index", "Event");
             }
 
             // если что то не так снова возвращает представление с ролями
-            return View();
+            if (user != null)
+            {
+                user.ExistingRoles = await GetRoles();
+                return View(user);
+            }
+            else
+            {
+                return View(new RegisterViewModel { ExistingRoles = await GetRoles() });
+            }
         }
 
         [HttpGet]
         public IActionResult Login()
         {
+            // проверять действительно ли юзер залогинен и в зависимости от этого выдавать нужное view ?
             return View();
         }
 

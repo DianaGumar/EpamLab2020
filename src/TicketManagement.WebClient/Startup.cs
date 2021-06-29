@@ -1,8 +1,10 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+/////using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TicketManagement.BusinessLogic.Standart.CustomMiddleware;
 
 namespace TicketManagement.WebClient
 {
@@ -18,6 +20,20 @@ namespace TicketManagement.WebClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ////// something interesting
+            ////services.AddDbContext<ApplicationDbContext>(options =>
+            ////    options.UseSqlServer(Configuration.GetConnectionString("MainConnection")));
+            ////////services.AddDatabaseDeveloperPageExceptionFilter();
+
+            ////services.AddIdentity<IdentityUser, IdentityRole>(
+            ////    options =>
+            ////    {
+            ////        options.SignIn.RequireConfirmedAccount = false;
+            ////        options.SignIn.RequireConfirmedEmail = false;
+            ////    })
+            ////    .AddEntityFrameworkStores<ApplicationDbContext>()
+            ////    .AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
         }
 
@@ -31,17 +47,22 @@ namespace TicketManagement.WebClient
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // app = pipeline
             app.UseRouting();
 
-            app.UseAuthorization();
+            // ничего не знает об аутентификации и базе данных пользователей,
+            // но при этом должен иметь понятие о валидности пользователя (используется во view)
+
+            ////app.UseAuthorization();
+            ////app.UseMiddleware<TokenMiddleware>();
+            // вызов кастомного middleware
+            app.UseTokenAuth();
 
             app.UseEndpoints(endpoints =>
             {

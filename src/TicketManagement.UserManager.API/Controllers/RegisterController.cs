@@ -54,28 +54,11 @@ namespace TicketManagement.UserManager.API.Controllers
 
                 // immediately signIns after registration
                 await _signInManager.SignInAsync(user, isPersistent: false);
-
                 return Ok(_jwtTokenService.GetToken(user));
-                /////return RedirectToAction("Index", "Home");
             }
 
+            // если не sucsess то нужно дропать юзера
             return BadRequest(result.Errors);
-
-            ////foreach (var error in result.Errors)
-            ////{
-            ////    ModelState.AddModelError(string.Empty, error.Description);
-            ////}
-
-            // If we got this far, something failed, redisplay form
-            ////if (model != null)
-            ////{
-            ////    var roles = _roleManager.Roles.ToList();
-            ////    var items = new List<SelectListItem>();
-            ////    roles.ForEach(r => items.Add(new SelectListItem { Text = r.Name, Value = r.Name }));
-            ////    model.ExistingRoles = items;
-            ////}
-
-            ////return View(model);
         }
     }
 }

@@ -64,6 +64,8 @@ namespace TicketManagement.UserManager.API.Controllers
         [HttpGet("validate")]
         public IActionResult Validate(string token)
         {
+
+
             return _jwtTokenService.ValidateToken(token) ? Ok() : (IActionResult)Forbid();
         }
     }
