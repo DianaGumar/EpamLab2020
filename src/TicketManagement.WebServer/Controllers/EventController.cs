@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TicketManagement.Domain.DTO;
@@ -31,6 +32,7 @@ namespace TicketManagement.WebServer.Controllers
         }
 
         // GET: api/<EventController>
+        [Authorize]
         [HttpGet("all")]
         public async Task<List<TMEventDto>> GetAll()
         {

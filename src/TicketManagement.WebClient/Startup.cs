@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TicketManagement.BusinessLogic.Standart.CustomMiddleware;
+////using TicketManagement.BusinessLogic.Standart.CustomMiddleware;
 
 namespace TicketManagement.WebClient
 {
@@ -58,11 +58,10 @@ namespace TicketManagement.WebClient
 
             // ничего не знает об аутентификации и базе данных пользователей,
             // но при этом должен иметь понятие о валидности пользователя (используется во view)
-
             ////app.UseAuthorization();
             ////app.UseMiddleware<TokenMiddleware>();
             // вызов кастомного middleware
-            app.UseTokenAuth();
+            ////app.UseTokenAuth();
 
             app.UseEndpoints(endpoints =>
             {

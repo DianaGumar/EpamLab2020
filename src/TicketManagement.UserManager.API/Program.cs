@@ -19,18 +19,10 @@ namespace TicketManagement.UserManager.API
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                try
-                {
-                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-                    var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    await RoleInitializer.InitializeAsync(userManager, rolesManager);
-                }
-#pragma warning disable CA1031 // Do not catch general exception types
-                catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
-                {
-                    Console.WriteLine(ex.Message);
-                }
+
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                await RoleInitializer.InitializeAsync(userManager, rolesManager);
             }
 
             host.Run();

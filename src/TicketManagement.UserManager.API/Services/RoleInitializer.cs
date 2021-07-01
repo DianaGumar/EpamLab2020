@@ -11,17 +11,6 @@ namespace TicketManagement.UserManager.API.Services
         {
             _ = userManager;
 
-            // added roles authorizeduser eventmanager venuemanager
-            // увы ef не позволяет асинки в отношении одного контекста бд
-            ////var roles = new List<string> { "authorizeduser", "eventmanager", "venuemanager" };
-            ////roles.ForEach(async r =>
-            ////{
-            ////    if (await roleManager?.FindByNameAsync(r) == null)
-            ////    {
-            ////        await roleManager?.CreateAsync(new IdentityRole(r));
-            ////    }
-            ////});
-
             if (await roleManager?.FindByNameAsync("authorizeduser") == null)
             {
                 await roleManager?.CreateAsync(new IdentityRole("authorizeduser"));

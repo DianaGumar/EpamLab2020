@@ -47,7 +47,6 @@ namespace TicketManagement.WebServer.Controllers
                 .PostAsJsonAsync<RegisterViewModel>("api/Register/register", user);
             if (response.IsSuccessStatusCode)
             {
-                // записывать токен в бд?
                 var token = await response.Content.ReadAsStringAsync();
                 return Ok(token);
             }

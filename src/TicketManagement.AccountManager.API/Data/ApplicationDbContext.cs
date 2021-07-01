@@ -8,6 +8,7 @@ namespace TicketManagement.AccountManager.API.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
     }
 }

@@ -92,6 +92,7 @@ namespace TicketManagement.UserManager.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

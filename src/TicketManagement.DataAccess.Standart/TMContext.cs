@@ -80,7 +80,9 @@ namespace TicketManagement.DataAccess
             ////var connectionString = ConfigurationManager
             ////    .ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            var connectionString = "Data Source=DESKTOP-137JOC2;Initial Catalog=TicketManagement.Database;Integrated Security=True";
+            // рабочая строка подключения
+            // вынести в конфиг
+            var connectionString = "Data Source=DESKTOP-GMOJ91Q;Initial Catalog=TicketManagement.Database;Integrated Security=True";
 
             optionsBuilder.UseSqlServer(connectionString);
         }

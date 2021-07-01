@@ -1,37 +1,14 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+﻿
 
 <ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            @*<a class="nav-link text-dark">Hello @User.Identity.Name!</a>*@
-            @Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Manage",
-                routeValues: null, htmlAttributes: new { title = "Manage", id = "TMUserRoomLink" })
-        </li>
-        <li class="nav-item">
-            @Html.ActionLink("Purchase history", "Index", "Purchase")
-        </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="" asp-controller="User" asp-action="Logout">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            @Html.ActionLink("Register", "Register", "User",
-                routeValues: null, htmlAttributes: new { id = "registerLink" })
-            @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>*@
-            @*<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>*@
-        </li>
-        <li class="nav-item">
-            @Html.ActionLink("Login", "Login", "User",
-                routeValues: null, htmlAttributes: new { id = "loginLink" })
-            @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>*@
-            @*<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>*@
-        </li>
-    }
+    @* проверять как то иначе *@
+    @* отправлять запрос в котроллер, если токен валиден отображать одно, если нет- другое *@
+
+    <li class="nav-item">
+        <a class="nav-link" id="registerLink" asp-controller="User" asp-action="Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id = "loginLink" asp-controller="User" asp-action="Login">Login</a>
+    </li>
+
 </ul>

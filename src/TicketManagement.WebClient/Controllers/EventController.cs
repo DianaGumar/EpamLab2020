@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+////using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -21,6 +21,7 @@ namespace TicketManagement.WebClient.Controllers
 
         public EventController()
         {
+            // передавать HttpClient как DI
             _httpClient = new HttpClient();
 
 #pragma warning disable S1075 // URIs should not be hardcoded
@@ -32,7 +33,7 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         // GET: EventController
-        [Authorize]
+        ////[Authorize]
         public async Task<ActionResult> Index()
         {
             var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event");
@@ -40,9 +41,12 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         // GET: EventController
-        [Authorize]
+        ////[Authorize]
         public async Task<ActionResult> GetAll()
         {
+            // достаём и отправляем с запросом токен
+            var token = HttpContext.Request.Cookies["secret_jwt_key"];
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event/all");
             return View(tmevents);
         }

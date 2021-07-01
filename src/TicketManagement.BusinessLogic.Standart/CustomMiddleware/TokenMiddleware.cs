@@ -23,7 +23,7 @@ namespace TicketManagement.BusinessLogic.Standart.CustomMiddleware
             // разместить мидлваре в бл
             // перенести метод проверки токена в бл, перебрасывать в него параметры из сеттингов
             // и использовать в каждом апи чтоб не дублировать код запросов
-
+            // проверять токен на валидность
             // Call the next delegate/middleware in the pipeline
             await _next(context);
         }

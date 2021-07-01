@@ -78,10 +78,28 @@ namespace TicketManagement.WebClient.Controllers
             }
         }
 
+        ////public bool IsTokenValid()
+        ////{
+        ////    // определить вошёл ли пользователь в систему
+        ////    var user = HttpContext.User;
+        ////    if (user == null)
+        ////    {
+        ////        return false;
+        ////    }
+
+        ////    var token = HttpContext.Request.Cookies["secret_jwt_key"];
+        ////    var httpClient = new HttpClient();
+        ////    httpClient.BaseAddress = new Uri("http://localhost:5001");
+        ////    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        ////    var response = await httpClient.GetAsync("data/getdata");
+
+        ////    return true;
+        ////}
+
         [HttpGet]
         public IActionResult Login()
         {
-            // проверять действительно ли юзер залогинен и в зависимости от этого выдавать нужное view ?
             return View();
         }
 
@@ -96,6 +114,7 @@ namespace TicketManagement.WebClient.Controllers
             var result = await _httpClient.PostAsync("users/login", formContent);
             formContent.Dispose();
 
+            // added to cookie
             if (result.IsSuccessStatusCode)
             {
                 var token = await result.Content.ReadAsStringAsync();
