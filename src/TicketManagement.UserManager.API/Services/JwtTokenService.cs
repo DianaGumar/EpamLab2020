@@ -43,6 +43,9 @@ namespace UserApi.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             try
             {
+                var temp = tokenHandler.ReadJwtToken(token);
+                _ = temp;
+
                 tokenHandler.ValidateToken(
                 token,
                 new TokenValidationParameters
@@ -58,9 +61,10 @@ namespace UserApi.Services
                 out var _);
             }
 #pragma warning disable CA1031 // Do not catch general exception types
-            catch
+            catch (Exception e)
 #pragma warning restore CA1031 // Do not catch general exception types
             {
+                _ = e.Message;
                 return false;
             }
 

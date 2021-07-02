@@ -23,7 +23,7 @@ namespace TicketManagement.WebServer.Controllers
             _disposed = false;
             _httpClient = new HttpClient();
 
-            // подключается к venue api
+            // подключается к user api
 #pragma warning disable S1075 // URIs should not be hardcoded
             _httpClient.BaseAddress = new Uri("https://localhost:5021/"); // адрес апи к которому будешь обращаться
 #pragma warning restore S1075 // URIs should not be hardcoded
@@ -48,6 +48,21 @@ namespace TicketManagement.WebServer.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var token = await response.Content.ReadAsStringAsync();
+                return Ok(token);
+            }
+
+            return Forbid();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel user) // +
+        {
+            HttpResponseMessage response = await _httpClient
+                .PostAsJsonAsync<LoginViewModel>("api/Login/login", user);
+            if (response.IsSuccessStatusCode)
+            {
+                ////var token = Request.Headers["Authorization"];
+                var token = await response.Content.ReadAsStringAsync(); // -
                 return Ok(token);
             }
 

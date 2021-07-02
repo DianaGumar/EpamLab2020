@@ -32,14 +32,15 @@ namespace TicketManagement.WebServer.Controllers
         }
 
         // GET: api/<EventController>
-        [Authorize]
         [HttpGet("all")]
+        [Authorize]
         public async Task<List<TMEventDto>> GetAll()
         {
             var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event/existing-events");
             return tmevents;
         }
 
+        // get all relevant events
         // GET: api/<EventController>
         [HttpGet]
         public async Task<List<TMEventDto>> Get()
@@ -50,6 +51,7 @@ namespace TicketManagement.WebServer.Controllers
 
         // GET api/<EventController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "eventmanager")]
         public async Task<TMEventDto> Get(int id) //// +
         {
             var tmevent = await _httpClient.GetFromJsonAsync<TMEventDto>($"api/Event/{id}");
@@ -71,6 +73,7 @@ namespace TicketManagement.WebServer.Controllers
 
         // PUT api/<EventController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "eventmanager")]
         public async Task<TMEventDto> Put(int id, [FromBody] TMEventDto obj)
         {
             // значение id отправляется в строке запроса. obj - в теле
@@ -85,6 +88,7 @@ namespace TicketManagement.WebServer.Controllers
 
         // DELETE api/<EventController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "eventmanager")]
         public async Task<string> Delete(int id)
         {
             HttpResponseMessage response = await _httpClient.DeleteAsync($"api/Event/{id}");

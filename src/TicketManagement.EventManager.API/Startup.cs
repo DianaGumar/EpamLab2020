@@ -1,12 +1,10 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using TicketManagement.API.JwtTokenAuth;
 using TicketManagement.BusinessLogic;
 using TicketManagement.Web;
 
@@ -24,51 +22,39 @@ namespace TicketManagement.EventManager.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // собственная реализация
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddAuthentication(JwtAutheticationConstants.SchemeName)
-                .AddScheme<JwtAuthenticationOptions, JwtAuthenticationHandler>(JwtAutheticationConstants.SchemeName, null);
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicketManagement.EventManager.API", Version = "v1" });
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "Jwt Token is required to access the endpoints",
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                });
+                ////c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                ////{
+                ////    Description = "Jwt Token is required to access the endpoints",
+                ////    In = ParameterLocation.Header,
+                ////    Name = "Authorization",
+                ////    Type = SecuritySchemeType.ApiKey,
+                ////});
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Id = "Bearer",
-                                Type = ReferenceType.SecurityScheme,
-                            },
-                        },
-                        System.Array.Empty<string>()
-                    },
-                });
+                ////c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                ////{
+                ////    {
+                ////        new OpenApiSecurityScheme
+                ////        {
+                ////            Reference = new OpenApiReference
+                ////            {
+                ////                Id = "Bearer",
+                ////                Type = ReferenceType.SecurityScheme,
+                ////            },
+                ////        },
+                ////        System.Array.Empty<string>()
+                ////    },
+                ////});
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            ////var builder = new ConfigurationBuilder()
-            ////    .SetBasePath(env?.ContentRootPath)
-            ////    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            ////    .AddJsonFile($"appsettings.{env?.EnvironmentName}.json", optional: true)
-            ////    .AddEnvironmentVariables();
-            ////Configuration = builder.Build();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -78,8 +64,8 @@ namespace TicketManagement.EventManager.API
 
             ////app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            ////app.useauthentication();
+            ////app.useauthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -89,6 +75,7 @@ namespace TicketManagement.EventManager.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            // регестрирую собстенные модули
             builder.RegisterModule(new DbRepositoryModule());
             builder.RegisterModule(new DbServiceModule());
         }

@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -37,9 +38,11 @@ namespace TicketManagement.WebServer.JwtTokenAuth
 #pragma warning disable S1075 // URIs should not be hardcoded
             httpClient.BaseAddress = new Uri("https://localhost:5021/");
 #pragma warning restore S1075 // URIs should not be hardcoded
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // создаём get запрос
-            var response = await httpClient.GetAsync(new Uri($"api/Register/Validate?token={token}"));
+            var response = await httpClient.GetAsync($"api/Login/validate?token={token}");
             httpClient.Dispose();
 
             // проверка ответа - валиден ли токен

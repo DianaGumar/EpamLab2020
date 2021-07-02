@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TicketManagement.UserManager.API.Controllers
 {
-    public class LogoutController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LogoutController : ControllerBase
     {
         private readonly SignInManager<IdentityUser> _signInManager;
 

@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.UserManager.API.Models;
 using UserApi.Services;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace TicketManagement.UserManager.API.Controllers
 {
-    public class LoginController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoginController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -32,31 +35,20 @@ namespace TicketManagement.UserManager.API.Controllers
 
         [HttpPost("login")]
         ////[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model) // +
         {
             var user = await _userManager.FindByEmailAsync(model?.Email);
-            if (user == null)
+            if (user != null)
             {
-                ////ModelState.AddModelError(string.Empty, "User dont exist.");
-                ////return View(model);
-                return Forbid();
+                var result = await _signInManager.PasswordSignInAsync(user?.UserName, model?.Password,
+                (bool)model?.RememberMe, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    Request.Headers["Authorization"] = _jwtTokenService.GetToken(user);
+                    return Ok(_jwtTokenService.GetToken(user)); // забрасывает в тело вместо хедера
+                }
             }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(user?.UserName, model?.Password,
-                (bool) model?.RememberMe, lockoutOnFailure: false);
-
-            if (result.Succeeded)
-            {
-                return Ok(_jwtTokenService.GetToken(user));
-                ////return RedirectToAction("Index", "Home");
-            }
-
-            //////ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-
-            // If we got this far, something failed, redisplay form
-            //////return View(model);
 
             return Forbid();
         }

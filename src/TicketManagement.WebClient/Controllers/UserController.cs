@@ -67,6 +67,8 @@ namespace TicketManagement.WebClient.Controllers
             }
 
             // если что то не так снова возвращает представление с ролями
+            ModelState.AddModelError("", "Sms wrong");
+
             if (user != null)
             {
                 user.ExistingRoles = await GetRoles();
@@ -78,25 +80,6 @@ namespace TicketManagement.WebClient.Controllers
             }
         }
 
-        ////public bool IsTokenValid()
-        ////{
-        ////    // определить вошёл ли пользователь в систему
-        ////    var user = HttpContext.User;
-        ////    if (user == null)
-        ////    {
-        ////        return false;
-        ////    }
-
-        ////    var token = HttpContext.Request.Cookies["secret_jwt_key"];
-        ////    var httpClient = new HttpClient();
-        ////    httpClient.BaseAddress = new Uri("http://localhost:5001");
-        ////    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        ////    var response = await httpClient.GetAsync("data/getdata");
-
-        ////    return true;
-        ////}
-
         [HttpGet]
         public IActionResult Login()
         {
@@ -104,30 +87,33 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromForm] UserModel user)
+        public async Task<IActionResult> Login([FromForm] LoginViewModel user) // +
         {
-            var formContent = new FormUrlEncodedContent(new[]
+            if (user == null || !ModelState.IsValid)
             {
-                new KeyValuePair<string, string>("login", user?.Login),
-                new KeyValuePair<string, string>("password", user?.Password),
-            });
-            var result = await _httpClient.PostAsync("users/login", formContent);
-            formContent.Dispose();
+                return View(user);
+            }
+
+            HttpResponseMessage response = await _httpClient
+                .PostAsJsonAsync<LoginViewModel>("api/User/login", user);
 
             // added to cookie
-            if (result.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                var token = await result.Content.ReadAsStringAsync();
+                ////var token = await response.Content.ReadAsStringAsync();
+                var token = Request.Headers["Authorization"].ToString(); // не приходит
                 HttpContext.Response.Cookies.Append("secret_jwt_key", token, new CookieOptions
                 {
                     HttpOnly = true,
                     SameSite = SameSiteMode.Strict,
                 });
 
-                return Ok();
+                return RedirectToAction("Index", "Event");
             }
 
-            return Forbid();
+            // реализовать прокидывание уточняющих сообщений при неудачной попытке
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return View();
         }
 
         protected override void Dispose(bool disposing)

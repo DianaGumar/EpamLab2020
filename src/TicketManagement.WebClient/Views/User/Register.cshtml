@@ -10,39 +10,39 @@
 <h4>Create a new account.</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-6">
         <form asp-action="Register">
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger", id = "TMRegisterValidationErrors" })
 
             <div class="form-group">
                 @Html.LabelFor(m => m.Email, new { @class = "col control-label" })
-                <div class="col-md-10">
+                <div class="col">
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Password, new { @class = "col control-label" })
-                <div class="col-md-10">
+                <div class="col">
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col control-label" })
-                <div class="col-md-10">
+                <div class="col">
                     @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
                 </div>
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(m => m.Role, new { @class = "col control-label" })
-                <div class="col-md-10">
+                <div class="col">
                     @Html.DropDownListFor(model => model.Role, Model.ExistingRoles)
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+                <div class="col-md-offset-2 col">
                     <input type="submit" class="btn btn-primary" id="TMFinalRegisterButton" value="Register" />
                 </div>
             </div>

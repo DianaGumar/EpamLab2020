@@ -19,7 +19,6 @@ namespace TicketManagement.EventManager.API.Controllers
         }
 
         // GET: api/<TMEventController>
-        //////[Authorize(Roles = "eventmanager")]
         [HttpGet("existing-events")]
         public ActionResult<IEnumerable<TMEventDto>> GetAllExistingEvents() ////+
         {
@@ -53,13 +52,12 @@ namespace TicketManagement.EventManager.API.Controllers
         // POST api/<TMEventController>/Create
         [HttpPost]
         ////[ValidateAntiForgeryToken]
-        //////[Authorize(Roles = "eventmanager")]
         public TMEventDto Create([FromBody] TMEventDto obj) ////+
         {
             TMEventStatus result = ModelState.IsValid ?
                 _tmeventService.CreateTMEvent(obj) : TMEventStatus.ModelInvalid;
 
-            // если евент не имеет постера - ставить дефолтную картинку
+            // если евент не имеет постера - ставить дефолтную картинку - логика этого на ui
             if (obj != null)
             {
                 obj.Status = result;
@@ -71,7 +69,6 @@ namespace TicketManagement.EventManager.API.Controllers
         // PUT api/<TMEventController>/5
         [HttpPut("{id}")]
         ////[ValidateAntiForgeryToken]
-        ////[Authorize(Roles = "eventmanager")]
         public TMEventDto Edit(int id, [FromBody] TMEventDto obj) ////+
         {
             TMEventStatus result = ModelState.IsValid ?
@@ -87,7 +84,6 @@ namespace TicketManagement.EventManager.API.Controllers
 
         // DELETE api/<TMEventController>/5
         [HttpDelete("{id}")]
-        ////[Authorize(Roles = "eventmanager")]
         public string Delete(int id) ////+
         {
             var response = _tmeventService.RemoveTMEvent(id).ToString();
