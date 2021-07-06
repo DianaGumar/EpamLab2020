@@ -22,7 +22,7 @@ namespace TicketManagement.UserManager.API
 
                 var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                 var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                await RoleInitializer.InitializeAsync(userManager, rolesManager);
+                await RoleInitializer.InitializeAsync(userManager, rolesManager); // инициализация ролями
             }
 
             host.Run();

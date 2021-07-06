@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -98,10 +99,12 @@ namespace TicketManagement.WebClient.Controllers
                 .PostAsJsonAsync<LoginViewModel>("api/User/login", user);
 
             // added to cookie
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
             {
-                ////var token = await response.Content.ReadAsStringAsync();
-                var token = Request.Headers["Authorization"].ToString(); // не приходит
+                // достаём токен из хедера запроса
+                var token = response.Headers.GetValues("Authorization").ToArray()[0];
+
+                // кладём токен в куки
                 HttpContext.Response.Cookies.Append("secret_jwt_key", token, new CookieOptions
                 {
                     HttpOnly = true,

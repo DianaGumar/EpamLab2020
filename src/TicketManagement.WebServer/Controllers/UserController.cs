@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -41,14 +42,17 @@ namespace TicketManagement.WebServer.Controllers
         }
 
         [HttpPost("register")] // +
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel user) // клиент отправляет в метод данные юзера
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel user)
         {
             HttpResponseMessage response = await _httpClient
                 .PostAsJsonAsync<RegisterViewModel>("api/Register/register", user);
             if (response.IsSuccessStatusCode)
             {
+                var tokenFromHeader = response.Headers.GetValues("Authorization").ToString();
+                Request.Headers["Authorization"] = tokenFromHeader;
                 var token = await response.Content.ReadAsStringAsync();
-                return Ok(token);
+                _ = token;
+                return Ok(tokenFromHeader);
             }
 
             return Forbid();
@@ -61,12 +65,19 @@ namespace TicketManagement.WebServer.Controllers
                 .PostAsJsonAsync<LoginViewModel>("api/Login/login", user);
             if (response.IsSuccessStatusCode)
             {
-                ////var token = Request.Headers["Authorization"];
-                var token = await response.Content.ReadAsStringAsync(); // -
-                return Ok(token);
+                if (!response.Headers.Contains("Authorization"))
+                {
+                    return Forbid();
+                }
+
+                // достаём токен из хедера запроса
+                var token = response.Headers.GetValues("Authorization").ToArray()[0];
+                _ = token;
+                Response.Headers.Add("Authorization", token);
+                return Ok();
             }
 
-            return Forbid();
+            return BadRequest(new { errorText = "Invalid username or password." });
         }
 
         protected virtual void Dispose(bool disposing)

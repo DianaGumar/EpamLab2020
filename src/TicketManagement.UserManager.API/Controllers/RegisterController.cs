@@ -54,10 +54,16 @@ namespace TicketManagement.UserManager.API.Controllers
 
                 // immediately signIns after registration
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return Ok(_jwtTokenService.GetToken(user));
+
+                // закидываем токен в хедер ответа
+                ////Request.Headers.Add("Authorization", _jwtTokenService.GetToken(user));
+                Response.Headers.Add("Authorization", _jwtTokenService.GetToken(user));
+                return Ok();
             }
 
             // если не sucsess то нужно дропать юзера
+            ////var result_delete = await _userManager.DeleteAsync(user);
+            ////_ = result_delete;
             return BadRequest(result.Errors);
         }
     }

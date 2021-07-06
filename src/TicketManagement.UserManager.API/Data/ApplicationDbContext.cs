@@ -11,5 +11,10 @@ namespace TicketManagement.UserManager.API.Data
             // при первом обращении создаётся бд
             Database.EnsureCreated();
         }
+
+        ////protected override void OnModelCreating(ModelBuilder modelBuilder)
+        ////{
+        ////    // здесь могла бы быть начальная инициализация
+        ////}
     }
 }

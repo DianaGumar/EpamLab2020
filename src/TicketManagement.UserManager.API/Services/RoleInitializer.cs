@@ -5,11 +5,11 @@ namespace TicketManagement.UserManager.API.Services
 {
     public static class RoleInitializer
     {
-        // метод инициализации базы identity начальными ролями и админом
+        // метод инициализации базы identity начальными ролями
         public static async Task InitializeAsync(UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
-            _ = userManager;
+            _ = userManager; // без админа
 
             if (await roleManager?.FindByNameAsync("authorizeduser") == null)
             {

@@ -54,7 +54,7 @@ namespace TicketManagement.UserManager.API
             })
                 .AddJwtBearer(options =>
                 {
-                    options.RequireHttpsMetadata = false;
+                    options.RequireHttpsMetadata = false; // для использования передачи по протоколу https
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,

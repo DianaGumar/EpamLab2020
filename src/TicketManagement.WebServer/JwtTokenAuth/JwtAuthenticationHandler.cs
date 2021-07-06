@@ -30,7 +30,7 @@ namespace TicketManagement.WebServer.JwtTokenAuth
                 return AuthenticateResult.Fail("Unauthorized");
             }
 
-            // достаём токен из хедера
+            // достаём токен из хедера запроса
             var token = Request.Headers["Authorization"].ToString().Substring("Bearer ".Length);
 
             // проверка валидности токена путём запроса к UserManagerAPI
