@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,8 +28,10 @@ namespace TicketManagement.UserManager.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
+            // HttpContextAccessor создаётся единожды при первом обращении используется для доступа к контексту
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                     Configuration.GetConnectionString("MainConnection")));
             ////services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -52,7 +55,7 @@ namespace TicketManagement.UserManager.API
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(options =>
+                .AddJwtBearer(options => // добавление обработчика проверки подлинности jwt
                 {
                     options.RequireHttpsMetadata = false; // для использования передачи по протоколу https
                     options.TokenValidationParameters = new TokenValidationParameters

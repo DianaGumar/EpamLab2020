@@ -51,7 +51,6 @@ namespace TicketManagement.WebServer.Controllers
 
         // GET api/<EventController>/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "eventmanager")]
         public async Task<TMEventDto> Get(int id) //// +
         {
             var tmevent = await _httpClient.GetFromJsonAsync<TMEventDto>($"api/Event/{id}");
@@ -60,6 +59,7 @@ namespace TicketManagement.WebServer.Controllers
 
         // POST api/<EventController>
         [HttpPost]
+        [Authorize(Roles = "eventmanager")]
         public async Task<TMEventDto> Post([FromBody] TMEventDto obj)
         {
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync<TMEventDto>("api/Event", obj);

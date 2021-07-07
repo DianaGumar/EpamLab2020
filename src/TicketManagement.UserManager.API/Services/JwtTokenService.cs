@@ -23,7 +23,8 @@ namespace UserApi.Services
         {
             var userClaims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user?.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, user?.UserName), // добавить роль пользователя
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user?.UserName),
             };
             var jwt = new JwtSecurityToken(
                 issuer: _settings.JwtIssuer,

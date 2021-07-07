@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-/////using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.WebServer.Models;
 
@@ -36,7 +35,7 @@ namespace TicketManagement.WebServer.Controllers
         [HttpGet("get_all_roles")]
         public async Task<IList<string>> GetAllRoles() // +
         {
-            // запрос на получение лолей  GetAllRoles
+            // запрос на получение ролей  GetAllRoles
             var roles = await _httpClient.GetFromJsonAsync<List<string>>("api/Register/get_all_roles");
             return roles;
         }
@@ -46,13 +45,12 @@ namespace TicketManagement.WebServer.Controllers
         {
             HttpResponseMessage response = await _httpClient
                 .PostAsJsonAsync<RegisterViewModel>("api/Register/register", user);
-            if (response.IsSuccessStatusCode)
+
+            if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
             {
-                var tokenFromHeader = response.Headers.GetValues("Authorization").ToString();
-                Request.Headers["Authorization"] = tokenFromHeader;
-                var token = await response.Content.ReadAsStringAsync();
-                _ = token;
-                return Ok(tokenFromHeader);
+                var token = response.Headers.GetValues("Authorization").ToArray()[0];
+                Response.Headers.Add("Authorization", token);
+                return Ok();
             }
 
             return Forbid();
@@ -63,16 +61,9 @@ namespace TicketManagement.WebServer.Controllers
         {
             HttpResponseMessage response = await _httpClient
                 .PostAsJsonAsync<LoginViewModel>("api/Login/login", user);
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
             {
-                if (!response.Headers.Contains("Authorization"))
-                {
-                    return Forbid();
-                }
-
-                // достаём токен из хедера запроса
                 var token = response.Headers.GetValues("Authorization").ToArray()[0];
-                _ = token;
                 Response.Headers.Add("Authorization", token);
                 return Ok();
             }

@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -41,6 +46,13 @@ namespace TicketManagement.WebClient.Controllers
             return items;
         }
 
+        ////[HttpPost]
+        ////public async Task<IActionResult> Logout()
+        ////{
+        ////    HttpResponseMessage response = await _httpClient
+        ////        .PostAsJsonAsync<RegisterViewModel>("api/User/logout", user);
+        ////}
+
         [HttpGet]
         public async Task<IActionResult> Register()
         {
@@ -53,16 +65,11 @@ namespace TicketManagement.WebClient.Controllers
             HttpResponseMessage response = await _httpClient
                 .PostAsJsonAsync<RegisterViewModel>("api/User/register", user);
 
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
             {
-                var token = await response.Content.ReadAsStringAsync();
-
-                // сохранение в куки полученного токена
-                HttpContext.Response.Cookies.Append("secret_jwt_key", token, new CookieOptions
-                {
-                    HttpOnly = true, // чтобы с js никто не получил доступ
-                    SameSite = SameSiteMode.Strict,
-                });
+                // taking token from header and writing to cookie
+                var token = response.Headers.GetValues("Authorization").ToArray()[0];
+                Authorizehandle(token);
 
                 return RedirectToAction("Index", "Event");
             }
@@ -101,15 +108,9 @@ namespace TicketManagement.WebClient.Controllers
             // added to cookie
             if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
             {
-                // достаём токен из хедера запроса
+                // taking token from header and writing to cookie
                 var token = response.Headers.GetValues("Authorization").ToArray()[0];
-
-                // кладём токен в куки
-                HttpContext.Response.Cookies.Append("secret_jwt_key", token, new CookieOptions
-                {
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.Strict,
-                });
+                Authorizehandle(token);
 
                 return RedirectToAction("Index", "Event");
             }
@@ -117,6 +118,29 @@ namespace TicketManagement.WebClient.Controllers
             // реализовать прокидывание уточняющих сообщений при неудачной попытке
             ModelState.AddModelError("", "Invalid login attempt.");
             return View();
+        }
+
+        private async void Authorizehandle(string token)
+        {
+            HttpContext.Response.Cookies.Append("secret_jwt_key", token,
+                    new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
+
+            var decodedJwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+
+            // забираем из токена клеймы с юзером, записываем их в контекст
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(decodedJwt.Claims, "UserInfo",
+                ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            HttpContext.User = new GenericPrincipal(claimsIdentity, null); // вместо null должны быть стринги ролей
+
+            bool userIsAuth = HttpContext.User.Identity.IsAuthenticated;
+            _ = userIsAuth;
+
+            var username = HttpContext.User.Identity.Name;
+            _ = username;
+
+            // оповещаем систему о залогиненности
+            await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme,
+                new GenericPrincipal(claimsIdentity, null));
         }
 
         protected override void Dispose(bool disposing)

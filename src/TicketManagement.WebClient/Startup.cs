@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-/////using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-////using TicketManagement.BusinessLogic.Standart.CustomMiddleware;
 
 namespace TicketManagement.WebClient
 {
@@ -20,19 +19,22 @@ namespace TicketManagement.WebClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ////// something interesting
-            ////services.AddDbContext<ApplicationDbContext>(options =>
-            ////    options.UseSqlServer(Configuration.GetConnectionString("MainConnection")));
-            ////////services.AddDatabaseDeveloperPageExceptionFilter();
+            ////AddAuthentication().AddCookie("Bearer", ...)
 
-            ////services.AddIdentity<IdentityUser, IdentityRole>(
-            ////    options =>
-            ////    {
-            ////        options.SignIn.RequireConfirmedAccount = false;
-            ////        options.SignIn.RequireConfirmedEmail = false;
-            ////    })
-            ////    .AddEntityFrameworkStores<ApplicationDbContext>()
-            ////    .AddDefaultTokenProviders();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddCookie(JwtBearerDefaults.AuthenticationScheme,
+                options =>
+                {
+                    options.LoginPath = "/User/Login";
+                    options.LogoutPath = "/User/Logout";
+                });
+
+            // HttpContextAccessor создаётся единожды при первом обращении используется для доступа к контексту
+            ////services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews();
         }
@@ -56,12 +58,8 @@ namespace TicketManagement.WebClient
             // app = pipeline
             app.UseRouting();
 
-            // ничего не знает об аутентификации и базе данных пользователей,
-            // но при этом должен иметь понятие о валидности пользователя (используется во view)
-            ////app.UseAuthorization();
-            ////app.UseMiddleware<TokenMiddleware>();
-            // вызов кастомного middleware
-            ////app.UseTokenAuth();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

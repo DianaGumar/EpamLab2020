@@ -84,7 +84,7 @@ namespace TicketManagement.WebClient.Controllers
 
         // POST: EventLayoutController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        /////[ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(EventLayoutViewModel obj)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Event", obj?.TMEvent);
@@ -132,7 +132,7 @@ namespace TicketManagement.WebClient.Controllers
 
         // POST: EventLayoutController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        ////[ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, EventLayoutViewModel obj)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/Event/{id}", obj?.TMEvent);

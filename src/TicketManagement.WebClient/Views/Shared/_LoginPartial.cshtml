@@ -1,14 +1,25 @@
 ﻿
-
 <ul class="navbar-nav">
-    @* проверять как то иначе *@
-    @* отправлять запрос в котроллер, если токен валиден отображать одно, если нет- другое *@
-
-    <li class="nav-item">
-        <a class="nav-link" id="registerLink" asp-controller="User" asp-action="Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id = "loginLink" asp-controller="User" asp-action="Login">Login</a>
-    </li>
-
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" id = "TMUserRoomLink" asp-controller="User" asp-action="Manage">Hello @User.Identity.Name!</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="User" asp-action="Purchase">Purchase history</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="registerLink" asp-controller="User" asp-action="Logout">Logout</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" id="registerLink" asp-controller="User" asp-action="Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="loginLink" asp-controller="User" asp-action="Login">Login</a>
+        </li>
+    }
 </ul>
+

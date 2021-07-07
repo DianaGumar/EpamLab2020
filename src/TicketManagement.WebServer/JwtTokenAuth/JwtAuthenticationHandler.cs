@@ -53,6 +53,7 @@ namespace TicketManagement.WebServer.JwtTokenAuth
                 var identity = new ClaimsIdentity(jwtToken.Claims, Scheme.Name);
                 var principal = new ClaimsPrincipal(identity);
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);
+
                 return AuthenticateResult.Success(ticket);
             }
 
