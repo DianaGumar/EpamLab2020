@@ -40,6 +40,19 @@ namespace TicketManagement.WebServer.Controllers
             return roles;
         }
 
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync("api/Logout/logout");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok();
+            }
+
+            return Forbid();
+        }
+
         [HttpPost("register")] // +
         public async Task<IActionResult> Register([FromBody] RegisterViewModel user)
         {

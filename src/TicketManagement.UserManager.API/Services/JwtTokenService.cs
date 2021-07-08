@@ -32,6 +32,7 @@ namespace UserApi.Services
                 signingCredentials: new SigningCredentials(
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.JwtSecretKey)),
                     SecurityAlgorithms.HmacSha256),
+                expires: new DateTimeOffset(DateTime.Now.AddMinutes(60)).DateTime,
                 claims: userClaims);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

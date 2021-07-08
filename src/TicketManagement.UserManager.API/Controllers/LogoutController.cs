@@ -14,7 +14,7 @@ namespace TicketManagement.UserManager.API.Controllers
             _signInManager = signInManager;
         }
 
-        [HttpPost("logout")]
+        [HttpGet("logout")]
         public async void Logout()
         {
             //// JwtBearerDefaults.AuthenticationScheme

@@ -46,12 +46,28 @@ namespace TicketManagement.WebClient.Controllers
             return items;
         }
 
-        ////[HttpPost]
-        ////public async Task<IActionResult> Logout()
-        ////{
-        ////    HttpResponseMessage response = await _httpClient
-        ////        .PostAsJsonAsync<RegisterViewModel>("api/User/logout", user);
-        ////}
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            ////// забираем токен с куки, разлогиниваем на клиенте
+            ////var token = HttpContext.Request.Cookies["secret_jwt_key"];
+            ////var decodedJwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+
+            ////// забираем из токена клеймы с юзером, записываем их в контекст
+            ////ClaimsIdentity claimsIdentity = new ClaimsIdentity(decodedJwt.Claims, "UserInfo",
+            ////    ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            ////HttpContext.User = new GenericPrincipal(claimsIdentity, null); // вместо null должны быть стринги ролей
+
+            ////var user = HttpContext.User.Identity.Name;
+            HttpResponseMessage response = await _httpClient.GetAsync("api/User/logout");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+            }
+
+            return RedirectToAction("Index", "Event");
+        }
 
         [HttpGet]
         public async Task<IActionResult> Register()
@@ -131,12 +147,6 @@ namespace TicketManagement.WebClient.Controllers
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(decodedJwt.Claims, "UserInfo",
                 ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             HttpContext.User = new GenericPrincipal(claimsIdentity, null); // вместо null должны быть стринги ролей
-
-            bool userIsAuth = HttpContext.User.Identity.IsAuthenticated;
-            _ = userIsAuth;
-
-            var username = HttpContext.User.Identity.Name;
-            _ = username;
 
             // оповещаем систему о залогиненности
             await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme,

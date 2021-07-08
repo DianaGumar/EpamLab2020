@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 ////using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -33,7 +34,6 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         // GET: EventController
-        ////[Authorize]
         public async Task<ActionResult> Index()
         {
             var tmevents = await _httpClient.GetFromJsonAsync<List<TMEventDto>>("api/Event");
@@ -41,7 +41,7 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         // GET: EventController
-        ////[Authorize]
+        [Authorize]
         public async Task<ActionResult> GetAll()
         {
             // достаём и отправляем с запросом токен
@@ -52,6 +52,7 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         // GET: EventController/Details/5
+        [Authorize(Roles = "eventmanager")]
         public async Task<ActionResult> Details(int id)
         {
             var tmevent = await _httpClient.GetFromJsonAsync<TMEventDto>($"api/Event/{id}");
@@ -59,7 +60,7 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         [HttpGet]
-        ////[Authorize(Roles = "eventmanager")]
+        [Authorize(Roles = "eventmanager")]
         public async Task<ActionResult> Delete(int id)
         {
             HttpResponseMessage response = await _httpClient.DeleteAsync($"api/Event/{id}");
@@ -72,6 +73,7 @@ namespace TicketManagement.WebClient.Controllers
 
         // доделать нормальное представление
         // GET: EventLayoutController/Create
+        [Authorize(Roles = "eventmanager")]
         public async Task<ActionResult> Create()
         {
             // использует полную модель представления EventLayoutViewModel
@@ -84,6 +86,7 @@ namespace TicketManagement.WebClient.Controllers
 
         // POST: EventLayoutController/Create
         [HttpPost]
+        [Authorize(Roles = "eventmanager")]
         /////[ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(EventLayoutViewModel obj)
         {
@@ -115,6 +118,7 @@ namespace TicketManagement.WebClient.Controllers
         }
 
         // GET: EventLayoutController/Edit/5
+        [Authorize(Roles = "eventmanager")]
         public async Task<ActionResult> Edit(int id)
         {
             var tmevent = await _httpClient.GetFromJsonAsync<TMEventDto>($"api/Event/{id}");
@@ -132,6 +136,7 @@ namespace TicketManagement.WebClient.Controllers
 
         // POST: EventLayoutController/Edit/5
         [HttpPost]
+        [Authorize(Roles = "eventmanager")]
         ////[ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, EventLayoutViewModel obj)
         {
