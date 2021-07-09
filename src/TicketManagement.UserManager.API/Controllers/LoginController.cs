@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.UserManager.API.Models;
@@ -38,8 +39,14 @@ namespace TicketManagement.UserManager.API.Controllers
 
                 if (result.Succeeded)
                 {
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    var info = await _userManager.GetClaimsAsync(user);
+                    _ = info;
+
                     // закидываем токен в хедер ответа
                     Response.Headers.Add("Authorization", _jwtTokenService.GetToken(user));
+                    Response.Headers.Add("AuthorizationRoles", roles.ToArray());
                     return Ok();
                 }
             }

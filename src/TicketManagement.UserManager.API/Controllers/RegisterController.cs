@@ -56,7 +56,9 @@ namespace TicketManagement.UserManager.API.Controllers
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
                 // закидываем токен в хедер ответа
+                var roles = await _userManager.GetRolesAsync(user);
                 Response.Headers.Add("Authorization", _jwtTokenService.GetToken(user));
+                Response.Headers.Add("AuthorizationRoles", roles.ToArray());
                 return Ok();
             }
 

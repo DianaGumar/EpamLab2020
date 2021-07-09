@@ -50,8 +50,12 @@ namespace TicketManagement.BusinessLogic.Entities
         [MaxLength(256)]
         public string UserLastName { get; set; }
 
+        public string UserEmail { get; set; }
+
         [Required]
         public decimal Balance { get; set; }
+
+        public string Role { get; set; }
     }
 
     [Table("TMLayout")]

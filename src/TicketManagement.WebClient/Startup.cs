@@ -30,6 +30,7 @@ namespace TicketManagement.WebClient
                 options =>
                 {
                     options.LoginPath = "/User/Login";
+                    options.AccessDeniedPath = "/User/Login";
                     options.LogoutPath = "/User/Logout";
                 });
 

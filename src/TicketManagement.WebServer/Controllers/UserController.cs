@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.WebServer.Models;
 
@@ -59,10 +60,14 @@ namespace TicketManagement.WebServer.Controllers
             HttpResponseMessage response = await _httpClient
                 .PostAsJsonAsync<RegisterViewModel>("api/Register/register", user);
 
-            if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
+            if (response.IsSuccessStatusCode &&
+                response.Headers.Contains("Authorization") &&
+                response.Headers.Contains("AuthorizationRoles"))
             {
                 var token = response.Headers.GetValues("Authorization").ToArray()[0];
+                var roles = response.Headers.GetValues("AuthorizationRoles").ToArray()[0];
                 Response.Headers.Add("Authorization", token);
+                Response.Headers.Add("AuthorizationRoles", roles);
                 return Ok();
             }
 
@@ -74,14 +79,34 @@ namespace TicketManagement.WebServer.Controllers
         {
             HttpResponseMessage response = await _httpClient
                 .PostAsJsonAsync<LoginViewModel>("api/Login/login", user);
-            if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
+            if (response.IsSuccessStatusCode &&
+                response.Headers.Contains("Authorization") &&
+                response.Headers.Contains("AuthorizationRoles"))
             {
                 var token = response.Headers.GetValues("Authorization").ToArray()[0];
+                var roles = response.Headers.GetValues("AuthorizationRoles").ToArray()[0];
                 Response.Headers.Add("Authorization", token);
+                Response.Headers.Add("AuthorizationRoles", roles);
                 return Ok();
             }
 
             return BadRequest(new { errorText = "Invalid username or password." });
+        }
+
+        [HttpGet("get_user")]
+        public async Task<IdentityUser> Get(string name)
+        {
+            var user = await _httpClient
+                .GetFromJsonAsync<IdentityUser>($"api/User/get_user/{name}");
+            return user;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<string> Delete(string id)
+        {
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"api/User/{id}");
+            var contents = await response.Content.ReadAsStringAsync();
+            return contents;
         }
 
         protected virtual void Dispose(bool disposing)

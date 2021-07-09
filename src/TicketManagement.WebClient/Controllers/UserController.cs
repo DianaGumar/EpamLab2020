@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TicketManagement.BusinessLogic.Entities;
 using TicketManagement.WebClient.Models;
 
 namespace TicketManagement.WebClient.Controllers
@@ -44,6 +46,27 @@ namespace TicketManagement.WebClient.Controllers
             roles.ForEach(r => items.Add(new SelectListItem { Text = r, Value = r }));
 
             return items;
+        }
+
+        // user managing
+        public async Task<IActionResult> GetUserInfo()
+        {
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                return Forbid();
+            }
+
+            // получиаем данные о текущем залогиненном пользователе не из кук, а по запросу к апи
+            var user = await _httpClient.GetFromJsonAsync<IdentityUser>($"api/User/get_user/{HttpContext.User.Identity.Name}");
+
+            TMUser obj = new TMUser();
+            obj.UserLastName = user.UserName;
+            obj.UserEmail = user.Email;
+
+            ////// получение ролей пользователя
+            ////ticketUser.Role = HttpContext.User.Claim
+
+            return View(obj);
         }
 
         [HttpGet]
@@ -81,11 +104,14 @@ namespace TicketManagement.WebClient.Controllers
             HttpResponseMessage response = await _httpClient
                 .PostAsJsonAsync<RegisterViewModel>("api/User/register", user);
 
-            if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
+            if (response.IsSuccessStatusCode &&
+                response.Headers.Contains("Authorization") &&
+                response.Headers.Contains("AuthorizationRoles"))
             {
                 // taking token from header and writing to cookie
                 var token = response.Headers.GetValues("Authorization").ToArray()[0];
-                Authorizehandle(token);
+                var roles = response.Headers.GetValues("AuthorizationRoles").ToArray()[0];
+                AuthorizeHandle(token, roles);
 
                 return RedirectToAction("Index", "Event");
             }
@@ -122,11 +148,14 @@ namespace TicketManagement.WebClient.Controllers
                 .PostAsJsonAsync<LoginViewModel>("api/User/login", user);
 
             // added to cookie
-            if (response.IsSuccessStatusCode && response.Headers.Contains("Authorization"))
+            if (response.IsSuccessStatusCode
+                && response.Headers.Contains("Authorization")
+                && response.Headers.Contains("AuthorizationRoles"))
             {
                 // taking token from header and writing to cookie
                 var token = response.Headers.GetValues("Authorization").ToArray()[0];
-                Authorizehandle(token);
+                var roles = response.Headers.GetValues("AuthorizationRoles").ToArray()[0];
+                AuthorizeHandle(token, roles);
 
                 return RedirectToAction("Index", "Event");
             }
@@ -136,21 +165,21 @@ namespace TicketManagement.WebClient.Controllers
             return View();
         }
 
-        private async void Authorizehandle(string token)
+        private async void AuthorizeHandle(string token, string roles)
         {
             HttpContext.Response.Cookies.Append("secret_jwt_key", token,
                     new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
 
             var decodedJwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var arrRoles = roles.Split(',');
 
             // забираем из токена клеймы с юзером, записываем их в контекст
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(decodedJwt.Claims, "UserInfo",
                 ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            HttpContext.User = new GenericPrincipal(claimsIdentity, null); // вместо null должны быть стринги ролей
+            HttpContext.User = new GenericPrincipal(claimsIdentity, arrRoles);
 
             // оповещаем систему о залогиненности
-            await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme,
-                new GenericPrincipal(claimsIdentity, null));
+            await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, HttpContext.User);
         }
 
         protected override void Dispose(bool disposing)
