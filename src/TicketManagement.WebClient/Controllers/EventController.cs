@@ -20,10 +20,9 @@ namespace TicketManagement.WebClient.Controllers
     {
         private HttpClient _httpClient;
 
-        public EventController()
+        public EventController(HttpClient httpClient)
         {
-            // передавать HttpClient как DI
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
 
 #pragma warning disable S1075 // URIs should not be hardcoded
             _httpClient.BaseAddress = new Uri("https://localhost:5101/");
@@ -96,7 +95,7 @@ namespace TicketManagement.WebClient.Controllers
             // получение ответа от сервиса по созданию евента
             TMEventDto result = JsonConvert.DeserializeObject<TMEventDto>(contents);
 
-            switch (result.Status)
+            switch (result?.Status)
             {
                 case TMEventStatus.Success:
                     return RedirectToAction(nameof(Index));
@@ -146,7 +145,7 @@ namespace TicketManagement.WebClient.Controllers
             // получение ответа от сервиса по созданию евента
             TMEventDto result = JsonConvert.DeserializeObject<TMEventDto>(contents);
 
-            switch (result.Status)
+            switch (result?.Status)
             {
                 case TMEventStatus.Success:
                     return RedirectToAction(nameof(Index));

@@ -16,10 +16,11 @@ namespace TicketManagement.WebServer.Controllers
         private bool _disposed;
         private HttpClient _httpClient;
 
-        public LayoutController()
+        public LayoutController(HttpClient httpClient)
         {
             _disposed = false;
-            _httpClient = new HttpClient();
+            ////_httpClient = new HttpClient();
+            _httpClient = httpClient;
 
             // подключается к venue api
 #pragma warning disable S1075 // URIs should not be hardcoded

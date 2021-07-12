@@ -23,6 +23,8 @@ namespace TicketManagement.WebServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
+
             // HttpContextAccessor создаётся единожды при первом обращении используется для доступа к контексту
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
